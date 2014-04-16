@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <cassert>
 #include "FileParser.h"
+#include "LevelCreator.h"
 
 int main(int argc, char* argv[])
 {
@@ -9,7 +10,9 @@ int main(int argc, char* argv[])
 
 	TokenList list = parser.tokenize(argv[1], ' ');
 
-	
+	LevelCreator creator;
+
+	Level test = creator.createLevel(list);
 
 
 

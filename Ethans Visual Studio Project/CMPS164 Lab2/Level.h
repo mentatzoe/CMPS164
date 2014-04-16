@@ -1,6 +1,8 @@
-#include "utility.h"
-#include <vector>
+#ifndef LEVEL_H
+#define LEVEL_H
+
 #include "Tile.h"
+#include "utility.h"
 
 class Level
 {
@@ -14,3 +16,5 @@ private:
 	Vector4f tee;
 	Vector4f cup;
 };
+
+#endif /* LEVEL_H */

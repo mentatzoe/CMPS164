@@ -1,4 +1,5 @@
 #include "LevelCreator.h"
+#include <iostream>
 
 Level LevelCreator::createLevel(TokenList tokenList)
 {
@@ -6,59 +7,59 @@ Level LevelCreator::createLevel(TokenList tokenList)
 	int tileID = 0;
 	int numSides = 0;
 	std::vector<Tile> tileList;
-	Vector3f teeVect;
-	Vector3f cupVect;
+	Vector4f teeVect;
+	Vector4f cupVect;
+	std::vector<Vector3f> vertList;
+	std::vector<int> neighbors;
 
 	while (curToken != tokenList.end()) {
-		switch ((curToken)->data) {
-		case "tile":
-			std::vector<Vector3f> vertList;
-			std::vector<int> neighbors;
-
-			tileID = *std::next(curToken, 1).data;
-			numSides = *std::next(curToken, 2).data;
+		std::cout << "Examining curToken: " << (*curToken).data << "\n";
+		if ((*curToken).data.compare("tile")) {
+			std::cout << "     curToken is 'tile'\n";
+			tileID = std::stoi((*std::next(curToken, 1)).data);
+			numSides = std::stoi((*std::next(curToken, 2)).data);
 			curToken += 3;
 
-			for (int = 0; i < 3 * numSides; i += 3) {
-				Vector3f vert(*std::next(curToken, i).data, *std::next(curToken, i + 1).data, *std::next(curToken, i + 2).data);
+			std::cout << "     (After tileID/numSides) curToken is now " << (*curToken).data << "\n";
+
+			for (int i = 0; i < 3 * numSides; i += 3) {
+				Vector3f vert(std::stoi((*std::next(curToken, i)).data), std::stoi((*std::next(curToken, i + 1)).data), std::stoi((*std::next(curToken, i + 2)).data));
 				vertList.push_back(vert);
 			}
 			curToken += 3 * numSides;
 
+			std::cout << "     (After verts) curToken is now " << (*curToken).data << "\n";
+
 			for (int i = 0; i < numSides; i++) {
-				neighbors.push_back(*std::next(curToken, i).data);
+				neighbors.push_back(std::stoi((*std::next(curToken, i)).data));
 			}
 			curToken += numSides;
 
+			std::cout << "     (After neighbors) curToken is now " << (*curToken).data << "\n";
+
 			Tile tile(tileID, numSides, vertList, neighbors);
 			tileList.push_back(tile);
-			break;
-
-		case "tee":
-			teeVect.x = *std::next(curToken, 2).data;
-			teeVect.y = *std::next(curToken, 3).data;
-			teeVect.z = *std::next(curToken, 4).data;
-			teeVect.w = *std::next(curToken, 1).data;			// TileID
-			break;
-
-		case "cup":
-			cupVect.x = *std::next(curToken, 2).data;
-			cupVect.y = *std::next(curToken, 3).data;
-			cupVect.z = *std::next(curToken, 4).data;
-			cupVect.w = *std::next(curToken, 1).data;			// TileID
-			break;
-
-		case '\n':
-			// Means that there is some extra white space somewhere
-			curToken++;
-			break;
-
-		default:
+		}
+		else if ((curToken)->data.compare("tee")) {
+			std::cout << "     curToken is 'tee'\n";
+			teeVect.x = std::stoi((*std::next(curToken, 2)).data);
+			teeVect.y = std::stoi((*std::next(curToken, 3)).data);
+			teeVect.z = std::stoi((*std::next(curToken, 4)).data);
+			teeVect.w = std::stoi((*std::next(curToken, 1)).data);			// TileID
+		}
+		else if ((curToken)->data.compare("cup")) {
+			std::cout << "     curToken is 'cup'\n";
+			cupVect.x = std::stoi((*std::next(curToken, 2)).data);
+			cupVect.y = std::stoi((*std::next(curToken, 3)).data);
+			cupVect.z = std::stoi((*std::next(curToken, 4)).data);
+			cupVect.w = std::stoi((*std::next(curToken, 1)).data);			// TileID
+		}
+		else {
 			// Something wrong happened somewhere
-			break;
+			curToken++;
 		}
 	}
 
-	Level level(tileList teeVect, cupVect);
+	Level level(tileList, teeVect, cupVect);
 	return level;
 }
