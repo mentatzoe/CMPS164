@@ -10,7 +10,7 @@
 class FileParser
 {
 public:
-	TokenList tokenize(std::string filename, char delim);
+	TokenList tokenize(std::string filename);
 };
 
 #endif /* FILEPARSER_H */

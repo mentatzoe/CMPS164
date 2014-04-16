@@ -1,6 +1,7 @@
 #include "FileParser.h"
+#include <sstream>
 
-TokenList FileParser::tokenize(std::string filename, char delim)
+TokenList FileParser::tokenize(std::string filename)
 {
 	std::ifstream myFile(filename);
 	TokenList tokenList;
@@ -8,11 +9,18 @@ TokenList FileParser::tokenize(std::string filename, char delim)
 
 	if (myFile.is_open())
 	{
-		while (std::getline(myFile, item, delim))
+		while (std::getline(myFile, item, '\n'))
 		{
-			Token token;
-			token.data = item;
-			tokenList.push_back(token);
+			std::istringstream buf(item);
+			std::istream_iterator<std::string> beg(buf), end;
+
+			std::vector<std::string> tokens(beg, end);
+
+			for (auto& s : tokens){
+				Token token;
+				token.data = s;
+				tokenList.push_back(token);
+			}
 		}
 	}
 
