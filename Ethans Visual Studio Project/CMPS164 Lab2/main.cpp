@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
 	Level test = creator.createLevel(list);
 
-
+	test.print();
 
 	system("pause");
 	return 0;

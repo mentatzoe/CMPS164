@@ -11,6 +11,7 @@ public:
 		: tileList(tileList)
 		, tee(teeVect)
 		, cup(cupVect) {}
+	void print();
 private:
 	std::vector<Tile> tileList;
 	Vector4f tee;
