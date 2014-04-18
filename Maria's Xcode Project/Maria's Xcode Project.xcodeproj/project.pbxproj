@@ -12,6 +12,10 @@
 		4FA2051218FDF3BE007F09B5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA2051118FDF3BE007F09B5 /* Cocoa.framework */; };
 		4FA2051418FDF3C4007F09B5 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA2051318FDF3C4007F09B5 /* GLUT.framework */; };
 		4FA2051618FDF3D0007F09B5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA2051518FDF3D0007F09B5 /* OpenGL.framework */; };
+		4FDC5F951900A8E400B12A69 /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F8A1900A8E400B12A69 /* FileParser.cpp */; };
+		4FDC5F961900A8E400B12A69 /* Level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F8D1900A8E400B12A69 /* Level.cpp */; };
+		4FDC5F971900A8E400B12A69 /* LevelCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F8F1900A8E400B12A69 /* LevelCreator.cpp */; };
+		4FDC5F981900A8E400B12A69 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F911900A8E400B12A69 /* Tile.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -35,6 +39,17 @@
 		4FA2051318FDF3C4007F09B5 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		4FA2051518FDF3D0007F09B5 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		4FA2051718FDF41D007F09B5 /* hw5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hw5.h; sourceTree = "<group>"; };
+		4FDC5F8A1900A8E400B12A69 /* FileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
+		4FDC5F8B1900A8E400B12A69 /* FileParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileParser.h; sourceTree = "<group>"; };
+		4FDC5F8C1900A8E400B12A69 /* hole.00.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hole.00.db; sourceTree = "<group>"; };
+		4FDC5F8D1900A8E400B12A69 /* Level.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Level.cpp; sourceTree = "<group>"; };
+		4FDC5F8E1900A8E400B12A69 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level.h; sourceTree = "<group>"; };
+		4FDC5F8F1900A8E400B12A69 /* LevelCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelCreator.cpp; sourceTree = "<group>"; };
+		4FDC5F901900A8E400B12A69 /* LevelCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelCreator.h; sourceTree = "<group>"; };
+		4FDC5F911900A8E400B12A69 /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
+		4FDC5F921900A8E400B12A69 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
+		4FDC5F931900A8E400B12A69 /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
+		4FDC5F941900A8E400B12A69 /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +88,17 @@
 		4FA2050718FDF33F007F09B5 /* Maria's Xcode Project */ = {
 			isa = PBXGroup;
 			children = (
+				4FDC5F8A1900A8E400B12A69 /* FileParser.cpp */,
+				4FDC5F8B1900A8E400B12A69 /* FileParser.h */,
+				4FDC5F8C1900A8E400B12A69 /* hole.00.db */,
+				4FDC5F8D1900A8E400B12A69 /* Level.cpp */,
+				4FDC5F8E1900A8E400B12A69 /* Level.h */,
+				4FDC5F8F1900A8E400B12A69 /* LevelCreator.cpp */,
+				4FDC5F901900A8E400B12A69 /* LevelCreator.h */,
+				4FDC5F911900A8E400B12A69 /* Tile.cpp */,
+				4FDC5F921900A8E400B12A69 /* Tile.h */,
+				4FDC5F931900A8E400B12A69 /* Token.h */,
+				4FDC5F941900A8E400B12A69 /* utility.h */,
 				4FA2050818FDF33F007F09B5 /* main.cpp */,
 				4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */,
 				4FA2051718FDF41D007F09B5 /* hw5.h */,
@@ -131,7 +157,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FDC5F961900A8E400B12A69 /* Level.cpp in Sources */,
+				4FDC5F971900A8E400B12A69 /* LevelCreator.cpp in Sources */,
+				4FDC5F951900A8E400B12A69 /* FileParser.cpp in Sources */,
 				4FA2050918FDF33F007F09B5 /* main.cpp in Sources */,
+				4FDC5F981900A8E400B12A69 /* Tile.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +271,7 @@
 				4FA2051018FDF33F007F09B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

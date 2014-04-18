@@ -10,248 +10,144 @@
 #include <windows.h>
 #endif
 
-#include <stdlib.h>
-#include <iostream>
-#include <fstream>
-
+#include <stdio.h>
+#include <stdarg.h>
+#include <math.h>
+#define GL_GLEXT_PROTOTYPES
 #ifdef __APPLE__
 #include <GLUT/glut.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
 #else
 #include <GL/glut.h>
-#include <GL/glu.h>
-#include <GL/gl.h>
 #endif
 
-#include "hw5.h"
+#include "Tile.h"
+#include "LevelCreator.h"
+#include "Level.h"
+#include "FileParser.h"
+#include <iostream>
 
 using namespace std;
 
-#define MIN_LINEAR 0
-#define MIN_NEAREST 1
-#define MAG_LINEAR 2
-#define MAG_NEAREST 3
-#define S_REPEAT 4
-#define S_CLAMP 5
-#define T_REPEAT 6
-#define T_CLAMP 7
-#define ENV_MODULATE 8
-#define ENV_REPLACE 9
+double rotate_y=0;
+double rotate_x=0;
+bool levelLoaded = false;
+string filename = "";
+Level l;
 
-static int minFilter = GL_LINEAR;
-static int magFilter = GL_LINEAR;
-static int wrapS = GL_REPEAT;
-static int wrapT = GL_REPEAT;
-static int envMode = GL_MODULATE;
 
-void menuCallback(int);
-void setCamera(void);
-void drawScene(void);
-
-static int win = 0;
-static GLfloat whiteLight[3] = {1.0f, 1.5f, 1.0f};
-static GLfloat greenLight[3] = {0.0f, 1.0f, 0.0f};
-static GLfloat lightPosition[4] = {0.0f, 0.0f, 0.0f, 1.0f};
-static GLuint teaTex;
-
-void loadTextures()
-{
-	generate_texture();
-	
-	glGenTextures(2, &teaTex);
-	glBindTexture(GL_TEXTURE_2D, teaTex);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapS);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapT);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, envMode);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, texture_image);
-}
-
-void display()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//Called when a key is pressed
+void handleKeypress( int key, int x, int y) {
+    //  Right arrow - increase rotation by 5 degree
+    if (key == GLUT_KEY_RIGHT)
+        rotate_y += 5;
+    //  Left arrow - decrease rotation by 5 degree
+    else if (key == GLUT_KEY_LEFT)
+        rotate_y -= 5;
     
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	
-	glPushMatrix();
-	glTranslatef(0.0f, 10.0f, 0.0f);
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
-	glPopMatrix();
-	
-	setCamera();
-	
-	drawScene();
-	
-	glutSwapBuffers();
-}
-
-void drawScene()
-{
-	// Draw Teapot
-	glPushMatrix();
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, greenLight);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, whiteLight);
-	glMaterialf(GL_FRONT, GL_SHININESS, 25.0);
-	glTranslatef(0.0f, 0.5f, 0.0f);
-	glutSolidTeapot(1.0f);
-	glPopMatrix();
+    else if (key == GLUT_KEY_UP)
+        rotate_x += 5;
     
-	// Draw Floor
-	glPushMatrix();
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteLight);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, whiteLight);
-	glMaterialf(GL_FRONT, GL_SHININESS, 25.0);
-	glBegin(GL_QUADS);
-	glNormal3f(0.0f, 1.0f, 0.0f);
-	glTexCoord2f(0.0f, 0.0f); glVertex3f(2.0f, 0.0f, 2.0f);
-	glTexCoord2f(0.0f, 2.0f); glVertex3f(2.0f, 0.0f, -2.0f);
-	glTexCoord2f(2.0f, 2.0f); glVertex3f(-2.0f, 0.0f, -2.0f);
-	glTexCoord2f(2.0f, 0.0f); glVertex3f(-2.0f, 0.0f, 2.0f);
-	glEnd();
-	glPopMatrix();
-}
-
-void idle()
-{
-	glutPostRedisplay();
-}
-
-void setCamera()
-{
-    glTranslatef(0.0f,-0.75f, -2.0f);
-    glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
-}
-
-void makeMenu()
-{
-	int menu, min, mag, sDir, tDir, env;
-	
-	min = glutCreateMenu(menuCallback);
-	glutAddMenuEntry("linear", MIN_LINEAR);
-	glutAddMenuEntry("nearest", MIN_NEAREST);
-	
-	mag = glutCreateMenu(menuCallback);
-	glutAddMenuEntry("linear", MAG_LINEAR);
-	glutAddMenuEntry("nearest", MAG_NEAREST);
+    else if (key == GLUT_KEY_DOWN)
+        rotate_x -= 5;
     
-	sDir = glutCreateMenu(menuCallback);
-	glutAddMenuEntry("repeat", S_REPEAT);
-	glutAddMenuEntry("clamp", S_CLAMP);
-	
-	tDir = glutCreateMenu(menuCallback);
-	glutAddMenuEntry("repeat", T_REPEAT);
-	glutAddMenuEntry("clamp", T_CLAMP);
-	
-	env = glutCreateMenu(menuCallback);
-	glutAddMenuEntry("modulate", ENV_MODULATE);
-	glutAddMenuEntry("replace", ENV_REPLACE);
-	
-	menu = glutCreateMenu(menuCallback);
-	glutAddSubMenu("texture min filter", min);
-	glutAddSubMenu("texture mag filter", mag);
-	glutAddSubMenu("wrap s direction", sDir);
-	glutAddSubMenu("wrap t direction", tDir);
-	glutAddSubMenu("texture env mode", env);
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
+    //  Request display update
+    glutPostRedisplay();
 }
-
-void menuCallback(int option)
-{
-    switch (option) {
-        case MIN_LINEAR:
-            minFilter = GL_LINEAR;
-            break;
-        case MIN_NEAREST:
-            minFilter = GL_NEAREST;
-            break;
-        case MAG_LINEAR:
-            magFilter = GL_LINEAR;
-            break;
-        case MAG_NEAREST:
-            magFilter = GL_NEAREST;
-            break;
-        case S_REPEAT:
-            wrapS = GL_REPEAT;
-            break;
-        case S_CLAMP:
-            wrapS = GL_CLAMP;
-            break;
-        case T_REPEAT:
-            wrapT = GL_REPEAT;
-            break;
-        case T_CLAMP:
-            wrapT = GL_CLAMP;
-            break;
-        case ENV_MODULATE:
-            envMode = GL_MODULATE;
-            break;
-        case ENV_REPLACE:
-            envMode = GL_REPLACE;
-            break;
-        default:
-            break;
-    }
-	
-	glDeleteTextures(1, &teaTex); // De-allocate current texture
-	loadTextures(); // Re-load texture
-	glutPostRedisplay();
-}
-
-void CreateGlutWindow()
-{
-	glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	glutInitWindowPosition (10, 10);
-	glutInitWindowSize (512, 512);
-	win = glutCreateWindow ("Butcher, Andrew");
-}
-
-void CreateGlutCallbacks()
-{
-	glutDisplayFunc(display);
-	glutIdleFunc(idle);
-}
-
-void InitOpenGL()
-{
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(90.0, 1.0, 0.1, 100);
-	glMatrixMode(GL_MODELVIEW);
-    
+//Initializes 3D rendering
+void initRendering() {
+	//Makes 3D drawing work when something is in front of something else
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_TEXTURE_2D);
-	loadTextures();
-	
-	glEnable(GL_NORMALIZE);
-	glShadeModel(GL_SMOOTH);
-	glEnable(GL_LIGHTING);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteLight);
-	glLightfv(GL_LIGHT0, GL_SPECULAR, whiteLight);
-	glEnable(GL_LIGHT0);
+}
+//Called when the window is resized
+void handleResize(int w, int h) {
+	//Tell OpenGL how to convert from coordinates to pixel values
+	glViewport(0, 0, w, h);
+	glMatrixMode(GL_PROJECTION); //Switch to setting the camera perspective
+	//Set the camera perspective
+	glLoadIdentity(); //Reset the camera
+	gluPerspective(95.0,                  //The camera angle
+				   (double)w / (double)h, //The width-to-height ratio
+				   1.0,                   //The near z clipping coordinate
+				   200.0);                //The far z clipping coordinate
+}
+
+
+
+// SCENE FRAWING
+void drawScene() {
+    //  Clear screen and Z-buffer
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    // Reset transformations
+    glLoadIdentity();
+    
+    // Rotate when user changes rotate_x and rotate_y
+    glRotatef( rotate_x, 1.0, 0.0, 0.0 );
+    glRotatef( rotate_y, 0.0, 1.0, 0.0 );
+    
+    // Other Transformations
+    // glScalef( 2.0, 2.0, 0.0 );          // Not included
+    
+    //Obtaining tile list from the level
+    std::vector<Tile> tiles = l.getTileList();
+    
+    for (Tile &t : tiles){
+//        std::cout << t.getTileID();
+//        std::cout << " ";
+        glBegin(GL_QUADS);
+        glColor4f(0.0, 1.0, 0.0, 1.0);
+        for (Vector3f &v : t.getVerts()){
+//            std::cout << "X ";
+//            std::cout << v.x;
+//            std::cout << " ";
+//                        std::cout << "Y ";
+//            std::cout << v.y;
+//            std::cout << " ";
+//                        std::cout << "Z ";
+//            std::cout << v.z;
+//            std::cout << " ";
+            glVertex3f(v.x, v.y, v.z);
+        }
+        glEnd();
+    }
+    
+    glFlush();
+    glutSwapBuffers(); //Send the 3D scene to the screen
+}
+int main(int argc, char** argv)
+{
+    //Find the level
+    if (argv[1]==NULL){
+        printf ("No file indicated ");
+        exit (EXIT_FAILURE);
+    } else {
+        filename = argv[1];
+    }
+    
+    FileParser fp = FileParser();
+    LevelCreator lc = LevelCreator();
+
+    
+    //Load the level
+    l = lc.createLevel(fp.tokenize(filename));
+    
+    //If the structures are available
+    levelLoaded = true;
+    
+	//Initialize GLUT
+	if (levelLoaded){
+        glutInit(&argc, argv);
+        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+        glutInitWindowSize(400, 400); //Set the window size
+        //Create the window
+        glutCreateWindow("MiniGolf");
+        initRendering(); //Initialize rendering
+        //Set handler functions for drawing, keypresses, and window resizes
+        glutDisplayFunc(drawScene);
+        glutSpecialFunc(handleKeypress);
+        glutReshapeFunc(handleResize);
+        glutMainLoop(); //Start the main loop
+    }
+	return 0;
 }
 
-void ExitGlut()
-{
-	glutDestroyWindow(win);
-	exit(0);
-}
-
-int main (int argc, char **argv)
-{
-	glutInit(&argc, argv); 
-	CreateGlutWindow();
-	CreateGlutCallbacks();
-	InitOpenGL();
-	
-	makeMenu();
-	
-	glutMainLoop();
-	
-	ExitGlut();
-	return 0;		
-}
