@@ -34,7 +34,7 @@ bool levelLoaded = false;
 string filename = "";
 Level l;
 // angle of rotation for the camera direction
-float angle=0.0;
+float angle=0.0f;
 // actual vector representing the camera's direction
 float lx=0.0f,lz=-1.0f;
 // XZ position of the camera
@@ -50,31 +50,19 @@ void processSpecialKeys(int key, int xx, int yy) {
 			angle -= 0.01f;
 			lx = sin(angle);
 			lz = -cos(angle);
-            gluLookAt(	x, 1.0f, z,
-                      x+lx, 1.0f,  z+lz,
-                      0.0f, 0.0f,  1.0f);
 			break;
 		case GLUT_KEY_RIGHT :
 			angle += 0.01f;
 			lx = sin(angle);
 			lz = -cos(angle);
-            gluLookAt(	x, 1.0f, z,
-                      x+lx, 1.0f,  z+lz,
-                      0.0f, 0.0f,  1.0f);
 			break;
 		case GLUT_KEY_UP :
 			x += lx * fraction;
 			z += lz * fraction;
-            gluLookAt(	x, 1.0f, z,
-                      x+lx, 1.0f,  z+lz,
-                      0.0f, 0.0f,  1.0f);
 			break;
 		case GLUT_KEY_DOWN :
 			x -= lx * fraction;
 			z -= lz * fraction;
-            gluLookAt(	x, 1.0f, z,
-                      x+lx, 1.0f,  z+lz,
-                      0.0f, 0.0f,  1.0f);
 			break;
 	}
 
@@ -94,7 +82,7 @@ void handleResize(int w, int h) {
 	glMatrixMode(GL_PROJECTION); //Switch to setting the camera perspective
 	//Set the camera perspective
 	glLoadIdentity(); //Reset the camera
-//	gluPerspective(95.0,                  //The camera angle
+//	gluPerspective(110.0,                  //The camera angle
 //				   (double)w / (double)h, //The width-to-height ratio
 //				   1.0,                   //The near z clipping coordinate
 //				   200.0);                //The far z clipping coordinate
@@ -108,9 +96,58 @@ void drawScene() {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     // Reset transformations
     glLoadIdentity();
-    gluLookAt(	x, 1.0f, z,
-              x+lx, 1.0f,  z+lz,
-              0.0f, 0.0f,  1.0f);
+	// Set the camera
+    glMatrixMode(GL_MODELVIEW);
+    gluLookAt(1, 1, -1,
+              15, 10, 0,
+              0, 0, 1);
+    glPushMatrix();
+	glRotatef(angle, 0.0f, 1.0f, 0.0f);
+
+    glBegin(GL_POLYGON);
+    glColor3f(   1.0,  1.0, 1.0 );
+    glVertex3f(  0.5, -0.5, 0.5 );
+    glVertex3f(  0.5,  0.5, 0.5 );
+    glVertex3f( -0.5,  0.5, 0.5 );
+    glVertex3f( -0.5, -0.5, 0.5 );
+    glEnd();
+    
+    // Purple side - RIGHT
+    glBegin(GL_POLYGON);
+    glColor3f(  1.0,  0.0,  1.0 );
+    glVertex3f( 0.5, -0.5, -0.5 );
+    glVertex3f( 0.5,  0.5, -0.5 );
+    glVertex3f( 0.5,  0.5,  0.5 );
+    glVertex3f( 0.5, -0.5,  0.5 );
+    glEnd();
+    
+    // Green side - LEFT
+    glBegin(GL_POLYGON);
+    glColor3f(   0.0,  1.0,  0.0 );
+    glVertex3f( -0.5, -0.5,  0.5 );
+    glVertex3f( -0.5,  0.5,  0.5 );
+    glVertex3f( -0.5,  0.5, -0.5 );
+    glVertex3f( -0.5, -0.5, -0.5 );
+    glEnd();
+    
+    // Blue side - TOP
+    glBegin(GL_POLYGON);
+    glColor3f(   0.0,  0.0,  1.0 );
+    glVertex3f(  0.5,  0.5,  0.5 );
+    glVertex3f(  0.5,  0.5, -0.5 );
+    glVertex3f( -0.5,  0.5, -0.5 );
+    glVertex3f( -0.5,  0.5,  0.5 );
+    glEnd();
+    
+    // Red side - BOTTOM
+    glBegin(GL_POLYGON);
+    glColor3f(   1.0,  0.0,  0.0 );
+    glVertex3f(  0.5, -0.5, -0.5 );
+    glVertex3f(  0.5, -0.5,  0.5 );
+    glVertex3f( -0.5, -0.5,  0.5 );
+    glVertex3f( -0.5, -0.5, -0.5 );
+    glEnd();
+    
     
     std::vector<Tile> tiles = l.getTileList();
     for (Tile &t : tiles){
@@ -123,6 +160,8 @@ void drawScene() {
     }
     
     glFlush();
+    
+    angle+=0.1f;
     glutSwapBuffers(); //Send the 3D scene to the screen
     
 }
