@@ -39,35 +39,31 @@ float angle=0.0f;
 float lx=0.0f,lz=-1.0f;
 // XZ position of the camera
 float x=0.0f,z=5.0f;
+float eX = 0, eY = 0, eZ =0;
+float cX = 15, cY = 5, cZ =0;
 
 //Called when a key is pressed
 void processSpecialKeys(int key, int xx, int yy) {
-	float fraction = 0.1f;
-    printf("%f",x);
-    printf("%f",z);
+//	float fraction = 0.1f;
+//    printf("%f",x);
+   printf("camera position %f %f %f \n",cX, cY, cZ);
 	switch (key) {
 		case GLUT_KEY_LEFT :
-			angle -= 0.01f;
-			lx = sin(angle);
-			lz = -cos(angle);
+            cX -= 0.9f;
 			break;
 		case GLUT_KEY_RIGHT :
-			angle += 0.01f;
-			lx = sin(angle);
-			lz = -cos(angle);
+            cX += 0.9f;
 			break;
 		case GLUT_KEY_UP :
-			x += lx * fraction;
-			z += lz * fraction;
+            cY += 0.9f;
 			break;
 		case GLUT_KEY_DOWN :
-			x -= lx * fraction;
-			z -= lz * fraction;
+            cY -= 0.9f;
 			break;
 	}
 
     
-    //glutPostRedisplay();
+    glutPostRedisplay();
 }
 
 //Initializes 3D rendering
@@ -79,13 +75,13 @@ void initRendering() {
 void handleResize(int w, int h) {
 	//Tell OpenGL how to convert from coordinates to pixel values
 	glViewport(0, 0, w, h);
-	glMatrixMode(GL_PROJECTION); //Switch to setting the camera perspective
+	    glMatrixMode(GL_MODELVIEW); //Switch to setting the camera perspective
 	//Set the camera perspective
 	glLoadIdentity(); //Reset the camera
-//	gluPerspective(110.0,                  //The camera angle
-//				   (double)w / (double)h, //The width-to-height ratio
-//				   1.0,                   //The near z clipping coordinate
-//				   200.0);                //The far z clipping coordinate
+	gluPerspective(110.0,                  //The camera angle
+				   (double)w / (double)h, //The width-to-height ratio
+				   1.0,                   //The near z clipping coordinate
+				   200.0);                //The far z clipping coordinate
 }
 
 
@@ -98,8 +94,8 @@ void drawScene() {
     glLoadIdentity();
 	// Set the camera
     glMatrixMode(GL_MODELVIEW);
-    gluLookAt(1, 1, -1,
-              15, 10, 0,
+    gluLookAt(eX, eY, eZ,
+              cX, cY, cZ,
               0, 0, 1);
     glPushMatrix();
 	glRotatef(angle, 0.0f, 1.0f, 0.0f);
