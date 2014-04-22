@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F3290D719072F9A00FB737D /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3290D619072F9A00FB737D /* SDL2.framework */; };
 		4FA2050918FDF33F007F09B5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2050818FDF33F007F09B5 /* main.cpp */; };
 		4FA2050B18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */; };
 		4FA2051218FDF3BE007F09B5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA2051118FDF3BE007F09B5 /* Cocoa.framework */; };
@@ -32,6 +33,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F3290D619072F9A00FB737D /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		4FA2050518FDF33F007F09B5 /* Maria's Xcode Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Maria's Xcode Project"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA2050818FDF33F007F09B5 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Maria_s_Xcode_Project.1; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F3290D719072F9A00FB737D /* SDL2.framework in Frameworks */,
 				4FA2051618FDF3D0007F09B5 /* OpenGL.framework in Frameworks */,
 				4FA2051418FDF3C4007F09B5 /* GLUT.framework in Frameworks */,
 				4FA2051218FDF3BE007F09B5 /* Cocoa.framework in Frameworks */,
@@ -69,6 +72,7 @@
 		4FA204FC18FDF33F007F09B5 = {
 			isa = PBXGroup;
 			children = (
+				4F3290D619072F9A00FB737D /* SDL2.framework */,
 				4FA2051518FDF3D0007F09B5 /* OpenGL.framework */,
 				4FA2051318FDF3C4007F09B5 /* GLUT.framework */,
 				4FA2051118FDF3BE007F09B5 /* Cocoa.framework */,
@@ -241,6 +245,10 @@
 		4FA2050F18FDF33F007F09B5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -248,6 +256,10 @@
 		4FA2051018FDF33F007F09B5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

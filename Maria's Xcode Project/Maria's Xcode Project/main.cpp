@@ -94,6 +94,13 @@ void drawScene() {
     //  Clear screen and Z-buffer
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     // Reset transformations
+//    
+//    glMatrixMode(GL_PROJECTION);
+//    glLoadIdentity();
+//    gluPerspective(60.0,                  //The camera angle
+//				  1, //The width-to-height ratio
+//				   1.0,                   //The near z clipping coordinate
+//				   700.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(eX, eY, eZ,
