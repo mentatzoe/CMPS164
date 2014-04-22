@@ -40,25 +40,27 @@ float lx=0.0f,lz=-1.0f;
 // XZ position of the camera
 float x=0.0f,z=5.0f;
 float eX = 0, eY = 0, eZ =0;
-float cX = 15, cY = 5, cZ =0;
+float cX = 5, cY = 10, cZ =5;
+
 
 //Called when a key is pressed
 void processSpecialKeys(int key, int xx, int yy) {
 //	float fraction = 0.1f;
 //    printf("%f",x);
    printf("camera position %f %f %f \n",cX, cY, cZ);
+       printf("eye position %f %f %f \n",eX, eY, eZ);
 	switch (key) {
 		case GLUT_KEY_LEFT :
-            cX -= 0.9f;
+            rotate_y -=5;
 			break;
 		case GLUT_KEY_RIGHT :
-            cX += 0.9f;
+            rotate_y += 5;
 			break;
 		case GLUT_KEY_UP :
-            cY += 0.9f;
+            rotate_x += 5;
 			break;
 		case GLUT_KEY_DOWN :
-            cY -= 0.9f;
+            rotate_x -= 5;
 			break;
 	}
 
@@ -75,30 +77,32 @@ void initRendering() {
 void handleResize(int w, int h) {
 	//Tell OpenGL how to convert from coordinates to pixel values
 	glViewport(0, 0, w, h);
-	    glMatrixMode(GL_MODELVIEW); //Switch to setting the camera perspective
+ //Switch to setting the camera perspective
 	//Set the camera perspective
 	glLoadIdentity(); //Reset the camera
-	gluPerspective(110.0,                  //The camera angle
+	gluPerspective(60.0,                  //The camera angle
 				   (double)w / (double)h, //The width-to-height ratio
 				   1.0,                   //The near z clipping coordinate
-				   200.0);                //The far z clipping coordinate
+				   700.0);                //The far z clipping coordinate
 }
 
 
 
 // SCENE FRAWING
 void drawScene() {
+    printf("hello");
     //  Clear screen and Z-buffer
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     // Reset transformations
-    glLoadIdentity();
-	// Set the camera
     glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     gluLookAt(eX, eY, eZ,
               cX, cY, cZ,
               0, 0, 1);
-    glPushMatrix();
-	glRotatef(angle, 0.0f, 1.0f, 0.0f);
+    glTranslatef(0, -1, 0);
+	glRotatef( rotate_x, 1.0, 0.0, 0.0 );
+    glRotatef( rotate_y, 0.0, 1.0, 0.0 );
+    glTranslatef(0, 1, 0);
 
     glBegin(GL_POLYGON);
     glColor3f(   1.0,  1.0, 1.0 );
@@ -145,15 +149,15 @@ void drawScene() {
     glEnd();
     
     
-    std::vector<Tile> tiles = l.getTileList();
-    for (Tile &t : tiles){
-        glBegin(GL_QUADS);
-        glColor4f(0.0, 1.0, 0.0, 1.0);
-        for (Vector3f &v : t.getVerts()){
-            glVertex3f(v.x, v.y, v.z);
-        }
-        glEnd();
-    }
+//    std::vector<Tile> tiles = l.getTileList();
+//    for (Tile &t : tiles){
+//        glBegin(GL_QUADS);
+//        glColor4f(0.0, 1.0, 0.0, 1.0);
+//        for (Vector3f &v : t.getVerts()){
+//            glVertex3f(v.x, v.y, v.z);
+//        }
+//        glEnd();
+//    }
     
     glFlush();
     
