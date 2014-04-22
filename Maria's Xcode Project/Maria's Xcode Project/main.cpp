@@ -33,26 +33,55 @@ double rotate_x=0;
 bool levelLoaded = false;
 string filename = "";
 Level l;
-
+// angle of rotation for the camera direction
+float angle=0.0;
+// actual vector representing the camera's direction
+float lx=0.0f,lz=-1.0f;
+// XZ position of the camera
+float x=0.0f,z=5.0f;
 
 //Called when a key is pressed
-void handleKeypress( int key, int x, int y) {
-    //  Right arrow - increase rotation by 5 degree
-    if (key == GLUT_KEY_RIGHT)
-        rotate_y += 5;
-    //  Left arrow - decrease rotation by 5 degree
-    else if (key == GLUT_KEY_LEFT)
-        rotate_y -= 5;
+void processSpecialKeys(int key, int xx, int yy) {
+	float fraction = 0.1f;
+    printf("%f",x);
+    printf("%f",z);
+	switch (key) {
+		case GLUT_KEY_LEFT :
+			angle -= 0.01f;
+			lx = sin(angle);
+			lz = -cos(angle);
+            gluLookAt(	x, 1.0f, z,
+                      x+lx, 1.0f,  z+lz,
+                      0.0f, 0.0f,  1.0f);
+			break;
+		case GLUT_KEY_RIGHT :
+			angle += 0.01f;
+			lx = sin(angle);
+			lz = -cos(angle);
+            gluLookAt(	x, 1.0f, z,
+                      x+lx, 1.0f,  z+lz,
+                      0.0f, 0.0f,  1.0f);
+			break;
+		case GLUT_KEY_UP :
+			x += lx * fraction;
+			z += lz * fraction;
+            gluLookAt(	x, 1.0f, z,
+                      x+lx, 1.0f,  z+lz,
+                      0.0f, 0.0f,  1.0f);
+			break;
+		case GLUT_KEY_DOWN :
+			x -= lx * fraction;
+			z -= lz * fraction;
+            gluLookAt(	x, 1.0f, z,
+                      x+lx, 1.0f,  z+lz,
+                      0.0f, 0.0f,  1.0f);
+			break;
+	}
+
     
-    else if (key == GLUT_KEY_UP)
-        rotate_x += 5;
-    
-    else if (key == GLUT_KEY_DOWN)
-        rotate_x -= 5;
-    
-    //  Request display update
-    glutPostRedisplay();
+    //glutPostRedisplay();
 }
+
 //Initializes 3D rendering
 void initRendering() {
 	//Makes 3D drawing work when something is in front of something else
@@ -65,10 +94,10 @@ void handleResize(int w, int h) {
 	glMatrixMode(GL_PROJECTION); //Switch to setting the camera perspective
 	//Set the camera perspective
 	glLoadIdentity(); //Reset the camera
-	gluPerspective(95.0,                  //The camera angle
-				   (double)w / (double)h, //The width-to-height ratio
-				   1.0,                   //The near z clipping coordinate
-				   200.0);                //The far z clipping coordinate
+//	gluPerspective(95.0,                  //The camera angle
+//				   (double)w / (double)h, //The width-to-height ratio
+//				   1.0,                   //The near z clipping coordinate
+//				   200.0);                //The far z clipping coordinate
 }
 
 
@@ -77,35 +106,17 @@ void handleResize(int w, int h) {
 void drawScene() {
     //  Clear screen and Z-buffer
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    
     // Reset transformations
     glLoadIdentity();
+    gluLookAt(	x, 1.0f, z,
+              x+lx, 1.0f,  z+lz,
+              0.0f, 0.0f,  1.0f);
     
-    // Rotate when user changes rotate_x and rotate_y
-    glRotatef( rotate_x, 1.0, 0.0, 0.0 );
-    glRotatef( rotate_y, 0.0, 1.0, 0.0 );
-    
-    // Other Transformations
-    // glScalef( 2.0, 2.0, 0.0 );          // Not included
-    
-    //Obtaining tile list from the level
     std::vector<Tile> tiles = l.getTileList();
-    
     for (Tile &t : tiles){
-//        std::cout << t.getTileID();
-//        std::cout << " ";
         glBegin(GL_QUADS);
         glColor4f(0.0, 1.0, 0.0, 1.0);
         for (Vector3f &v : t.getVerts()){
-//            std::cout << "X ";
-//            std::cout << v.x;
-//            std::cout << " ";
-//                        std::cout << "Y ";
-//            std::cout << v.y;
-//            std::cout << " ";
-//                        std::cout << "Z ";
-//            std::cout << v.z;
-//            std::cout << " ";
             glVertex3f(v.x, v.y, v.z);
         }
         glEnd();
@@ -113,7 +124,10 @@ void drawScene() {
     
     glFlush();
     glutSwapBuffers(); //Send the 3D scene to the screen
+    
 }
+
+
 int main(int argc, char** argv)
 {
     //Find the level
@@ -144,7 +158,7 @@ int main(int argc, char** argv)
         initRendering(); //Initialize rendering
         //Set handler functions for drawing, keypresses, and window resizes
         glutDisplayFunc(drawScene);
-        glutSpecialFunc(handleKeypress);
+        glutSpecialFunc(processSpecialKeys);
         glutReshapeFunc(handleResize);
         glutMainLoop(); //Start the main loop
     }
