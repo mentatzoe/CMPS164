@@ -1,8 +1,5 @@
 //
 //  main.cpp
-//  Maria's Xcode Project
-//
-//  Created by Maria Lopez Latorre on 15/04/14.
 //  Copyright (c) 2014 CMPS 164 Game Engines. All rights reserved.
 //
 

@@ -31,5 +31,79 @@
             endingLineNumber = "22">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Maria&apos;s Xcode Project/Level.h"
+            timestampString = "419904311.5293"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "5"
+            endingLineNumber = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Level::~Level()"
+                  moduleName = "Maria&apos;s Xcode Project"
+                  urlString = "file:///Users/marialopezlatorre/Documents/workspace/CMPS164/Maria&apos;s%20Xcode%20Project/Maria&apos;s%20Xcode%20Project/Level.h"
+                  timestampString = "419904311.578357"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "7"
+                  endingLineNumber = "7"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Level::~Level()"
+                  moduleName = "Maria&apos;s Xcode Project"
+                  urlString = "file:///Users/marialopezlatorre/Documents/workspace/CMPS164/Maria&apos;s%20Xcode%20Project/Maria&apos;s%20Xcode%20Project/Level.h"
+                  timestampString = "419904311.581037"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "7"
+                  endingLineNumber = "7"
+                  offsetFromSymbolStart = "16">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Level::operator=(Level&amp;&amp;)"
+                  moduleName = "Maria&apos;s Xcode Project"
+                  urlString = "file:///Users/marialopezlatorre/Documents/workspace/CMPS164/Maria&apos;s%20Xcode%20Project/Maria&apos;s%20Xcode%20Project/Level.h"
+                  timestampString = "419904311.581317"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "7"
+                  endingLineNumber = "7"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Maria&apos;s Xcode Project/Game.h"
+            timestampString = "419906374.547835"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "16"
+            endingLineNumber = "16"
+            landmarkName = "class Game"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
