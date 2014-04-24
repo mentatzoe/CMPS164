@@ -29,6 +29,10 @@ float FoV = 90;
 float orbitY = 0.0;
 float orbitZ = 0.0;
 float orbitX = 0.0;
+float lightPosition[4] = { 0, 3, 0, 1 };
+float diffuseColour[4] = { .8, .8, .8, 1 };
+float ambientColour[4] = { .4, .4, .4, 1 };
+float specularColour[4] = { 0, 0, 0, 1 };
 
 // Game window
 SDL_Window* gWindow = NULL;
@@ -133,8 +137,9 @@ bool initGL() {
 	}
 
 
-
 	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	//Check for error
 	err = glGetError();
 	if (err != GL_NO_ERROR) {
@@ -143,6 +148,54 @@ bool initGL() {
 	}
 
 	return success;
+}
+
+void drawCube()
+{
+	// White side - BACK
+	glBegin(GL_POLYGON);
+	glColor3f(1.0, 1.0, 1.0);
+	glVertex3f(0.5, -0.5, 0.5);
+	glVertex3f(0.5, 0.5, 0.5);
+	glVertex3f(-0.5, 0.5, 0.5);
+	glVertex3f(-0.5, -0.5, 0.5);
+	glEnd();
+
+	// Purple side - RIGHT
+	glBegin(GL_POLYGON);
+	glColor3f(1.0, 0.0, 1.0);
+	glVertex3f(0.5, -0.5, -0.5);
+	glVertex3f(0.5, 0.5, -0.5);
+	glVertex3f(0.5, 0.5, 0.5);
+	glVertex3f(0.5, -0.5, 0.5);
+	glEnd();
+
+	// Green side - LEFT
+	glBegin(GL_POLYGON);
+	glColor3f(0.0, 1.0, 0.0);
+	glVertex3f(-0.5, -0.5, 0.5);
+	glVertex3f(-0.5, 0.5, 0.5);
+	glVertex3f(-0.5, 0.5, -0.5);
+	glVertex3f(-0.5, -0.5, -0.5);
+	glEnd();
+
+	// Blue side - TOP
+	glBegin(GL_POLYGON);
+	glColor3f(0.0, 0.0, 1.0);
+	glVertex3f(0.5, 0.5, 0.5);
+	glVertex3f(0.5, 0.5, -0.5);
+	glVertex3f(-0.5, 0.5, -0.5);
+	glVertex3f(-0.5, 0.5, 0.5);
+	glEnd();
+
+	// Red side - BOTTOM
+	glBegin(GL_POLYGON);
+	glColor3f(1.0, 0.0, 0.0);
+	glVertex3f(0.5, -0.5, -0.5);
+	glVertex3f(0.5, -0.5, 0.5);
+	glVertex3f(-0.5, -0.5, 0.5);
+	glVertex3f(-0.5, -0.5, -0.5);
+	glEnd();
 }
 
 void close()
@@ -179,13 +232,26 @@ void render(Level lvl)
 
 	handleCamera();
 
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientColour);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseColour);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specularColour);
+
 	glRotatef(orbitY, 0.0, -1.0, 0.0);
+
+	glPushMatrix();
+	glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
+	// Draw our light
+	drawCube();
+	glPopMatrix();
 
 	std::vector<Tile> tiles = lvl.getTileList();
 
 	for (Tile &t : tiles){
+		Vector3f normal = calcSurfaceNormal(t.getVerts());
 		glColor4f(0.0, 1.0, 0.0, 1.0);
 		glBegin(GL_QUADS);
+		glNormal3f(normal.x, normal.y, normal.z);
 		for (Vector3f &v : t.getVerts()){
 			//std::cout << "Vert: [" << v.x << ", " << v.y << ", " << v.z << "]\n";
 			glVertex3f(v.x, v.y, v.z);
@@ -202,9 +268,9 @@ int main(int argc, char* args[])
 	TokenList list = fp.tokenize(args[1]);
 	LevelCreator lc;
 	Level test = lc.createLevel(list);
-
 	// Start SDL
 	if (!init()) {
+		system("pause");
 		exit(0);
 	}
 
@@ -240,12 +306,23 @@ int main(int argc, char* args[])
 					case SDLK_w:
 						FoV -= 5;
 						break;
+					case SDLK_a:
+						lightPosition[2] += 1;
+						break;
+					case SDLK_s:
+						lightPosition[2] -= 1;
+						break;
+					case SDLK_d:
+						lightPosition[0] += 1;
+						break;
+					case SDLK_f:
+						lightPosition[0] -= 1;
+						break;
 					default:
 						break;
 					}
 				}
 			}
-
 			// Draw
 			render(test);
 		}

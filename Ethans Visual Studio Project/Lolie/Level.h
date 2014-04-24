@@ -2,7 +2,6 @@
 #define LEVEL_H
 
 #include "Tile.h"
-#include "utility.h"
 
 class Level
 {
