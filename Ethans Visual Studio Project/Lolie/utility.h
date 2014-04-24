@@ -26,10 +26,6 @@ float dot(float *a, float *b);
 
 float angle(float *a, float *b);
 
-Vector3f cross(Vector3f a, Vector3f b);
-
-Vector3f calcSurfaceNormal(std::vector<Vector3f> vertList);
-
-Vector3f normalize(Vector3f orig);
+std::vector<float> cross(float *a, float *b);
 
 #endif /* UTILITY_H */
