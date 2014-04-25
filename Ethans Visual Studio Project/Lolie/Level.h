@@ -13,6 +13,8 @@ public:
     Level() {}
 	void print();
     std::vector<Tile> getTileList() {return tileList;};
+    Vector4f getTee() {return tee;};
+    Vector4f getCup() {return cup;};
 private:
 	std::vector<Tile> tileList;
 	Vector4f tee;

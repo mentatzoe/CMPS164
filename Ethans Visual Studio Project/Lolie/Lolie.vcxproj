@@ -75,6 +75,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelCreator.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="openglUtil.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
@@ -84,6 +85,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelCreator.h" />
+    <ClInclude Include="openglUtil.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="utility.h" />

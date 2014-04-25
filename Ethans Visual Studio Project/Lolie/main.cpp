@@ -14,6 +14,7 @@
 #include <iostream>
 #include "FileParser.h"
 #include "LevelCreator.h"
+#include "openglUtil.h"
 
 #ifndef M_PI    //if the pi is not defined in the cmath header file
 #define M_PI 3.1415926535       //define it
@@ -24,12 +25,13 @@
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 const bool USE_VSYNC = 1;			// 1 On, 0 Off, -1 Late Swap Tearing
-float cam[] = { 0, 5, -5 };
+float cam[] = { 0, -5, -5 };
+float loc[] = { 0, 0, 0 };
 float FoV = 90;
 float orbitY = 0.0;
 float orbitZ = 0.0;
 float orbitX = 0.0;
-float lightPosition[4] = { 0, 3, 0, 1 };
+float lightPosition[4] = { 0, -3, 0, 1 };
 float diffuseColour[4] = { 0.3, 0.3, 0.3, 1 };
 float ambientColour[4] = { .01, .01, .01, 1 };
 float specularColour[4] = { 0.5, 0.5, 0.5, 1 };
@@ -162,54 +164,6 @@ bool initGL() {
 	return success;
 }
 
-void drawCube()
-{
-	// White side - BACK
-	glBegin(GL_POLYGON);
-	glColor3f(1.0, 1.0, 1.0);
-	glVertex3f(0.5, -0.5, 0.5);
-	glVertex3f(0.5, 0.5, 0.5);
-	glVertex3f(-0.5, 0.5, 0.5);
-	glVertex3f(-0.5, -0.5, 0.5);
-	glEnd();
-
-	// Purple side - RIGHT
-	glBegin(GL_POLYGON);
-	glColor3f(1.0, 0.0, 1.0);
-	glVertex3f(0.5, -0.5, -0.5);
-	glVertex3f(0.5, 0.5, -0.5);
-	glVertex3f(0.5, 0.5, 0.5);
-	glVertex3f(0.5, -0.5, 0.5);
-	glEnd();
-
-	// Green side - LEFT
-	glBegin(GL_POLYGON);
-	glColor3f(0.0, 1.0, 0.0);
-	glVertex3f(-0.5, -0.5, 0.5);
-	glVertex3f(-0.5, 0.5, 0.5);
-	glVertex3f(-0.5, 0.5, -0.5);
-	glVertex3f(-0.5, -0.5, -0.5);
-	glEnd();
-
-	// Blue side - TOP
-	glBegin(GL_POLYGON);
-	glColor3f(0.0, 0.0, 1.0);
-	glVertex3f(0.5, 0.5, 0.5);
-	glVertex3f(0.5, 0.5, -0.5);
-	glVertex3f(-0.5, 0.5, -0.5);
-	glVertex3f(-0.5, 0.5, 0.5);
-	glEnd();
-
-	// Red side - BOTTOM
-	glBegin(GL_POLYGON);
-	glColor3f(1.0, 0.0, 0.0);
-	glVertex3f(0.5, -0.5, -0.5);
-	glVertex3f(0.5, -0.5, 0.5);
-	glVertex3f(-0.5, -0.5, 0.5);
-	glVertex3f(-0.5, -0.5, -0.5);
-	glEnd();
-}
-
 void close()
 {
 	SDL_DestroyWindow(gWindow);
@@ -249,6 +203,7 @@ void render(Level lvl)
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseColour);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, specularColour);
 
+	glPushMatrix();
 	glRotatef(orbitY, 0.0, -1.0, 0.0);
 
 	glPushMatrix();
@@ -265,20 +220,37 @@ void render(Level lvl)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, no_mat);
 	glColor4f(0.0, 1.0, 0.0, 1.0);
 
+	glPushMatrix();
+	glTranslatef(loc[0], loc[1], loc[2]);
 	for (Tile &t : tiles){
-		Vector3f normal = calcSurfaceNormal(t.getVerts());
-		
-		glBegin(GL_QUADS);
-		glNormal3f(normal.x, normal.y, normal.z);
-		for (Vector3f &v : t.getVerts()){
-			//std::cout << "Vert: [" << v.x << ", " << v.y << ", " << v.z << "]\n";
-			glVertex3f(v.x, v.y, v.z);
-			
-		}
-		glEnd();
-		
+		drawTile(t, .1);
 	}
+	
 
+	glPushMatrix();
+	Vector4f cup = lvl.getCup();
+	Vector4f tee = lvl.getTee();
+	//std::cout << "CUP: [" << cup.x << ", " << cup.y << ", " << cup.z << "]\n";
+	GLUquadricObj *quadratic;
+	quadratic = gluNewQuadric();
+	//glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+	glTranslatef(cup.x, cup.y, cup.z);
+	glColor4f(0.0, 1.0, 1.0, 1.0);
+	gluCylinder(quadratic, 0.1, 0.1, 0.5f, 3, 3);
+	glPopMatrix();
+
+	glPushMatrix();
+	GLUquadricObj *quadratic2;
+	quadratic2 = gluNewQuadric();
+	//glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+	glTranslatef(tee.x, tee.y, tee.z);
+	glColor4f(0.0, 1.0, 1.0, 1.0);
+	gluCylinder(quadratic2, 0.1, 0.1, 0.5f, 3, 3);
+	glPopMatrix();
+
+	glPopMatrix();
+
+	glPopMatrix();
 	SDL_GL_SwapWindow(gWindow);
 }
 
@@ -288,6 +260,7 @@ int main(int argc, char* args[])
 	TokenList list = fp.tokenize(args[1]);
 	LevelCreator lc;
 	Level test = lc.createLevel(list);
+	test.print();
 	// Start SDL
 	if (!init()) {
 		system("pause");
@@ -315,28 +288,34 @@ int main(int argc, char* args[])
 						orbitY -= 5;
 						break;
 					case SDLK_UP:
-						cam[1] += 0.5;
-						break;
-					case SDLK_DOWN:
 						cam[1] -= 0.5;
 						break;
-					case SDLK_q:
+					case SDLK_DOWN:
+						cam[1] += 0.5;
+						break;
+					case SDLK_e:
 						FoV += 5;
 						break;
-					case SDLK_w:
+					case SDLK_q:
 						FoV -= 5;
 						break;
+					case SDLK_w:
+						loc[2] += .2;
+						break;
 					case SDLK_a:
-						lightPosition[2] += 1;
+						loc[0] -= .2;
 						break;
 					case SDLK_s:
-						lightPosition[2] -= 1;
+						loc[2] -= .2;
 						break;
 					case SDLK_d:
-						lightPosition[0] += 1;
+						loc[0] += .2;
+						break;
+					case SDLK_r:
+						loc[1] += .2;
 						break;
 					case SDLK_f:
-						lightPosition[0] -= 1;
+						loc[1] -= .2;
 						break;
 					default:
 						break;
