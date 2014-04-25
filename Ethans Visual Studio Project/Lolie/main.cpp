@@ -29,6 +29,20 @@ float FoV = 90;
 float orbitY = 0.0;
 float orbitZ = 0.0;
 float orbitX = 0.0;
+float lightPosition[4] = { 0, 3, 0, 1 };
+float diffuseColour[4] = { 0.3, 0.3, 0.3, 1 };
+float ambientColour[4] = { .01, .01, .01, 1 };
+float specularColour[4] = { 0.5, 0.5, 0.5, 1 };
+
+GLfloat no_mat[] = { 0.0, 0.0, 0.0, 1.0 };
+GLfloat mat_ambient[] = { 0.7, 0.7, 0.7, 1.0 };
+GLfloat mat_ambient_color[] = { 0.8, 0.8, 0.2, 1.0 };
+GLfloat mat_diffuse[] = { 0.1, 0.5, 0.8, 1.0 };
+GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+GLfloat no_shininess[] = { 0.0 };
+GLfloat low_shininess[] = { 5.0 };
+GLfloat high_shininess[] = { 100.0 };
+GLfloat mat_emission[] = { 0.3, 0.2, 0.2, 0.0 };
 
 // Game window
 SDL_Window* gWindow = NULL;
@@ -133,7 +147,11 @@ bool initGL() {
 	}
 
 
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_COLOR_MATERIAL);
+
 	//Check for error
 	err = glGetError();
 	if (err != GL_NO_ERROR) {
@@ -142,6 +160,54 @@ bool initGL() {
 	}
 
 	return success;
+}
+
+void drawCube()
+{
+	// White side - BACK
+	glBegin(GL_POLYGON);
+	glColor3f(1.0, 1.0, 1.0);
+	glVertex3f(0.5, -0.5, 0.5);
+	glVertex3f(0.5, 0.5, 0.5);
+	glVertex3f(-0.5, 0.5, 0.5);
+	glVertex3f(-0.5, -0.5, 0.5);
+	glEnd();
+
+	// Purple side - RIGHT
+	glBegin(GL_POLYGON);
+	glColor3f(1.0, 0.0, 1.0);
+	glVertex3f(0.5, -0.5, -0.5);
+	glVertex3f(0.5, 0.5, -0.5);
+	glVertex3f(0.5, 0.5, 0.5);
+	glVertex3f(0.5, -0.5, 0.5);
+	glEnd();
+
+	// Green side - LEFT
+	glBegin(GL_POLYGON);
+	glColor3f(0.0, 1.0, 0.0);
+	glVertex3f(-0.5, -0.5, 0.5);
+	glVertex3f(-0.5, 0.5, 0.5);
+	glVertex3f(-0.5, 0.5, -0.5);
+	glVertex3f(-0.5, -0.5, -0.5);
+	glEnd();
+
+	// Blue side - TOP
+	glBegin(GL_POLYGON);
+	glColor3f(0.0, 0.0, 1.0);
+	glVertex3f(0.5, 0.5, 0.5);
+	glVertex3f(0.5, 0.5, -0.5);
+	glVertex3f(-0.5, 0.5, -0.5);
+	glVertex3f(-0.5, 0.5, 0.5);
+	glEnd();
+
+	// Red side - BOTTOM
+	glBegin(GL_POLYGON);
+	glColor3f(1.0, 0.0, 0.0);
+	glVertex3f(0.5, -0.5, -0.5);
+	glVertex3f(0.5, -0.5, 0.5);
+	glVertex3f(-0.5, -0.5, 0.5);
+	glVertex3f(-0.5, -0.5, -0.5);
+	glEnd();
 }
 
 void close()
@@ -174,22 +240,43 @@ void update()
 void render(Level lvl)
 {
 	//Clear color buffer
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	handleCamera();
 
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientColour);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseColour);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specularColour);
+
 	glRotatef(orbitY, 0.0, -1.0, 0.0);
+
+	glPushMatrix();
+	glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
+	// Draw our light
+	drawCube();
+	glPopMatrix();
 
 	std::vector<Tile> tiles = lvl.getTileList();
 
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient_color);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, no_mat);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, no_mat);
+	glColor4f(0.0, 1.0, 0.0, 1.0);
+
 	for (Tile &t : tiles){
-		glColor4f(0.0, 1.0, 0.0, 1.0);
+		Vector3f normal = calcSurfaceNormal(t.getVerts());
+		
 		glBegin(GL_QUADS);
+		glNormal3f(normal.x, normal.y, normal.z);
 		for (Vector3f &v : t.getVerts()){
 			//std::cout << "Vert: [" << v.x << ", " << v.y << ", " << v.z << "]\n";
 			glVertex3f(v.x, v.y, v.z);
+			
 		}
 		glEnd();
+		
 	}
 
 	SDL_GL_SwapWindow(gWindow);
@@ -201,9 +288,9 @@ int main(int argc, char* args[])
 	TokenList list = fp.tokenize(args[1]);
 	LevelCreator lc;
 	Level test = lc.createLevel(list);
-
 	// Start SDL
 	if (!init()) {
+		system("pause");
 		exit(0);
 	}
 
@@ -239,12 +326,23 @@ int main(int argc, char* args[])
 					case SDLK_w:
 						FoV -= 5;
 						break;
+					case SDLK_a:
+						lightPosition[2] += 1;
+						break;
+					case SDLK_s:
+						lightPosition[2] -= 1;
+						break;
+					case SDLK_d:
+						lightPosition[0] += 1;
+						break;
+					case SDLK_f:
+						lightPosition[0] -= 1;
+						break;
 					default:
 						break;
 					}
 				}
 			}
-
 			// Draw
 			render(test);
 		}
