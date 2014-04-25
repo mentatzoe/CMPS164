@@ -2,7 +2,6 @@
 #define TILE_H
 
 #include "utility.h"
-#include <vector>
 
 class Tile
 {

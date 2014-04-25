@@ -34,7 +34,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Maria&apos;s Xcode Project/Level.h"
@@ -45,45 +45,59 @@
             endingLineNumber = "5">
             <Locations>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "Level::~Level()"
                   moduleName = "Maria&apos;s Xcode Project"
                   urlString = "file:///Users/marialopezlatorre/Documents/workspace/CMPS164/Maria&apos;s%20Xcode%20Project/Maria&apos;s%20Xcode%20Project/Level.h"
-                  timestampString = "419904311.578357"
+                  timestampString = "420077408.399122"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "7"
-                  endingLineNumber = "7"
+                  startingLineNumber = "6"
+                  endingLineNumber = "6"
                   offsetFromSymbolStart = "16">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
                   symbolName = "Level::~Level()"
                   moduleName = "Maria&apos;s Xcode Project"
                   urlString = "file:///Users/marialopezlatorre/Documents/workspace/CMPS164/Maria&apos;s%20Xcode%20Project/Maria&apos;s%20Xcode%20Project/Level.h"
-                  timestampString = "419904311.581037"
+                  timestampString = "420077408.399399"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "7"
-                  endingLineNumber = "7"
+                  startingLineNumber = "6"
+                  endingLineNumber = "6"
                   offsetFromSymbolStart = "16">
                </Location>
                <Location
-                  shouldBeEnabled = "Yes"
+                  shouldBeEnabled = "No"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Level::operator=(Level&amp;&amp;)"
+                  symbolName = "Level::Level(Level const&amp;)"
                   moduleName = "Maria&apos;s Xcode Project"
                   urlString = "file:///Users/marialopezlatorre/Documents/workspace/CMPS164/Maria&apos;s%20Xcode%20Project/Maria&apos;s%20Xcode%20Project/Level.h"
-                  timestampString = "419904311.581317"
+                  timestampString = "420077408.39956"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "7"
-                  endingLineNumber = "7"
+                  startingLineNumber = "6"
+                  endingLineNumber = "6"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Level::Level(Level const&amp;)"
+                  moduleName = "Maria&apos;s Xcode Project"
+                  urlString = "file:///Users/marialopezlatorre/Documents/workspace/CMPS164/Maria&apos;s%20Xcode%20Project/Maria&apos;s%20Xcode%20Project/Level.h"
+                  timestampString = "420077408.399712"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "6"
+                  endingLineNumber = "6"
                   offsetFromSymbolStart = "20">
                </Location>
             </Locations>
@@ -100,9 +114,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "16"
-            endingLineNumber = "16"
-            landmarkName = "class Game"
-            landmarkType = "3">
+            endingLineNumber = "16">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

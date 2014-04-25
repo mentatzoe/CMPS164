@@ -6,7 +6,7 @@ TokenList FileParser::tokenize(std::string filename)
 	std::ifstream myFile(filename);
 	TokenList tokenList;
 	std::string item;
-    
+
 	if (myFile.is_open())
 	{
 		while (std::getline(myFile, item, '\n'))
@@ -22,10 +22,7 @@ TokenList FileParser::tokenize(std::string filename)
 				tokenList.push_back(token);
 			}
 		}
-	} else {
-        printf ("File doesn't exist \n");
-        exit (EXIT_FAILURE);
-    }
+	}
 
 	return tokenList;
 }

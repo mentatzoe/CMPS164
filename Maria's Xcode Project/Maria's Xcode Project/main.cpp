@@ -1,210 +1,279 @@
-//
-//  main.cpp
-//  Copyright (c) 2014 CMPS 164 Game Engines. All rights reserved.
-//
-
 #ifdef WIN32
 #include <windows.h>
 #endif
 
-#include <stdio.h>
-#include <stdarg.h>
-#include <math.h>
-#define GL_GLEXT_PROTOTYPES
 #ifdef __APPLE__
-#include <GLUT/glut.h>
+#include <SDL2/SDL.h>
+#include <GLUT/GLUT.h>
 #else
-#include <GL/glut.h>
+#include <GL/freeglut.h>
+#include <SDL.h>
 #endif
 
-#include "Tile.h"
-#include "LevelCreator.h"
-#include "Level.h"
-#include "FileParser.h"
 #include <iostream>
+#include "FileParser.h"
+#include "LevelCreator.h"
 
-using namespace std;
+#ifndef M_PI    //if the pi is not defined in the cmath header file
+#define M_PI 3.1415926535       //define it
+#endif
 
-double rotate_y=0;
-double rotate_x=0;
-bool levelLoaded = false;
-string filename = "";
-Level l;
-// angle of rotation for the camera direction
-float angle=0.0f;
-// actual vector representing the camera's direction
-float lx=0.0f,lz=-1.0f;
-// XZ position of the camera
-float x=0.0f,z=5.0f;
-float eX = 0, eY = 0, eZ =0;
-float cX = 5, cY = 10, cZ =5;
+//// GLOBALS ////
 
+const int WINDOW_WIDTH = 640;
+const int WINDOW_HEIGHT = 480;
+const bool USE_VSYNC = 1;			// 1 On, 0 Off, -1 Late Swap Tearing
+float cam[] = { 0, 5, -5 };
+float FoV = 90;
+float orbitY = 0.0;
+float orbitZ = 0.0;
+float orbitX = 0.0;
 
-//Called when a key is pressed
-void processSpecialKeys(int key, int xx, int yy) {
-//	float fraction = 0.1f;
-//    printf("%f",x);
-   printf("camera position %f %f %f \n",cX, cY, cZ);
-       printf("eye position %f %f %f \n",eX, eY, eZ);
-	switch (key) {
-		case GLUT_KEY_LEFT :
-            rotate_y -=5;
-			break;
-		case GLUT_KEY_RIGHT :
-            rotate_y += 5;
-			break;
-		case GLUT_KEY_UP :
-            rotate_x += 5;
-			break;
-		case GLUT_KEY_DOWN :
-            rotate_x -= 5;
-			break;
+// Game window
+SDL_Window* gWindow = NULL;
+
+//OpenGL context
+SDL_GLContext gContext;
+
+// Render Flag
+bool gRenderQuad = true;
+
+//// END OF GLOBALS ////
+
+/// Forward Declarations /// 
+bool initGL();
+
+bool init() {
+	bool success = true;
+
+	// Initialize SDL
+	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+		std::cout << "SDL_Init has failed. Error code: " << SDL_GetError() << "\n";
+		success = false;
+	}
+	else {
+		//Use OpenGL 2.1
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+		// Create Window
+		gWindow = SDL_CreateWindow(
+			"Lolie 164: Assignment 2"		// Window name
+			, SDL_WINDOWPOS_UNDEFINED		// Window X Position
+			, SDL_WINDOWPOS_UNDEFINED		// Window Y Position
+			, WINDOW_WIDTH					// Window Width
+			, WINDOW_HEIGHT					// Window Height
+			, SDL_WINDOW_OPENGL				// Uint32 flags
+			| SDL_WINDOW_SHOWN);
+		if (gWindow == NULL) {
+			std::cout << "SDL_CreateWindow has failed. SDL Error: " << SDL_GetError() << "\n";
+			success = false;
+		}
+		else {
+			// Create context
+			gContext = SDL_GL_CreateContext(gWindow);
+			if (gContext == NULL) {
+				std::cout << "SDL_GL_CreateContext has failed. SDL Error: " << SDL_GetError() << "\n";
+				success = false;
+			}
+			else {
+				// Set Vertical Sync
+				if (SDL_GL_SetSwapInterval(USE_VSYNC) < 0) {
+					std::cout << "Warning: SDL_GL_SetSwapInterval has failed (Vsync). SDL Error: " << SDL_GetError() << "\n";
+				}
+
+				// Initialize GL
+				if (!initGL()){
+					success = false;
+				}
+			}
+		}
 	}
 
-    
-    glutPostRedisplay();
+	return success;
 }
 
-//Initializes 3D rendering
-void initRendering() {
-	//Makes 3D drawing work when something is in front of something else
-	glEnable(GL_DEPTH_TEST);
-}
-//Called when the window is resized
-void handleResize(int w, int h) {
-	//Tell OpenGL how to convert from coordinates to pixel values
-	glViewport(0, 0, w, h);
- //Switch to setting the camera perspective
-	//Set the camera perspective
-	glLoadIdentity(); //Reset the camera
-	gluPerspective(60.0,                  //The camera angle
-				   (double)w / (double)h, //The width-to-height ratio
-				   1.0,                   //The near z clipping coordinate
-				   700.0);                //The far z clipping coordinate
-}
+bool initGL() {
+	bool success = true;
+	GLenum err = GL_NO_ERROR;
+
+	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	// Initialize Projection Matrix
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	//Check for error
+	err = glGetError();
+	if (err != GL_NO_ERROR) {
+		std::cout << "Failed to initialize OpenGL. Error: " << gluErrorString(err) << "\n";
+		success = false;
+	}
+
+	//Initialize Modelview Matrix
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	//Check for error
+	err = glGetError();
+	if (err != GL_NO_ERROR) {
+		std::cout << "Failed to initialize OpenGL. Error: " << gluErrorString(err) << "\n";
+		success = false;
+	}
+
+	//Initialize clear color
+	glClearColor(0.f, 0.f, 0.f, 1.f);
+
+	//Check for error
+	err = glGetError();
+	if (err != GL_NO_ERROR) {
+		std::cout << "Failed to initialize OpenGL. Error: " << gluErrorString(err) << "\n";
+		success = false;
+	}
 
 
+	//glEnable(GL_DEPTH_TEST);
+	//Check for error
+	err = glGetError();
+	if (err != GL_NO_ERROR) {
+		std::cout << "Failed to initialize OpenGL. Error: " << gluErrorString(err) << "\n";
+		success = false;
+	}
 
-// SCENE FRAWING
-void drawScene() {
-    printf("hello");
-    //  Clear screen and Z-buffer
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    // Reset transformations
-//    
-//    glMatrixMode(GL_PROJECTION);
-//    glLoadIdentity();
-//    gluPerspective(60.0,                  //The camera angle
-//				  1, //The width-to-height ratio
-//				   1.0,                   //The near z clipping coordinate
-//				   700.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(eX, eY, eZ,
-              cX, cY, cZ,
-              0, 0, 1);
-    glTranslatef(0, -1, 0);
-	glRotatef( rotate_x, 1.0, 0.0, 0.0 );
-    glRotatef( rotate_y, 0.0, 1.0, 0.0 );
-    glTranslatef(0, 1, 0);
-
-    glBegin(GL_POLYGON);
-    glColor3f(   1.0,  1.0, 1.0 );
-    glVertex3f(  0.5, -0.5, 0.5 );
-    glVertex3f(  0.5,  0.5, 0.5 );
-    glVertex3f( -0.5,  0.5, 0.5 );
-    glVertex3f( -0.5, -0.5, 0.5 );
-    glEnd();
-    
-    // Purple side - RIGHT
-    glBegin(GL_POLYGON);
-    glColor3f(  1.0,  0.0,  1.0 );
-    glVertex3f( 0.5, -0.5, -0.5 );
-    glVertex3f( 0.5,  0.5, -0.5 );
-    glVertex3f( 0.5,  0.5,  0.5 );
-    glVertex3f( 0.5, -0.5,  0.5 );
-    glEnd();
-    
-    // Green side - LEFT
-    glBegin(GL_POLYGON);
-    glColor3f(   0.0,  1.0,  0.0 );
-    glVertex3f( -0.5, -0.5,  0.5 );
-    glVertex3f( -0.5,  0.5,  0.5 );
-    glVertex3f( -0.5,  0.5, -0.5 );
-    glVertex3f( -0.5, -0.5, -0.5 );
-    glEnd();
-    
-    // Blue side - TOP
-    glBegin(GL_POLYGON);
-    glColor3f(   0.0,  0.0,  1.0 );
-    glVertex3f(  0.5,  0.5,  0.5 );
-    glVertex3f(  0.5,  0.5, -0.5 );
-    glVertex3f( -0.5,  0.5, -0.5 );
-    glVertex3f( -0.5,  0.5,  0.5 );
-    glEnd();
-    
-    // Red side - BOTTOM
-    glBegin(GL_POLYGON);
-    glColor3f(   1.0,  0.0,  0.0 );
-    glVertex3f(  0.5, -0.5, -0.5 );
-    glVertex3f(  0.5, -0.5,  0.5 );
-    glVertex3f( -0.5, -0.5,  0.5 );
-    glVertex3f( -0.5, -0.5, -0.5 );
-    glEnd();
-    
-    
-//    std::vector<Tile> tiles = l.getTileList();
-//    for (Tile &t : tiles){
-//        glBegin(GL_QUADS);
-//        glColor4f(0.0, 1.0, 0.0, 1.0);
-//        for (Vector3f &v : t.getVerts()){
-//            glVertex3f(v.x, v.y, v.z);
-//        }
-//        glEnd();
-//    }
-    
-    glFlush();
-    
-    angle+=0.1f;
-    glutSwapBuffers(); //Send the 3D scene to the screen
-    
+	return success;
 }
 
-
-int main(int argc, char** argv)
+void close()
 {
-    //Find the level
-    if (argv[1]==NULL){
-        printf ("No file indicated ");
-        exit (EXIT_FAILURE);
-    } else {
-        filename = argv[1];
-    }
-    
-    FileParser fp = FileParser();
-    LevelCreator lc = LevelCreator();
+	SDL_DestroyWindow(gWindow);
+	gWindow = NULL;
 
+
+    SDL_Quit();
+}
+
+void handleCamera()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(FoV, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 100);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(cam[0], cam[1], cam[2], 0, 0, 0, 0, 0, 1);
+}
+
+void handleKeys(unsigned char key, int x, int y)
+{
+}
+
+void update()
+{
+	//No per frame update needed
+}
+
+void render(Level lvl)
+{
+	//Clear color buffer
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	handleCamera();
+
+	glRotatef(orbitY, 0.0, -1.0, 0.0);
+
+	std::vector<Tile> tiles = lvl.getTileList();
+
+	for (Tile &t : tiles){
+        if (t.getTileID() == 8){
+            //std::cout << "YES";
+            glColor4f(1.0, 1.0, 0.0, 1.0);
+        } else {
+            glColor4f(0.0, 1.0, 0.0, 1.0);
+        }
+		glBegin(GL_QUADS);
+//        std::cout << t.getTileID();
+       		for (Vector3f &v : t.getVerts()){
+			//std::cout << "Vert: [" << v.x << ", " << v.y << ", " << v.z << "]\n";
+			glVertex3f(v.x, v.y, v.z);
+		}
+		glEnd();
+	}
     
-    //Load the level
-    l = lc.createLevel(fp.tokenize(filename));
+    Vector4f cup = lvl.getCup();
+    Vector4f tee = lvl.getTee();
+    //std::cout << "CUP: [" << cup.x << ", " << cup.y << ", " << cup.z << "]\n";
+    GLUquadricObj *quadratic;
+    quadratic = gluNewQuadric();
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    glTranslatef( cup.x, cup.y, cup.z );
+    glColor4f(0.0, 1.0, 1.0, 1.0);
+    gluCylinder(quadratic,0.1,0.1,0.5f,3,3);
     
-    //If the structures are available
-    levelLoaded = true;
+    GLUquadricObj *quadratic2;
+    quadratic2 = gluNewQuadric();
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    glTranslatef( tee.x, tee.y, tee.z );
+    glColor4f(0.0, 1.0, 1.0, 1.0);
+    gluCylinder(quadratic2,0.1,0.1,0.5f,3,3);
     
-	//Initialize GLUT
-	if (levelLoaded){
-        glutInit(&argc, argv);
-        glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-        glutInitWindowSize(400, 400); //Set the window size
-        //Create the window
-        glutCreateWindow("MiniGolf");
-        initRendering(); //Initialize rendering
-        //Set handler functions for drawing, keypresses, and window resizes
-        glutDisplayFunc(drawScene);
-        glutSpecialFunc(processSpecialKeys);
-        glutReshapeFunc(handleResize);
-        glutMainLoop(); //Start the main loop
-    }
+	SDL_GL_SwapWindow(gWindow);
+}
+
+int main(int argc, char* args[])
+{
+	FileParser fp;
+	TokenList list = fp.tokenize(args[1]);
+	LevelCreator lc;
+	Level test = lc.createLevel(list);
+
+	// Start SDL
+	if (!init()) {
+		exit(0);
+	}
+
+	// Main Loop
+	else {
+		bool quit = false;
+		while (!quit) {
+
+			// Process Events
+			SDL_Event e;
+			while (SDL_PollEvent(&e)) {
+				switch (e.type){
+				case SDL_QUIT:
+					quit = true;
+					break;
+				case SDL_KEYDOWN:
+					switch (e.key.keysym.sym){
+					case SDLK_LEFT:
+						orbitY += 5;
+						break;
+					case SDLK_RIGHT:
+						orbitY -= 5;
+						break;
+					case SDLK_UP:
+						cam[1] += 0.5;
+						break;
+					case SDLK_DOWN:
+						cam[1] -= 0.5;
+						break;
+					case SDLK_q:
+						FoV += 5;
+						break;
+					case SDLK_w:
+						FoV -= 5;
+						break;
+					default:
+						break;
+					}
+				}
+			}
+
+			// Draw
+			render(test);
+		}
+	}
+
+	// Free and close
+	close();
 	return 0;
 }
-

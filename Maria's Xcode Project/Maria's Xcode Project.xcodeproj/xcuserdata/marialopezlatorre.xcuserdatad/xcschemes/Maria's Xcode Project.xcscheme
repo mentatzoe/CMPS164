@@ -60,7 +60,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "hole.00.db"
+            argument = "hole.02.db"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
