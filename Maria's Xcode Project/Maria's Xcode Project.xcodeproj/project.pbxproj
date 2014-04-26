@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F0F6C3B190AFF9D004022CB /* openglUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F0F6C38190AFF9D004022CB /* openglUtil.cpp */; };
+		4F0F6C3C190AFF9D004022CB /* utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F0F6C3A190AFF9D004022CB /* utility.cpp */; };
 		4F3290D719072F9A00FB737D /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3290D619072F9A00FB737D /* SDL2.framework */; };
 		4F3290DF19073AF300FB737D /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F3290DD19073AF300FB737D /* Game.cpp */; };
 		4F3290E219073C3300FB737D /* RenderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F3290E019073C3300FB737D /* RenderManager.cpp */; };
@@ -35,6 +37,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F0F6C38190AFF9D004022CB /* openglUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = openglUtil.cpp; sourceTree = "<group>"; };
+		4F0F6C39190AFF9D004022CB /* openglUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openglUtil.h; sourceTree = "<group>"; };
+		4F0F6C3A190AFF9D004022CB /* utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utility.cpp; sourceTree = "<group>"; };
 		4F3290D619072F9A00FB737D /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		4F3290DD19073AF300FB737D /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		4F3290DE19073AF300FB737D /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
@@ -129,6 +134,9 @@
 				4F3290D819073A9800FB737D /* engine */,
 				4FDC5F8C1900A8E400B12A69 /* hole.00.db */,
 				4FA2050818FDF33F007F09B5 /* main.cpp */,
+				4F0F6C38190AFF9D004022CB /* openglUtil.cpp */,
+				4F0F6C39190AFF9D004022CB /* openglUtil.h */,
+				4F0F6C3A190AFF9D004022CB /* utility.cpp */,
 				4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */,
 			);
 			path = "Maria's Xcode Project";
@@ -185,8 +193,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F0F6C3C190AFF9D004022CB /* utility.cpp in Sources */,
 				4FDC5F961900A8E400B12A69 /* Level.cpp in Sources */,
 				4FDC5F971900A8E400B12A69 /* LevelCreator.cpp in Sources */,
+				4F0F6C3B190AFF9D004022CB /* openglUtil.cpp in Sources */,
 				4FDC5F951900A8E400B12A69 /* FileParser.cpp in Sources */,
 				4F3290E219073C3300FB737D /* RenderManager.cpp in Sources */,
 				4F3290DF19073AF300FB737D /* Game.cpp in Sources */,
