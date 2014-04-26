@@ -62,15 +62,17 @@ void drawTile(Tile tile, float thickness)
 	std::vector<Vector3f> verts = tile.getVerts();
 	std::vector<Vector3f> lowerVerts(verts.size());
 	std::vector<int> neighs = tile.getNeighbors();
-	std::vector<Vector3f> temp(verts.size());
+	Vector3f vec;
+	std::vector<Vector3f> temp(4, vec);
 
 	for (int i = 0; i < verts.size(); i++) {
 		lowerVerts[i].x = verts[i].x;
-		lowerVerts[i].y = verts[i].y + thickness;
+		lowerVerts[i].y = verts[i].y - thickness;
 		lowerVerts[i].z = verts[i].z;
 	}
 
 	Vector3f normal;
+	glColor4f(0.0, 1.0, 0.0, 1.0);
 
 	// Draw 6 tile faces
 
@@ -83,28 +85,31 @@ void drawTile(Tile tile, float thickness)
 	}
 	glEnd();
 
-	// Face 2: A2 B2 C2 D2
+	// Face 2: A2 B2 C2 D2 (bottom)
 	normal = calcSurfaceNormal(lowerVerts);
 	glBegin(GL_POLYGON);
 	glNormal3f(normal.x, normal.y, normal.z);
-	for (Vector3f &v : lowerVerts){
-		glVertex3f(v.x, v.y, v.z);
+	for (auto v = lowerVerts.rbegin(); v != lowerVerts.rend(); v++){
+		glVertex3f((*v).x, (*v).y, (*v).z);
 	}
 	glEnd();
 
-	// Face 3: D A A2 D2
-	temp[0] = verts[3];
-	temp[1] = verts[0];
-	temp[2] = lowerVerts[0];
-	temp[3] = lowerVerts[3];
-	normal = calcSurfaceNormal(temp);
-	glBegin(GL_POLYGON);
-	glNormal3f(normal.x, normal.y, normal.z);
-	for (Vector3f &v : temp){
-		glVertex3f(v.x, v.y, v.z);
+	// Faces 3-n
+	for (int i = 0; i < tile.getNumSides(); i++){
+		temp[0] = verts[i];
+		temp[1] = verts[(i + 1) % verts.size()];
+		temp[2] = lowerVerts[(i + 1) % verts.size()];
+		temp[3] = lowerVerts[i];
+		normal = calcSurfaceNormal(temp);
+		glBegin(GL_POLYGON);
+		glNormal3f(normal.x, normal.y, normal.z);
+		for (auto v = temp.rbegin(); v != temp.rend(); v++){
+			glVertex3f((*v).x, (*v).y, (*v).z);
+		}
+		glEnd();
 	}
-	glEnd();
 
+	/*
 	// Face 4: C D D2 C2
 	temp[0] = verts[2];
 	temp[1] = verts[3];
@@ -143,6 +148,7 @@ void drawTile(Tile tile, float thickness)
 		glVertex3f(v.x, v.y, v.z);
 	}
 	glEnd();
+	*/
 
 	// Draw Boundaries
 	for (int i = 0; i < neighs.size(); i++){
@@ -155,12 +161,12 @@ void drawTile(Tile tile, float thickness)
 
 void drawBoundary(Vector3f v1, Vector3f v2, float H)
 {
-	Vector3f A(v1.x, v1.y - H, v1.z);
-	Vector3f B(v1.x, v1.y - H, v1.z);
-	Vector3f C(v1.x, v1.y, v1.z);
-	Vector3f D(v2.x, v2.y - H, v2.z);
-	Vector3f E(v2.x, v2.y - H, v2.z);
-	Vector3f F(v2.x, v2.y, v2.z);
+	Vector3f A(v1.x, v1.y + H, v1.z);
+	//Vector3f B(v1.x, v1.y - H, v1.z);
+	//Vector3f C(v1.x, v1.y, v1.z);
+	Vector3f D(v2.x, v2.y + H, v2.z);
+	//Vector3f E(v2.x, v2.y - H, v2.z);
+	//Vector3f F(v2.x, v2.y, v2.z);
 
 	glColor4f(1, 0.65, 0.0, 1.0); // ORANGE
 

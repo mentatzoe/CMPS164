@@ -61,6 +61,9 @@ Level LevelCreator::createLevel(TokenList tokenList)
 			// Something wrong happened somewhere
 			curToken++;
 		}
+
+		vertList.clear();
+		neighbors.clear();
 	}
 
 	Level level(tileList, teeVect, cupVect);

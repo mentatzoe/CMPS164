@@ -25,26 +25,26 @@
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 const bool USE_VSYNC = 1;			// 1 On, 0 Off, -1 Late Swap Tearing
-float cam[] = { 0, -5, -5 };
+float cam[] = { 0, 5, 5 };
 float loc[] = { 0, 0, 0 };
 float FoV = 90;
 float orbitY = 0.0;
 float orbitZ = 0.0;
 float orbitX = 0.0;
-float lightPosition[4] = { 0, -3, 0, 1 };
-float diffuseColour[4] = { 0.3, 0.3, 0.3, 1 };
-float ambientColour[4] = { .01, .01, .01, 1 };
-float specularColour[4] = { 0.5, 0.5, 0.5, 1 };
+float lightPosition[4] = { 0, 5, 0, 1 };
+float diffuseColour[4] = { .5, .5, .5, 1 };
+float ambientColour[4] = { 0, 0, 0, 1 };
+float specularColour[4] = { .1, .1, .1, 1 };
 
 GLfloat no_mat[] = { 0.0, 0.0, 0.0, 1.0 };
 GLfloat mat_ambient[] = { 0.7, 0.7, 0.7, 1.0 };
 GLfloat mat_ambient_color[] = { 0.8, 0.8, 0.2, 1.0 };
 GLfloat mat_diffuse[] = { 0.1, 0.5, 0.8, 1.0 };
-GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+GLfloat mat_specular[] = { 0.5, 0.5, 0.5, 1.0 };
 GLfloat no_shininess[] = { 0.0 };
 GLfloat low_shininess[] = { 5.0 };
 GLfloat high_shininess[] = { 100.0 };
-GLfloat mat_emission[] = { 0.3, 0.2, 0.2, 0.0 };
+GLfloat mat_emission[] = { 0, 0, 0, 1 };
 
 // Game window
 SDL_Window* gWindow = NULL;
@@ -179,7 +179,7 @@ void handleCamera()
 	gluPerspective(FoV, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 100);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(cam[0], cam[1], cam[2], 0, 0, 0, 0, 0, 1);
+	gluLookAt(cam[0], cam[1], cam[2], 0, 0, 0, 0, 1, 0);
 }
 
 void handleKeys(unsigned char key, int x, int y)
@@ -204,48 +204,45 @@ void render(Level lvl)
 	glLightfv(GL_LIGHT0, GL_SPECULAR, specularColour);
 
 	glPushMatrix();
-	glRotatef(orbitY, 0.0, -1.0, 0.0);
+	glRotatef(orbitY, 0.0, 1.0, 0.0);
 
-	glPushMatrix();
+	/*glPushMatrix();
 	glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
 	// Draw our light
 	drawCube();
-	glPopMatrix();
+	glPopMatrix();*/
 
 	std::vector<Tile> tiles = lvl.getTileList();
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient_color);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, no_mat);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, no_mat);
-	glColor4f(0.0, 1.0, 0.0, 1.0);
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_emission);
 
 	glPushMatrix();
 	glTranslatef(loc[0], loc[1], loc[2]);
 	for (Tile &t : tiles){
-		drawTile(t, .1);
+		drawTile(t, 0.1);
 	}
 	
 
 	glPushMatrix();
 	Vector4f cup = lvl.getCup();
 	Vector4f tee = lvl.getTee();
-	//std::cout << "CUP: [" << cup.x << ", " << cup.y << ", " << cup.z << "]\n";
 	GLUquadricObj *quadratic;
 	quadratic = gluNewQuadric();
-	//glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	glTranslatef(cup.x, cup.y, cup.z);
+	glTranslatef(tee.x, tee.y+.05, tee.z);
+	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 	glColor4f(0.0, 1.0, 1.0, 1.0);
-	gluCylinder(quadratic, 0.1, 0.1, 0.5f, 3, 3);
+	gluCylinder(quadratic, 0.02, 0.02, .05, 7, 3);
 	glPopMatrix();
 
 	glPushMatrix();
 	GLUquadricObj *quadratic2;
 	quadratic2 = gluNewQuadric();
-	//glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	glTranslatef(tee.x, tee.y, tee.z);
-	glColor4f(0.0, 1.0, 1.0, 1.0);
-	gluCylinder(quadratic2, 0.1, 0.1, 0.5f, 3, 3);
+	glTranslatef(cup.x, cup.y+.05, cup.z);
+	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+	glColor4f(0.0, 0.0, 0.0, 1.0);
+	gluCylinder(quadratic2, 0.06, 0.06, .05, 7, 3);
 	glPopMatrix();
 
 	glPopMatrix();
@@ -300,13 +297,13 @@ int main(int argc, char* args[])
 						FoV -= 5;
 						break;
 					case SDLK_w:
-						loc[2] += .2;
+						loc[2] -= .2;
 						break;
 					case SDLK_a:
 						loc[0] -= .2;
 						break;
 					case SDLK_s:
-						loc[2] -= .2;
+						loc[2] += .2;
 						break;
 					case SDLK_d:
 						loc[0] += .2;

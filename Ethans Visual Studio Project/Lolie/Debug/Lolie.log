@@ -1,21 +1,12 @@
-﻿Build started 4/24/2014 11:41:23 PM.
+﻿Build started 4/25/2014 5:50:04 PM.
      1>Project "C:\Users\Moogooloo\documents\visual studio 2013\Projects\Lolie\Lolie\Lolie.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         D:\Storage's Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\DEVELOPMENT\freeglut\include /I"C:\DEVELOPMENT\glew-1.10.0\include" /I"C:\DEVELOPMENT\SDL2-2.0.3\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(35): warning C4305: 'initializing' : truncation from 'double' to 'float'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(36): warning C4305: 'initializing' : truncation from 'double' to 'float'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(40): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(41): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(42): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(47): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(226): warning C4305: 'argument' : truncation from 'double' to 'float'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(303): warning C4305: '+=' : truncation from 'double' to 'float'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(306): warning C4305: '-=' : truncation from 'double' to 'float'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(309): warning C4305: '-=' : truncation from 'double' to 'float'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(312): warning C4305: '+=' : truncation from 'double' to 'float'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(315): warning C4305: '+=' : truncation from 'double' to 'float'
-     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\main.cpp(318): warning C4305: '-=' : truncation from 'double' to 'float'
+         D:\Storage's Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\DEVELOPMENT\freeglut\include /I"C:\DEVELOPMENT\glew-1.10.0\include" /I"C:\DEVELOPMENT\SDL2-2.0.3\include" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt openglUtil.cpp
+         openglUtil.cpp
+     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\openglutil.cpp(68): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\openglutil.cpp(154): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\openglutil.cpp(157): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\moogooloo\documents\visual studio 2013\projects\lolie\lolie\openglutil.cpp(171): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
        Link:
          D:\Storage's Program Files\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Moogooloo\documents\visual studio 2013\Projects\Lolie\Debug\Lolie.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\DEVELOPMENT\freeglut\lib /LIBPATH:"C:\DEVELOPMENT\glew-1.10.0\lib\Release\Win32" /LIBPATH:"C:\DEVELOPMENT\SDL2-2.0.3\lib\x86" glew32.lib freeglut.lib SDL2.lib SDL2main.lib opengl32.lib glu32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Moogooloo\documents\visual studio 2013\Projects\Lolie\Debug\Lolie.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Moogooloo\documents\visual studio 2013\Projects\Lolie\Debug\Lolie.lib" /MACHINE:X86 Debug\FileParser.obj
          Debug\Level.obj
@@ -29,4 +20,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.71
+Time Elapsed 00:00:00.81
