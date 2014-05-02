@@ -1,154 +1,46 @@
 #include <gl/freeglut.h>
 #include "openglUtil.h"
 
-void drawCube()
-{
-	//Multi-colored side - FRONT
-	glBegin(GL_POLYGON);
-	glColor3f(1.0, 0.0, 0.0);     glVertex3f(0.5, -0.5, -0.5);      // P1 is red
-	glColor3f(0.0, 1.0, 0.0);     glVertex3f(0.5, 0.5, -0.5);      // P2 is green
-	glColor3f(0.0, 0.0, 1.0);     glVertex3f(-0.5, 0.5, -0.5);      // P3 is blue
-	glColor3f(1.0, 0.0, 1.0);     glVertex3f(-0.5, -0.5, -0.5);      // P4 is purple
-	glEnd();
-
-	// White side - BACK
-	glBegin(GL_POLYGON);
-	glColor3f(1.0, 1.0, 1.0);
-	glVertex3f(0.5, -0.5, 0.5);
-	glVertex3f(0.5, 0.5, 0.5);
-	glVertex3f(-0.5, 0.5, 0.5);
-	glVertex3f(-0.5, -0.5, 0.5);
-	glEnd();
-
-	// Purple side - RIGHT
-	glBegin(GL_POLYGON);
-	glColor3f(1.0, 0.0, 1.0);
-	glVertex3f(0.5, -0.5, -0.5);
-	glVertex3f(0.5, 0.5, -0.5);
-	glVertex3f(0.5, 0.5, 0.5);
-	glVertex3f(0.5, -0.5, 0.5);
-	glEnd();
-
-	// Green side - LEFT
-	glBegin(GL_POLYGON);
-	glColor3f(0.0, 1.0, 0.0);
-	glVertex3f(-0.5, -0.5, 0.5);
-	glVertex3f(-0.5, 0.5, 0.5);
-	glVertex3f(-0.5, 0.5, -0.5);
-	glVertex3f(-0.5, -0.5, -0.5);
-	glEnd();
-
-	// Blue side - TOP
-	glBegin(GL_POLYGON);
-	glColor3f(0.0, 0.0, 1.0);
-	glVertex3f(0.5, 0.5, 0.5);
-	glVertex3f(0.5, 0.5, -0.5);
-	glVertex3f(-0.5, 0.5, -0.5);
-	glVertex3f(-0.5, 0.5, 0.5);
-	glEnd();
-
-	// Red side - BOTTOM
-	glBegin(GL_POLYGON);
-	glColor3f(1.0, 0.0, 0.0);
-	glVertex3f(0.5, -0.5, -0.5);
-	glVertex3f(0.5, -0.5, 0.5);
-	glVertex3f(-0.5, -0.5, 0.5);
-	glVertex3f(-0.5, -0.5, -0.5);
-	glEnd();
-}
-
-void drawTile(Tile tile, float thickness)
-{
-	std::vector<Vector3f> verts = tile.getVerts();
-	std::vector<Vector3f> lowerVerts(verts.size());
+void drawTile(Tile tile) {
+	int numSides = tile.getNumSides();
+	std::vector<Vector3f> vertList(tile.getVerts());
+	std::vector<Vector3f> verts(vertList.begin(), vertList.end() - numSides);
+	std::vector<Vector3f> lower(vertList.begin() + numSides, vertList.end());
 	std::vector<int> neighs = tile.getNeighbors();
-	Vector3f vec;
-	std::vector<Vector3f> temp(4, vec);
+	std::vector<Vector3f> normals = tile.getNormals();
 
-	for (int i = 0; i < verts.size(); i++) {
-		lowerVerts[i].x = verts[i].x;
-		lowerVerts[i].y = verts[i].y - thickness;
-		lowerVerts[i].z = verts[i].z;
-	}
-
-	Vector3f normal;
+	int normalIndex = 0;
 	glColor4f(0.0, 1.0, 0.0, 1.0);
 
-	// Draw 6 tile faces
-
-	// Face 1: A B C D (top)
-	normal = calcSurfaceNormal(verts);
+	// Draw Face 1
 	glBegin(GL_POLYGON);
-	glNormal3f(normal.x, normal.y, normal.z);
-	for (Vector3f &v : verts){
-		glVertex3f(v.x, v.y, v.z);
+	glNormal3f(normals[normalIndex].x, normals[normalIndex].y, normals[normalIndex].z);
+	for (int i = 0; i < numSides; i++) {
+		glVertex3f(verts[i].x, verts[i].y, verts[i].z);
 	}
 	glEnd();
+	normalIndex++;
 
-	// Face 2: A2 B2 C2 D2 (bottom)
-	normal = calcSurfaceNormal(lowerVerts);
+	// Draw Face 2
 	glBegin(GL_POLYGON);
-	glNormal3f(normal.x, normal.y, normal.z);
-	for (auto v = lowerVerts.rbegin(); v != lowerVerts.rend(); v++){
-		glVertex3f((*v).x, (*v).y, (*v).z);
+	glNormal3f(normals[normalIndex].x, normals[normalIndex].y, normals[normalIndex].z);
+	for (int i = 0; i < numSides; i++) {
+		glVertex3f(lower[i].x, lower[i].y, lower[i].z);
 	}
 	glEnd();
+	normalIndex++;
 
-	// Faces 3-n
-	for (int i = 0; i < tile.getNumSides(); i++){
-		temp[0] = verts[i];
-		temp[1] = verts[(i + 1) % verts.size()];
-		temp[2] = lowerVerts[(i + 1) % verts.size()];
-		temp[3] = lowerVerts[i];
-		normal = calcSurfaceNormal(temp);
+	// Draw Faces 3 to N
+	for (int i = 0; i < numSides; i++) {
 		glBegin(GL_POLYGON);
-		glNormal3f(normal.x, normal.y, normal.z);
-		for (auto v = temp.rbegin(); v != temp.rend(); v++){
-			glVertex3f((*v).x, (*v).y, (*v).z);
-		}
+		glNormal3f(normals[normalIndex].x, normals[normalIndex].y, normals[normalIndex].z);
+		glVertex3f(verts[i].x, verts[i].y, verts[i].z);
+		glVertex3f(verts[(i + 1) % verts.size()].x, verts[(i + 1) % verts.size()].y, verts[(i + 1) % verts.size()].z);
+		glVertex3f(lower[(i + 1) % lower.size()].x, lower[(i + 1) % lower.size()].y, lower[(i + 1) % lower.size()].z);
+		glVertex3f(lower[i].x, lower[i].y, lower[i].z);
 		glEnd();
+		normalIndex++;
 	}
-
-	/*
-	// Face 4: C D D2 C2
-	temp[0] = verts[2];
-	temp[1] = verts[3];
-	temp[2] = lowerVerts[3];
-	temp[3] = lowerVerts[2];
-	normal = calcSurfaceNormal(temp);
-	glBegin(GL_POLYGON);
-	glNormal3f(normal.x, normal.y, normal.z);
-	for (Vector3f &v : temp){
-		glVertex3f(v.x, v.y, v.z);
-	}
-	glEnd();
-
-	// Face 5: B C C2 B2
-	temp[0] = verts[1];
-	temp[1] = verts[2];
-	temp[2] = lowerVerts[2];
-	temp[3] = lowerVerts[1];
-	normal = calcSurfaceNormal(temp);
-	glBegin(GL_POLYGON);
-	glNormal3f(normal.x, normal.y, normal.z);
-	for (Vector3f &v : temp){
-		glVertex3f(v.x, v.y, v.z);
-	}
-	glEnd();
-
-	// Face 6: A B B2 A2
-	temp[0] = verts[0];
-	temp[1] = verts[1];
-	temp[2] = lowerVerts[1];
-	temp[3] = lowerVerts[0];
-	normal = calcSurfaceNormal(temp);
-	glBegin(GL_POLYGON);
-	glNormal3f(normal.x, normal.y, normal.z);
-	for (Vector3f &v : temp){
-		glVertex3f(v.x, v.y, v.z);
-	}
-	glEnd();
-	*/
 
 	// Draw Boundaries
 	for (int i = 0; i < neighs.size(); i++){

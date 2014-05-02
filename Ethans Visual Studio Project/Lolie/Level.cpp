@@ -16,6 +16,12 @@ void Level::print()
 			std::cout << neighbors[i] << ", ";
 		}
 		std::cout << "\n";
+		std::vector<Vector3f> normals = (*itr).getNormals();
+
+		for (int i = 0; i < normals.size(); i++) {
+			std::cout << "          Normal " << i << ": [" << normals[i].x << ", " << normals[i].y << ", " << normals[i].z << "]\n";
+		}
+		std::cout << "\n";
 	}
 	std::cout << "     Tee: [" << tee.x << ", " << tee.y << ", " << tee.z << "] on tile " << tee.w << "\n";
 	std::cout << "     Cup: [" << cup.x << ", " << cup.y << ", " << cup.z << "] on tile " << cup.w << "\n";

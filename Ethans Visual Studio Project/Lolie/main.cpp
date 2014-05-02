@@ -221,7 +221,7 @@ void render(Level lvl)
 	glPushMatrix();
 	glTranslatef(loc[0], loc[1], loc[2]);
 	for (Tile &t : tiles){
-		drawTile(t, 0.1);
+		drawTile(t);
 	}
 	
 

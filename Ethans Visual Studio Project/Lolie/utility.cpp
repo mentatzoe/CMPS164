@@ -34,7 +34,7 @@ Vector3f calcSurfaceNormal(std::vector<Vector3f> vertList) {
 
 		normal.x = normal.x + ((curVert.y - nextVert.y) * (curVert.z + nextVert.z));
 		normal.y = normal.y + ((curVert.z - nextVert.z) * (curVert.x + nextVert.x));
-		normal.z = normal.z + ((curVert.x - nextVert.x) * (curVert.z + nextVert.y));
+		normal.z = normal.z + ((curVert.x - nextVert.x) * (curVert.y + nextVert.y));
 	}
 
 	return normalize(normal);

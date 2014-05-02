@@ -6,7 +6,8 @@
 
 void drawCube();
 
-void drawTile(Tile tile, float thickness);
+void drawTile(Tile tile);
+
 
 void drawBoundary(Vector3f v1, Vector3f v2, float H);
 

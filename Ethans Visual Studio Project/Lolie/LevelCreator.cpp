@@ -27,6 +27,13 @@ Level LevelCreator::createLevel(TokenList tokenList)
 				Vector3f vert(std::stof((std::next(curToken, i))->data), std::stof((std::next(curToken, i + 1))->data), std::stof((std::next(curToken, i + 2))->data));
 				vertList.push_back(vert);
 			}
+
+			// Add the bottom layer of verts to the vert list
+			for (int i = 0; i < numSides; i++) {
+				Vector3f vert(vertList[i].x, vertList[i].y - .1, vertList[i].z);
+				vertList.push_back(vert);
+			}
+
 			curToken += 3 * numSides;
 
 			//std::cout << "     (After verts) curToken is now " << (*curToken).data << "\n";
