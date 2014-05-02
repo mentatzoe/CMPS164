@@ -1,11 +1,16 @@
 #include "Tile.h"
 #include <iostream>
+
+
 Tile::Tile(int tileID, int numSides, std::vector<Vector3f> verts, std::vector<int> neigh)
 : tileID(tileID)
 , numSides(numSides)
 , vertList(verts)
 , neighbors(neigh)
 {
+	// Set color to GREEN
+	color = { 0.0, 1.0, 0.0, 1.0 };
+
 	Vector3f normal;
 	std::vector<Vector3f> upper(verts.begin(), verts.end() - numSides);
 	std::vector<Vector3f> lower(verts.begin() + numSides, verts.end());

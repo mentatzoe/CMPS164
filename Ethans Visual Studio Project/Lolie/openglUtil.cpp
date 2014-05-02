@@ -54,23 +54,9 @@ void drawTile(Tile tile) {
 void drawBoundary(Vector3f v1, Vector3f v2, float H)
 {
 	Vector3f A(v1.x, v1.y + H, v1.z);
-	//Vector3f B(v1.x, v1.y - H, v1.z);
-	//Vector3f C(v1.x, v1.y, v1.z);
 	Vector3f D(v2.x, v2.y + H, v2.z);
-	//Vector3f E(v2.x, v2.y - H, v2.z);
-	//Vector3f F(v2.x, v2.y, v2.z);
 
 	glColor4f(1, 0.65, 0.0, 1.0); // ORANGE
-
-	/*
-	// Face A B C V1
-	glBegin(GL_POLYGON);
-	glVertex3f(A.x, A.y, A.z);
-	glVertex3f(B.x, B.y, B.z);
-	glVertex3f(C.x, C.y, C.z);
-	glVertex3f(v1.x, v1.y, v1.z);
-	glEnd();
-	*/
 
 	// Face D A v1 v2
 	glBegin(GL_POLYGON);
@@ -79,38 +65,4 @@ void drawBoundary(Vector3f v1, Vector3f v2, float H)
 	glVertex3f(v1.x , v1.y, v1.z );
 	glVertex3f(v2.x , v2.y, v2.z );
 	glEnd();
-
-	/*
-	// Face E D v2 F
-	glBegin(GL_POLYGON);
-	glVertex3f(E.x, E.y, E.z);
-	glVertex3f(D.x, D.y, D.z);
-	glVertex3f(v2.x, v2.y, v2.z);
-	glVertex3f(F.x, F.y, F.z);
-	glEnd();
-
-	// Face B E F C
-	glBegin(GL_POLYGON);
-	glVertex3f(B.x, B.y, B.z);
-	glVertex3f(E.x, E.y, E.z);
-	glVertex3f(F.x, F.y, F.z);
-	glVertex3f(C.x, C.y, C.z);
-	glEnd();
-
-	// Face F v2 v1 C
-	glBegin(GL_POLYGON);
-	glVertex3f(F.x, F.y, F.z);
-	glVertex3f(v2.x, v2.y, v2.z );
-	glVertex3f(v1.x, v1.y, v1.z);
-	glVertex3f(C.x, C.y, C.z);
-	glEnd();
-
-	// Face B A D C
-	glBegin(GL_POLYGON);
-	glVertex3f(B.x, B.y, B.z);
-	glVertex3f(A.x, A.y, A.z);
-	glVertex3f(D.x, D.y, D.z);
-	glVertex3f(C.x, C.y, C.z);
-	glEnd();
-	*/
 }
