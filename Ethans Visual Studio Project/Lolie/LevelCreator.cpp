@@ -7,8 +7,9 @@ Level LevelCreator::createLevel(TokenList tokenList)
 	int tileID = 0;
 	int numSides = 0;
 	std::vector<Tile> tileList;
-	Vector4f teeVect;
-	Vector4f cupVect;
+	Vector3f teeVect;
+	Vector3f cupVect;
+	int teeTileID, cupTileID;
 	std::vector<Vector3f> vertList;
 	std::vector<int> neighbors;
 
@@ -53,7 +54,7 @@ Level LevelCreator::createLevel(TokenList tokenList)
 			teeVect.x = std::stof((*std::next(curToken, 2)).data);
 			teeVect.y = std::stof((*std::next(curToken, 3)).data);
 			teeVect.z = std::stof((*std::next(curToken, 4)).data);
-			teeVect.w = std::stof((*std::next(curToken, 1)).data);			// TileID
+			teeTileID = std::stof((*std::next(curToken, 1)).data);			// TileID
 			curToken += 5;
 		}
 		else if (curToken->data.compare("cup") == 0) {
@@ -61,7 +62,7 @@ Level LevelCreator::createLevel(TokenList tokenList)
 			cupVect.x = std::stof((*std::next(curToken, 2)).data);
 			cupVect.y = std::stof((*std::next(curToken, 3)).data);
 			cupVect.z = std::stof((*std::next(curToken, 4)).data);
-			cupVect.w = std::stof((*std::next(curToken, 1)).data);			// TileID
+			cupTileID = std::stof((*std::next(curToken, 1)).data);			// TileID
 			curToken += 5;
 		}
 		else {
@@ -73,6 +74,8 @@ Level LevelCreator::createLevel(TokenList tokenList)
 		neighbors.clear();
 	}
 
-	Level level(tileList, teeVect, cupVect);
+	Tee tee(teeTileID, teeVect);
+	Cup cup(cupTileID, cupVect);
+	Level level(tileList, tee, cup);
 	return level;
 }

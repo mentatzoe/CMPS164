@@ -218,34 +218,18 @@ void render(Level lvl)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_emission);
 
-	glPushMatrix();
 	glTranslatef(loc[0], loc[1], loc[2]);
+
+	// Draw the tiles of the level
 	for (Tile &t : tiles){
 		drawTile(t);
 	}
 	
-
-	glPushMatrix();
-	Vector4f cup = lvl.getCup();
-	Vector4f tee = lvl.getTee();
-	GLUquadricObj *quadratic;
-	quadratic = gluNewQuadric();
-	glTranslatef(tee.x, tee.y+.05, tee.z);
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	glColor4f(0.0, 1.0, 1.0, 1.0);
-	gluCylinder(quadratic, 0.02, 0.02, .05, 7, 3);
-	glPopMatrix();
-
-	glPushMatrix();
-	GLUquadricObj *quadratic2;
-	quadratic2 = gluNewQuadric();
-	glTranslatef(cup.x, cup.y+.05, cup.z);
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	glColor4f(0.0, 0.0, 0.0, 1.0);
-	gluCylinder(quadratic2, 0.06, 0.06, .05, 7, 3);
-	glPopMatrix();
-
-	glPopMatrix();
+	// Draw the cup and tee of the level
+	Cup cup = lvl.getCup();
+	Tee tee = lvl.getTee();
+	drawTee(tee);
+	drawCup(cup);
 
 	glPopMatrix();
 	SDL_GL_SwapWindow(gWindow);

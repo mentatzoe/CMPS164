@@ -72,17 +72,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Boundary.cpp" />
+    <ClCompile Include="Cup.cpp" />
     <ClCompile Include="FileParser.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelCreator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openglUtil.cpp" />
     <ClCompile Include="SceneNode.cpp" />
+    <ClCompile Include="Tee.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Boundary.h" />
+    <ClInclude Include="Cup.h" />
     <ClInclude Include="FileParser.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputManager.h" />
@@ -90,6 +93,7 @@
     <ClInclude Include="LevelCreator.h" />
     <ClInclude Include="openglUtil.h" />
     <ClInclude Include="SceneNode.h" />
+    <ClInclude Include="Tee.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Token.h" />
     <ClInclude Include="utility.h" />

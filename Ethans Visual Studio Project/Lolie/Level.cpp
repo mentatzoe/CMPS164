@@ -23,6 +23,9 @@ void Level::print()
 		}
 		std::cout << "\n";
 	}
-	std::cout << "     Tee: [" << tee.x << ", " << tee.y << ", " << tee.z << "] on tile " << tee.w << "\n";
-	std::cout << "     Cup: [" << cup.x << ", " << cup.y << ", " << cup.z << "] on tile " << cup.w << "\n";
+	Vector3f teePos = tee.getPos();
+	Vector3f cupPos = cup.getPos();
+
+	std::cout << "     Tee: [" << teePos.x << ", " << teePos.y << ", " << teePos.z << "] on tile " << tee.getTileID() << "\n";
+	std::cout << "     Cup: [" << cupPos.x << ", " << cupPos.y << ", " << cupPos.z << "] on tile " << cup.getTileID() << "\n";
 }

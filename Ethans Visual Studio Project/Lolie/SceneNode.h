@@ -12,7 +12,7 @@ public:
 	void addChild(SceneNode* node);
 	void update(float dt);
 
-	virtual std::vector<Vector3f> getNormals() = 0;
+	virtual std::vector<Vector3f> getNormals();
 private:
 	SceneNode* parent;
 	std::vector<SceneNode*> children;

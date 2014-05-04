@@ -2,23 +2,25 @@
 #define LEVEL_H
 
 #include "Tile.h"
+#include "Cup.h"
+#include "Tee.h"
 
 class Level
 {
 public:
-	Level(std::vector<Tile> tileList, Vector4f teeVect, Vector4f cupVect)
+	Level(std::vector<Tile> tileList, Tee tee, Cup cup)
 		: tileList(tileList)
-		, tee(teeVect)
-		, cup(cupVect) {}
-    Level() {}
+		, tee(tee)
+		, cup(cup) {}
+	~Level() {}
 	void print();
     std::vector<Tile> getTileList() {return tileList;};
-    Vector4f getTee() {return tee;};
-    Vector4f getCup() {return cup;};
+    Tee getTee() {return tee;};
+    Cup getCup() {return cup;};
 private:
 	std::vector<Tile> tileList;
-	Vector4f tee;
-	Vector4f cup;
+	Tee tee;
+	Cup cup;
 };
 
 #endif /* LEVEL_H */
