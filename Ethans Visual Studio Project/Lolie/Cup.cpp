@@ -1,4 +1,5 @@
 #include "Cup.h"
+#include "CircleCollider.h"
 #include <gl/freeglut.h>
 
 Cup::Cup(int id, Vector3f pos)
@@ -10,6 +11,8 @@ Cup::Cup(int id, Vector3f pos)
 	dimensions.slices = 7;
 	dimensions.radius = .06; 
 	dimensions.stacks = 3;
+
+	setCollider(CircleCollider(pos, dimensions.radius));
 }
 
 void Cup::update(float dt)

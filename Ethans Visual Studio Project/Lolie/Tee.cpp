@@ -1,4 +1,5 @@
 #include "Tee.h"
+#include "CircleCollider.h"
 #include <gl/freeglut.h>
 
 Tee::Tee(int id, Vector3f pos)
@@ -10,6 +11,8 @@ Tee::Tee(int id, Vector3f pos)
 	dimensions.slices = 7;
 	dimensions.radius = .02;
 	dimensions.stacks = 3;
+
+	setCollider(CircleCollider(pos, dimensions.radius));
 }
 
 void Tee::update(float dt)

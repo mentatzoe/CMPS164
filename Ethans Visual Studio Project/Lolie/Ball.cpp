@@ -29,10 +29,8 @@ void Ball::update(float dt)
 	// Turn scalar and line equation into  point
 	Vector3f colPoint = (tileNormal * d) + pos;
 
-	// Add the radius to that point in the direction of the normal
-	colPoint = colPoint + (tileNormal * dimensions.radius);
-
-	pos = colPoint;
+	// Set the position of ball to the position of the collision + the radius in the direction of the normal.
+	pos = colPoint + (tileNormal * dimensions.radius);
 
 	// Update children
 	std::vector<SceneNode*> children = getChildren();
