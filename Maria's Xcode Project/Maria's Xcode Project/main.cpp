@@ -4,6 +4,8 @@
 
 #ifdef __APPLE__
 #include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
 #include <SDL2/SDL.h>
 #else
 #include <GL/freeglut.h>
@@ -13,7 +15,7 @@
 #include <iostream>
 #include "FileParser.h"
 #include "LevelCreator.h"
-#include "openglUtil.h"
+#include "Camera.h"
 
 #ifndef M_PI    //if the pi is not defined in the cmath header file
 #define M_PI 3.1415926535       //define it
@@ -24,26 +26,22 @@
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 const bool USE_VSYNC = 1;			// 1 On, 0 Off, -1 Late Swap Tearing
-float cam[] = { 0, -5, -5 };
-float loc[] = { 0, 0, 0 };
+bool quit = false;
 float FoV = 90;
-float orbitY = 0.0;
-float orbitZ = 0.0;
-float orbitX = 0.0;
-float lightPosition[4] = { 0, -3, 0, 1 };
-float diffuseColour[4] = { 0.3, 0.3, 0.3, 1 };
-float ambientColour[4] = { .01, .01, .01, 1 };
-float specularColour[4] = { 0.5, 0.5, 0.5, 1 };
+float lightPosition[4] = { 0, 5, 0, 1 };
+float diffuseColour[4] = { .5, .5, .5, 1 };
+float ambientColour[4] = { 0, 0, 0, 1 };
+float specularColour[4] = { .1, .1, .1, 1 };
 
 GLfloat no_mat[] = { 0.0, 0.0, 0.0, 1.0 };
 GLfloat mat_ambient[] = { 0.7, 0.7, 0.7, 1.0 };
 GLfloat mat_ambient_color[] = { 0.8, 0.8, 0.2, 1.0 };
 GLfloat mat_diffuse[] = { 0.1, 0.5, 0.8, 1.0 };
-GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+GLfloat mat_specular[] = { 0.5, 0.5, 0.5, 1.0 };
 GLfloat no_shininess[] = { 0.0 };
 GLfloat low_shininess[] = { 5.0 };
 GLfloat high_shininess[] = { 100.0 };
-GLfloat mat_emission[] = { 0.3, 0.2, 0.2, 0.0 };
+GLfloat mat_emission[] = { 0, 0, 0, 1 };
 
 // Game window
 SDL_Window* gWindow = NULL;
@@ -54,12 +52,16 @@ SDL_GLContext gContext;
 // Render Flag
 bool gRenderQuad = true;
 
+// Our Rendering Camera
+Camera camera;
+int cameraProfile = 0;
+
 //// END OF GLOBALS ////
 
 /// Forward Declarations /// 
-bool initGL();
+bool initGL(int argc, char* args[]);
 
-bool init() {
+bool init(int argc, char* args[]) {
 	bool success = true;
 
 	// Initialize SDL
@@ -99,7 +101,7 @@ bool init() {
 				}
 
 				// Initialize GL
-				if (!initGL()){
+				if (!initGL(argc, args)){
 					success = false;
 				}
 			}
@@ -109,7 +111,7 @@ bool init() {
 	return success;
 }
 
-bool initGL() {
+bool initGL(int argc, char* args[]) {
 	bool success = true;
 	GLenum err = GL_NO_ERROR;
 
@@ -152,6 +154,8 @@ bool initGL() {
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
 
 	//Check for error
 	err = glGetError();
@@ -159,6 +163,8 @@ bool initGL() {
 		std::cout << "Failed to initialize OpenGL. Error: " << gluErrorString(err) << "\n";
 		success = false;
 	}
+
+	glutInit(&argc, args);
 
 	return success;
 }
@@ -178,78 +184,147 @@ void handleCamera()
 	gluPerspective(FoV, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 100);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(cam[0], cam[1], cam[2], 0, 0, 0, 0, 0, 1);
+	gluLookAt(0, 5, 0, 0, 0, 0, 0, 1, 0);
 }
 
-void handleKeys(unsigned char key, int x, int y)
+void freeLookControls()
 {
+	SDL_Event e;
+	while (SDL_PollEvent(&e)) {
+		switch (e.type){
+		case SDL_QUIT:
+			quit = true;
+			break;
+		case SDL_KEYDOWN:
+			switch (e.key.keysym.sym){
+			case SDLK_LEFT:
+				camera.rotateY(5.0);
+				break;
+			case SDLK_RIGHT:
+				camera.rotateY(-5.0);
+				break;
+			case SDLK_UP:
+				camera.rotateX(5.0);
+				break;
+			case SDLK_DOWN:
+				camera.rotateX(-5.0);
+				break;
+			case SDLK_w:
+				camera.moveForwards(-0.1);
+				break;
+			case SDLK_a:
+				camera.strafeRight(-0.1);
+				break;
+			case SDLK_s:
+				camera.moveForwards(0.1);
+				break;
+			case SDLK_d:
+				camera.strafeRight(0.1);
+				break;
+			case SDLK_r:
+				camera.move(Vector3f(0, .3, 0));
+				break;
+			case SDLK_f:
+				camera.move(Vector3f(0, -.3, 0));
+				break;
+			case SDLK_x:
+				// Switch to TopDown profile
+				cameraProfile = 1;
+				camera.setTopDown();
+				break;
+			default:
+				break;
+			}
+		}
+	}
 }
 
-void update()
+void topDownControls()
+{
+	SDL_Event e;
+	while (SDL_PollEvent(&e)) {
+		switch (e.type){
+		case SDL_QUIT:
+			quit = true;
+			break;
+		case SDL_KEYDOWN:
+			switch (e.key.keysym.sym){
+			case SDLK_a:
+				camera.move(Vector3f(-.2, 0, 0));
+				break;
+			case SDLK_d:
+				camera.move(Vector3f(.2, 0, 0));
+				break;
+			case SDLK_w:
+				camera.move(Vector3f(0, 0, -.2));
+				break;
+			case SDLK_s:
+				camera.move(Vector3f(0, 0, .2));
+				break;
+			case SDLK_r:
+				camera.move(Vector3f(0, .3, 0));
+				break;
+			case SDLK_f:
+				camera.move(Vector3f(0, -.3, 0));
+				break;
+			case SDLK_z:
+				// Switch to FreeLook profile
+				cameraProfile = 0;
+				camera.setFreeLook();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
+void handleEvents()
+{
+	if (cameraProfile == 0){
+		freeLookControls();
+	}
+	else if (cameraProfile == 1){
+		topDownControls();
+	}
+}
+
+void update(Level lvl)
 {
 	//No per frame update needed
+	lvl.update(0.0);
 }
 
-void render(Level lvl)
+void draw(Level lvl)
 {
 	//Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	handleCamera();
+	//handleCamera();
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(FoV, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 100);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	camera.render();
 
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientColour);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseColour);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, specularColour);
 
-	glPushMatrix();
-	glRotatef(orbitY, 0.0, -1.0, 0.0);
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_emission);
 
 	glPushMatrix();
-	glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
-	// Draw our light
-	drawCube();
-	glPopMatrix();
 
-	std::vector<Tile> tiles = lvl.getTileList();
-
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient_color);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_diffuse);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, no_mat);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, no_mat);
-	glColor4f(0.0, 1.0, 0.0, 1.0);
-
-	glPushMatrix();
-	glTranslatef(loc[0], loc[1], loc[2]);
-	for (Tile &t : tiles){
-		drawTile(t, .1);
-	}
-	
-
-	glPushMatrix();
-	Vector4f cup = lvl.getCup();
-	Vector4f tee = lvl.getTee();
-	//std::cout << "CUP: [" << cup.x << ", " << cup.y << ", " << cup.z << "]\n";
-	GLUquadricObj *quadratic;
-	quadratic = gluNewQuadric();
-	//glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	glTranslatef(cup.x, cup.y, cup.z);
-	glColor4f(0.0, 1.0, 1.0, 1.0);
-	gluCylinder(quadratic, 0.1, 0.1, 0.5f, 3, 3);
-	glPopMatrix();
-
-	glPushMatrix();
-	GLUquadricObj *quadratic2;
-	quadratic2 = gluNewQuadric();
-	//glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-	glTranslatef(tee.x, tee.y, tee.z);
-	glColor4f(0.0, 1.0, 1.0, 1.0);
-	gluCylinder(quadratic2, 0.1, 0.1, 0.5f, 3, 3);
-	glPopMatrix();
+	lvl.draw();
 
 	glPopMatrix();
 
-	glPopMatrix();
 	SDL_GL_SwapWindow(gWindow);
 }
 
@@ -259,70 +334,42 @@ int main(int argc, char* args[])
 	TokenList list = fp.tokenize(args[1]);
 	LevelCreator lc;
 	Level test = lc.createLevel(list);
-	test.print();
+
 	// Start SDL
-	if (!init()) {
+	if (!init(argc, args)) {
 		system("pause");
 		exit(0);
 	}
 
 	// Main Loop
 	else {
-		bool quit = false;
+		Uint32 start_time_ms = SDL_GetTicks();
+		Uint32 prev_time = start_time_ms;
+		Uint32 curr_time;
+		float delta_time = .02;
+		float physics_lag_time = 0.0;
+
 		while (!quit) {
+			// Update game time
+			curr_time = SDL_GetTicks() - start_time_ms;
+
+			// Calc time since last update
+			physics_lag_time += curr_time - prev_time;
+
+			/*while (physics_lag_time > delta_time) {
+				// doPhysicsSimulaton(dt);
+				physics_lag_time -= delta_time;
+			}*/
+
 
 			// Process Events
-			SDL_Event e;
-			while (SDL_PollEvent(&e)) {
-				switch (e.type){
-				case SDL_QUIT:
-					quit = true;
-					break;
-				case SDL_KEYDOWN:
-					switch (e.key.keysym.sym){
-					case SDLK_LEFT:
-						orbitY += 5;
-						break;
-					case SDLK_RIGHT:
-						orbitY -= 5;
-						break;
-					case SDLK_UP:
-						cam[1] -= 0.5;
-						break;
-					case SDLK_DOWN:
-						cam[1] += 0.5;
-						break;
-					case SDLK_e:
-						FoV += 5;
-						break;
-					case SDLK_q:
-						FoV -= 5;
-						break;
-					case SDLK_w:
-						loc[2] += .2;
-						break;
-					case SDLK_a:
-						loc[0] -= .2;
-						break;
-					case SDLK_s:
-						loc[2] -= .2;
-						break;
-					case SDLK_d:
-						loc[0] += .2;
-						break;
-					case SDLK_r:
-						loc[1] += .2;
-						break;
-					case SDLK_f:
-						loc[1] -= .2;
-						break;
-					default:
-						break;
-					}
-				}
-			}
+			handleEvents();
+			// Update
+			update(test);
 			// Draw
-			render(test);
+			draw(test);
+
+			prev_time = curr_time;
 		}
 	}
 

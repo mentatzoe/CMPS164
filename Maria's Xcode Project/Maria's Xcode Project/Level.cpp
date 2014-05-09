@@ -1,22 +1,22 @@
 #include "Level.h"
-#include <iostream>
+#include <vector>
 
-void Level::print()
+Level::Level() {}
+
+void Level::update(float dt)
 {
-	std::cout << "Printing Level Status:\n";
-	for (auto itr = tileList.begin(); itr != tileList.end(); itr++){
-		std::cout << "     Tile with ID = " << (*itr).getTileID() << " and numSides = " << (*itr).getNumSides() << "\n";
-		std::vector<Vector3f> verts = (*itr).getVerts();
-		for (int i = 0; i < verts.size(); i++) {
-			std::cout << "          Vertex " << i << ": [" << verts[i].x << ", " << verts[i].y << ", " << verts[i].z << "]\n";
-		}
-		std::vector<int> neighbors = (*itr).getNeighbors();
-		std::cout << "          Neighbors list: ";
-		for (int i = 0; i < neighbors.size(); i++){
-			std::cout << neighbors[i] << ", ";
-		}
-		std::cout << "\n";
+	// Update children
+	std::vector<SceneNode*> children = getChildren();
+	for (auto itr = children.begin(); itr != children.end(); itr++) {
+		(*itr)->update(dt);
 	}
-	std::cout << "     Tee: [" << tee.x << ", " << tee.y << ", " << tee.z << "] on tile " << tee.w << "\n";
-	std::cout << "     Cup: [" << cup.x << ", " << cup.y << ", " << cup.z << "] on tile " << cup.w << "\n";
+}
+
+void Level::draw()
+{
+	// Draw children
+	std::vector<SceneNode*> children = getChildren();
+	for (auto itr = children.begin(); itr != children.end(); itr++) {
+		(*itr)->draw();
+	}
 }
