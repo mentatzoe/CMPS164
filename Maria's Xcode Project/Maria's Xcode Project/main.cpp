@@ -194,7 +194,7 @@ void handleCamera()
 	gluLookAt(0, 5, 0, 0, 0, 0, 0, 1, 0);
 }
 
-void freeLookControls()
+void freeLookControls(Level lvl)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
@@ -240,7 +240,7 @@ void freeLookControls()
 				camera.setTopDown();
 				break;
             case SDLK_SPACE: //Give impulse to the ball
-                PhysicsManager::giveImpulse(camera.getViewDir(), IMPULSE_FORCE, *ball);
+                PhysicsManager::giveImpulse(camera.getViewDir(), IMPULSE_FORCE, *lvl.getBall());
                 break;
 			default:
 				break;
@@ -292,10 +292,10 @@ void topDownControls()
 	}
 }
 
-void handleEvents()
+void handleEvents(Level lvl)
 {
 	if (cameraProfile == 0){
-		freeLookControls();
+		freeLookControls(lvl);
 	}
 	else if (cameraProfile == 1){
 		topDownControls();
@@ -376,7 +376,7 @@ int main(int argc, char* args[])
 
 
 			// Process Events
-			handleEvents();
+			handleEvents(test);
 			// Update
 			update(test);
 			// Draw
