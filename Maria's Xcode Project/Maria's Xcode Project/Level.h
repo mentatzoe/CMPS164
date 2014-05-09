@@ -14,6 +14,10 @@ public:
 
 	void update(float dt);
 	void draw();
+    Ball getBall(){return *b;};
+    void setBall(Ball ba){b = &ba;};
+private:
+    Ball* b;
 };
 
 #endif /* LEVEL_H */

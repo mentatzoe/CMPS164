@@ -23,6 +23,9 @@ public:
 	void rotateY(float angle);
 	void rotateZ(float angle);
 	void rotateXYZ(Vector3f angles);
+    
+    //For physics - Launching the ball
+    Vector3f getViewDir(){return viewDir;};
 
 private:
 	Vector3f position;
