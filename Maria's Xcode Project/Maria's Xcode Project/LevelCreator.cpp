@@ -77,8 +77,10 @@ Level LevelCreator::createLevel(TokenList tokenList)
 	for (int i = 0; i < children.size(); i++) {
 		Tile* t = static_cast<Tile*> (children[i]);
 		if (teeTileID == (*t).getTileID()) {
+            Ball* b = new Ball(teeTileID, teeVect);
+            level.setBall(*b);
 			(*t).addChild(new Tee(teeTileID, teeVect));
-			(*t).addChild(new Ball(teeTileID, teeVect));
+			(*t).addChild(static_cast<SceneNode*>(level.getBall()));
 		}
 		if (cupTileID == (*t).getTileID()) {
 			(*t).addChild(new Cup(cupTileID, cupVect));
