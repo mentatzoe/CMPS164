@@ -25,6 +25,7 @@
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 const bool USE_VSYNC = 1;			// 1 On, 0 Off, -1 Late Swap Tearing
+bool quit = false;
 float cam[] = { 0, 5, 5 };
 float loc[] = { 0, 0, 0 };
 float FoV = 90;
@@ -186,16 +187,66 @@ void handleCamera()
 	gluLookAt(cam[0], cam[1], cam[2], 0, 0, 0, 0, 1, 0);
 }
 
-void handleKeys(unsigned char key, int x, int y)
+void handleEvents()
 {
+	SDL_Event e;
+	while (SDL_PollEvent(&e)) {
+		switch (e.type){
+		case SDL_QUIT:
+			quit = true;
+			break;
+		case SDL_KEYDOWN:
+			switch (e.key.keysym.sym){
+			case SDLK_LEFT:
+				orbitY += 5;
+				break;
+			case SDLK_RIGHT:
+				orbitY -= 5;
+				break;
+			case SDLK_UP:
+				cam[1] -= 0.5;
+				break;
+			case SDLK_DOWN:
+				cam[1] += 0.5;
+				break;
+			case SDLK_e:
+				FoV += 5;
+				break;
+			case SDLK_q:
+				FoV -= 5;
+				break;
+			case SDLK_w:
+				loc[2] -= .2;
+				break;
+			case SDLK_a:
+				loc[0] -= .2;
+				break;
+			case SDLK_s:
+				loc[2] += .2;
+				break;
+			case SDLK_d:
+				loc[0] += .2;
+				break;
+			case SDLK_r:
+				loc[1] += .2;
+				break;
+			case SDLK_f:
+				loc[1] -= .2;
+				break;
+			default:
+				break;
+			}
+		}
+	}
 }
 
-void update()
+void update(Level lvl)
 {
 	//No per frame update needed
+	lvl.update(0.0);
 }
 
-void render(Level lvl)
+void draw(Level lvl)
 {
 	//Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -216,7 +267,6 @@ void render(Level lvl)
 
 	glTranslatef(loc[0], loc[1], loc[2]);
 
-	lvl.update(0.0);
 	lvl.draw();
 
 	glPopMatrix();
@@ -238,61 +288,33 @@ int main(int argc, char* args[])
 
 	// Main Loop
 	else {
-		bool quit = false;
+		Uint32 start_time_ms = SDL_GetTicks();
+		Uint32 prev_time = start_time_ms;
+		Uint32 curr_time;
+		float delta_time = .02;
+		float physics_lag_time = 0.0;
+
 		while (!quit) {
+			// Update game time
+			curr_time = SDL_GetTicks() - start_time_ms;
+
+			// Calc time since last update
+			physics_lag_time += curr_time - prev_time;
+
+			/*while (physics_lag_time > delta_time) {
+				// doPhysicsSimulaton(dt);
+				physics_lag_time -= delta_time;
+			}*/
+
 
 			// Process Events
-			SDL_Event e;
-			while (SDL_PollEvent(&e)) {
-				switch (e.type){
-				case SDL_QUIT:
-					quit = true;
-					break;
-				case SDL_KEYDOWN:
-					switch (e.key.keysym.sym){
-					case SDLK_LEFT:
-						orbitY += 5;
-						break;
-					case SDLK_RIGHT:
-						orbitY -= 5;
-						break;
-					case SDLK_UP:
-						cam[1] -= 0.5;
-						break;
-					case SDLK_DOWN:
-						cam[1] += 0.5;
-						break;
-					case SDLK_e:
-						FoV += 5;
-						break;
-					case SDLK_q:
-						FoV -= 5;
-						break;
-					case SDLK_w:
-						loc[2] -= .2;
-						break;
-					case SDLK_a:
-						loc[0] -= .2;
-						break;
-					case SDLK_s:
-						loc[2] += .2;
-						break;
-					case SDLK_d:
-						loc[0] += .2;
-						break;
-					case SDLK_r:
-						loc[1] += .2;
-						break;
-					case SDLK_f:
-						loc[1] -= .2;
-						break;
-					default:
-						break;
-					}
-				}
-			}
+			handleEvents();
+			// Update
+			update(test);
 			// Draw
-			render(test);
+			draw(test);
+
+			prev_time = curr_time;
 		}
 	}
 
