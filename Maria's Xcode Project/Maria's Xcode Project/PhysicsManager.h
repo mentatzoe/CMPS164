@@ -3,7 +3,6 @@
 
 #include "SceneNode.h"
 #include "Ball.h"
-#include "Boundary.h"
 
 class PhysicsManager 
 {
