@@ -58,9 +58,9 @@ bool gRenderQuad = true;
 //// END OF GLOBALS ////
 
 /// Forward Declarations /// 
-bool initGL();
+bool initGL(int argc, char* args[]);
 
-bool init() {
+bool init(int argc, char* args[]) {
 	bool success = true;
 
 	// Initialize SDL
@@ -100,7 +100,7 @@ bool init() {
 				}
 
 				// Initialize GL
-				if (!initGL()){
+				if (!initGL(argc, args)){
 					success = false;
 				}
 			}
@@ -110,7 +110,7 @@ bool init() {
 	return success;
 }
 
-bool initGL() {
+bool initGL(int argc, char* args[]) {
 	bool success = true;
 	GLenum err = GL_NO_ERROR;
 
@@ -163,6 +163,8 @@ bool initGL() {
 		success = false;
 	}
 
+	glutInit(&argc, args);
+
 	return success;
 }
 
@@ -214,6 +216,7 @@ void render(Level lvl)
 
 	glTranslatef(loc[0], loc[1], loc[2]);
 
+	lvl.update(0.0);
 	lvl.draw();
 
 	glPopMatrix();
@@ -228,7 +231,7 @@ int main(int argc, char* args[])
 	Level test = lc.createLevel(list);
 
 	// Start SDL
-	if (!init()) {
+	if (!init(argc, args)) {
 		system("pause");
 		exit(0);
 	}

@@ -78,6 +78,7 @@ Level LevelCreator::createLevel(TokenList tokenList)
 		Tile* t = static_cast<Tile*> (children[i]);
 		if (teeTileID == (*t).getTileID()) {
 			(*t).addChild(new Tee(teeTileID, teeVect));
+			(*t).addChild(new Ball(teeTileID, teeVect));
 		}
 		if (cupTileID == (*t).getTileID()) {
 			(*t).addChild(new Cup(cupTileID, cupVect));

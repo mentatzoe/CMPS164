@@ -26,8 +26,8 @@ void Cup::draw()
 	glPushMatrix();
 
 	// create the quadratic
-	GLUquadricObj *quadratic2;
-	quadratic2 = gluNewQuadric();
+	GLUquadricObj *quadratic;
+	quadratic = gluNewQuadric();
 
 	// Move the cylinder
 	glTranslatef(pos.x, pos.y + .05, pos.z);
@@ -37,7 +37,7 @@ void Cup::draw()
 	glColor4f(color.x, color.y, color.z, color.w);
 
 	// Draw the cylinder
-	gluCylinder(quadratic2, dimensions.radius, dimensions.radius, dimensions.height, dimensions.slices, dimensions.stacks);
+	gluCylinder(quadratic, dimensions.radius, dimensions.radius, dimensions.height, dimensions.slices, dimensions.stacks);
 
 	glPopMatrix();
 

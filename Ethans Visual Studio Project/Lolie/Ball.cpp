@@ -1,11 +1,69 @@
 #include "Ball.h"
+#include "Tile.h"
+#include <gl/freeglut.h>
 
-void Ball::draw() 
+Ball::Ball(int id, Vector3f pos)
+: pos(pos)
+, tileID(id)
+{
+	color = { 1.0, 1.0, 1.0, 1.0 };
+	dimensions.slices = 11;
+	dimensions.radius = .055;
+	dimensions.stacks = 5;
+}
+
+void Ball::update(float dt)
+{
+	/// Update Y position ///
+	SceneNode* node = getParent();
+
+	// Asserting that Ball's parent is a tile
+	Tile* parent = static_cast<Tile*>(node);
+	Vector3f tileNormal = parent->getNormals()[0]; // First normal is the normal of the top surface
+
+	// Line is p = d(l) + l0 where l0 is a point on the line (Ball's pos) and l is a vector in the direction of line (tile normal)
+
+	// Calculate scalar of the point of collision
+	float d = dot((parent->getVerts()[0] - pos), tileNormal) / dot(tileNormal, tileNormal);
+	
+	// Turn scalar and line equation into  point
+	Vector3f colPoint = (tileNormal * d) + pos;
+
+	// Add the radius to that point in the direction of the normal
+	colPoint = colPoint + (tileNormal * dimensions.radius);
+
+	pos = colPoint;
+
+	// Update children
+	std::vector<SceneNode*> children = getChildren();
+	for (auto itr = children.begin(); itr != children.end(); itr++) {
+		(*itr)->update(dt);
+	}
+}
+
+void Ball::draw()
 {
 	glPushMatrix();
-	
-	glTranslatef(location.x, location.y, location.z);
-	sphere.draw();
+
+	// create the quadratic
+	GLUquadricObj *quadratic;
+	quadratic = gluNewQuadric();
+
+	// Move the Sphere
+	glTranslatef(pos.x, pos.y, pos.z);
+
+	// Set Color
+	glColor4f(color.x, color.y, color.z, color.w);
+
+	// Draw Sphere
+	gluSphere(quadratic, dimensions.radius, dimensions.slices, dimensions.stacks);
+
 
 	glPopMatrix();
+
+	// Draw children
+	std::vector<SceneNode*> children = getChildren();
+	for (auto itr = children.begin(); itr != children.end(); itr++) {
+		(*itr)->draw();
+	}
 }

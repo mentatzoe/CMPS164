@@ -4,6 +4,7 @@
 #include "Tile.h"
 #include "Cup.h"
 #include "Tee.h"
+#include "Ball.h"
 
 class Level : public SceneNode
 {
