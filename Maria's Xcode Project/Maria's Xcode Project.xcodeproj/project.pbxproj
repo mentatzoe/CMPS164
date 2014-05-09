@@ -21,6 +21,9 @@
 		4FDC5F961900A8E400B12A69 /* Level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F8D1900A8E400B12A69 /* Level.cpp */; };
 		4FDC5F971900A8E400B12A69 /* LevelCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F8F1900A8E400B12A69 /* LevelCreator.cpp */; };
 		4FDC5F981900A8E400B12A69 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F911900A8E400B12A69 /* Tile.cpp */; };
+		4FE219CF191C511F00424821 /* Collider2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219CD191C511F00424821 /* Collider2D.cpp */; };
+		4FE219D2191C51C000424821 /* LineCollider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219D0191C51C000424821 /* LineCollider.cpp */; };
+		4FE219D5191C71F800424821 /* CircleCollider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219D3191C71F800424821 /* CircleCollider.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,6 +65,12 @@
 		4FDC5F921900A8E400B12A69 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
 		4FDC5F931900A8E400B12A69 /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
 		4FDC5F941900A8E400B12A69 /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		4FE219CD191C511F00424821 /* Collider2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Collider2D.cpp; sourceTree = "<group>"; };
+		4FE219CE191C511F00424821 /* Collider2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collider2D.h; sourceTree = "<group>"; };
+		4FE219D0191C51C000424821 /* LineCollider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LineCollider.cpp; sourceTree = "<group>"; };
+		4FE219D1191C51C000424821 /* LineCollider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineCollider.h; sourceTree = "<group>"; };
+		4FE219D3191C71F800424821 /* CircleCollider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleCollider.cpp; sourceTree = "<group>"; };
+		4FE219D4191C71F800424821 /* CircleCollider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleCollider.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +144,12 @@
 				4FDC5F8C1900A8E400B12A69 /* hole.00.db */,
 				4FA2050818FDF33F007F09B5 /* main.cpp */,
 				4F0F6C38190AFF9D004022CB /* openglUtil.cpp */,
+				4FE219CD191C511F00424821 /* Collider2D.cpp */,
+				4FE219CE191C511F00424821 /* Collider2D.h */,
+				4FE219D3191C71F800424821 /* CircleCollider.cpp */,
+				4FE219D4191C71F800424821 /* CircleCollider.h */,
+				4FE219D0191C51C000424821 /* LineCollider.cpp */,
+				4FE219D1191C51C000424821 /* LineCollider.h */,
 				4F0F6C39190AFF9D004022CB /* openglUtil.h */,
 				4F0F6C3A190AFF9D004022CB /* utility.cpp */,
 				4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */,
@@ -196,12 +211,15 @@
 				4F0F6C3C190AFF9D004022CB /* utility.cpp in Sources */,
 				4FDC5F961900A8E400B12A69 /* Level.cpp in Sources */,
 				4FDC5F971900A8E400B12A69 /* LevelCreator.cpp in Sources */,
+				4FE219CF191C511F00424821 /* Collider2D.cpp in Sources */,
 				4F0F6C3B190AFF9D004022CB /* openglUtil.cpp in Sources */,
+				4FE219D2191C51C000424821 /* LineCollider.cpp in Sources */,
 				4FDC5F951900A8E400B12A69 /* FileParser.cpp in Sources */,
 				4F3290E219073C3300FB737D /* RenderManager.cpp in Sources */,
 				4F3290DF19073AF300FB737D /* Game.cpp in Sources */,
 				4FA2050918FDF33F007F09B5 /* main.cpp in Sources */,
 				4FDC5F981900A8E400B12A69 /* Tile.cpp in Sources */,
+				4FE219D5191C71F800424821 /* CircleCollider.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
