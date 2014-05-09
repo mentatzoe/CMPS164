@@ -7,8 +7,7 @@ public:
     CircleCollider(Vector3f c, float r)
     : center(c)
     , radius(r){}
-    bool getCollision(Collider2D c); // Checks if there's been a collision
-    Vector3f getCollisionPoint(Collider2D c); //Returns collision point
+    bool getCollision(Collider2D c, Vector3f& result); // Checks if there's been a collision
 private:
     Vector3f center;
     float radius;

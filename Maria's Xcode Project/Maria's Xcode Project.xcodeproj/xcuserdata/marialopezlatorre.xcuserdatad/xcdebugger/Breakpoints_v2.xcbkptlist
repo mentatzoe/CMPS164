@@ -177,7 +177,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "5"
             endingLineNumber = "5"
-            landmarkName = "CircleCollider::getCollisionPoint(Collider2D c)"
+            landmarkName = "CircleCollider::getCollisionPoint(Collider2D col, Vector3f&amp; result)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
