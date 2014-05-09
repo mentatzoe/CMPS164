@@ -40,7 +40,7 @@ void PhysicsManager::update(float dt, Ball& b)
         p_init = b.getPosition();
         
         //Check that a and v are opposite
-        //NOT IMPLEMENTED YET!!
+        //NOT IMPLEMENTED YET!! (but we shouldn't need it right now)
         
         //Calculate new velocity
         v = Vector3f(b.getV().x + (a.x * dt), b.getV().y + (a.y * dt), b.getV().z + (a.z * dt));
