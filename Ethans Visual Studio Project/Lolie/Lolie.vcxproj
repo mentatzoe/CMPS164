@@ -73,6 +73,7 @@
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Boundary.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CircleCollider.cpp" />
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="Cup.cpp" />
@@ -91,6 +92,7 @@
   <ItemGroup>
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Boundary.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleCollider.h" />
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="Cup.h" />

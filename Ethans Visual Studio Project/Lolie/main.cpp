@@ -14,7 +14,7 @@
 #include <iostream>
 #include "FileParser.h"
 #include "LevelCreator.h"
-#include "openglUtil.h"
+#include "Camera.h"
 
 #ifndef M_PI    //if the pi is not defined in the cmath header file
 #define M_PI 3.1415926535       //define it
@@ -26,12 +26,7 @@ const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
 const bool USE_VSYNC = 1;			// 1 On, 0 Off, -1 Late Swap Tearing
 bool quit = false;
-float cam[] = { 0, 5, 5 };
-float loc[] = { 0, 0, 0 };
 float FoV = 90;
-float orbitY = 0.0;
-float orbitZ = 0.0;
-float orbitX = 0.0;
 float lightPosition[4] = { 0, 5, 0, 1 };
 float diffuseColour[4] = { .5, .5, .5, 1 };
 float ambientColour[4] = { 0, 0, 0, 1 };
@@ -55,6 +50,10 @@ SDL_GLContext gContext;
 
 // Render Flag
 bool gRenderQuad = true;
+
+// Our Rendering Camera
+Camera camera;
+int cameraProfile = 0;
 
 //// END OF GLOBALS ////
 
@@ -184,10 +183,10 @@ void handleCamera()
 	gluPerspective(FoV, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 100);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(cam[0], cam[1], cam[2], 0, 0, 0, 0, 1, 0);
+	gluLookAt(0, 5, 0, 0, 0, 0, 0, 1, 0);
 }
 
-void handleEvents()
+void freeLookControls()
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
@@ -198,45 +197,94 @@ void handleEvents()
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym){
 			case SDLK_LEFT:
-				orbitY += 5;
+				camera.rotateY(5.0);
 				break;
 			case SDLK_RIGHT:
-				orbitY -= 5;
+				camera.rotateY(-5.0);
 				break;
 			case SDLK_UP:
-				cam[1] -= 0.5;
+				camera.rotateX(5.0);
 				break;
 			case SDLK_DOWN:
-				cam[1] += 0.5;
-				break;
-			case SDLK_e:
-				FoV += 5;
-				break;
-			case SDLK_q:
-				FoV -= 5;
+				camera.rotateX(-5.0);
 				break;
 			case SDLK_w:
-				loc[2] -= .2;
+				camera.moveForwards(-0.1);
 				break;
 			case SDLK_a:
-				loc[0] -= .2;
+				camera.strafeRight(-0.1);
 				break;
 			case SDLK_s:
-				loc[2] += .2;
+				camera.moveForwards(0.1);
 				break;
 			case SDLK_d:
-				loc[0] += .2;
+				camera.strafeRight(0.1);
 				break;
 			case SDLK_r:
-				loc[1] += .2;
+				camera.move(Vector3f(0, .3, 0));
 				break;
 			case SDLK_f:
-				loc[1] -= .2;
+				camera.move(Vector3f(0, -.3, 0));
+				break;
+			case SDLK_x:
+				// Switch to TopDown profile
+				cameraProfile = 1;
+				camera.setTopDown();
 				break;
 			default:
 				break;
 			}
 		}
+	}
+}
+
+void topDownControls()
+{
+	SDL_Event e;
+	while (SDL_PollEvent(&e)) {
+		switch (e.type){
+		case SDL_QUIT:
+			quit = true;
+			break;
+		case SDL_KEYDOWN:
+			switch (e.key.keysym.sym){
+			case SDLK_a:
+				camera.move(Vector3f(-.2, 0, 0));
+				break;
+			case SDLK_d:
+				camera.move(Vector3f(.2, 0, 0));
+				break;
+			case SDLK_w:
+				camera.move(Vector3f(0, 0, -.2));
+				break;
+			case SDLK_s:
+				camera.move(Vector3f(0, 0, .2));
+				break;
+			case SDLK_r:
+				camera.move(Vector3f(0, .3, 0));
+				break;
+			case SDLK_f:
+				camera.move(Vector3f(0, -.3, 0));
+				break;
+			case SDLK_z:
+				// Switch to FreeLook profile
+				cameraProfile = 0;
+				camera.setFreeLook();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
+void handleEvents()
+{
+	if (cameraProfile == 0){
+		freeLookControls();
+	}
+	else if (cameraProfile == 1){
+		topDownControls();
 	}
 }
 
@@ -251,25 +299,31 @@ void draw(Level lvl)
 	//Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	handleCamera();
+	//handleCamera();
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(FoV, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 100);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	camera.render();
 
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientColour);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseColour);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, specularColour);
 
-	glPushMatrix();
-	glRotatef(orbitY, 0.0, 1.0, 0.0);
-
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_emission);
 
-	glTranslatef(loc[0], loc[1], loc[2]);
+	glPushMatrix();
 
 	lvl.draw();
 
 	glPopMatrix();
+
 	SDL_GL_SwapWindow(gWindow);
 }
 
