@@ -123,61 +123,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Maria&apos;s Xcode Project/LineCollider.cpp"
-            timestampString = "421288696.920678"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "intersection(Vector3f p1, Vector3f p2, Vector3f p3, Vector3f p4)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Maria&apos;s Xcode Project/LineCollider.cpp"
-            timestampString = "421288700.986507"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
-            landmarkName = "intersection(Vector3f p1, Vector3f p2, Vector3f p3, Vector3f p4)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Maria&apos;s Xcode Project/LineCollider.cpp"
-            timestampString = "421294507.000309"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
-            landmarkName = "intersection(Vector3f p1, Vector3f p2, Vector3f p3, Vector3f p4)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Maria&apos;s Xcode Project/CircleCollider.cpp"
             timestampString = "421307633.930393"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "5"
             endingLineNumber = "5"
-            landmarkName = "CircleCollider::getCollisionPoint(Collider2D col, Vector3f&amp; result)"
+            landmarkName = "CircleCollider::getCollision(Collider2D col, Vector3f&amp; result)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
