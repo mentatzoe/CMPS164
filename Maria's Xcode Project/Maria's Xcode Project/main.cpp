@@ -302,10 +302,10 @@ void handleEvents(Level lvl)
 	}
 }
 
-void update(Level lvl)
+void update(float delta_time, Level lvl)
 {
 	//No per frame update needed
-	lvl.update(0.0);
+	lvl.update(delta_time);
 }
 
 void draw(Level lvl)
@@ -368,6 +368,7 @@ int main(int argc, char* args[])
 
 			// Calc time since last update
 			physics_lag_time += curr_time - prev_time;
+            delta_time = curr_time - prev_time;
 
 			/*while (physics_lag_time > delta_time) {
 				// doPhysicsSimulaton(dt);
@@ -378,7 +379,7 @@ int main(int argc, char* args[])
 			// Process Events
 			handleEvents(test);
 			// Update
-			update(test);
+			update(delta_time, test);
 			// Draw
 			draw(test);
 

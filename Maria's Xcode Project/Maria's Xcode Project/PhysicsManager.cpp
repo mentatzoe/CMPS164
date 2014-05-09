@@ -16,6 +16,8 @@ void PhysicsManager::update(float dt, Ball& b)
 	for (int i = 0; i < siblings.size(); i++) {
 		Vector3f colPos;
 		if (checkCollision(b, (*siblings[i]), colPos)){
+            
+            Boundary bound = static_cast<Boundary>(siblings[i]);
             //First we check if it's a boundary and if the boundary is a changing tile one
             //If it's a changing tile boundary, we update the ball's parent
             //NOT IMPLEMENTED YET!!
@@ -23,14 +25,18 @@ void PhysicsManager::update(float dt, Ball& b)
             //If not, we proceed to reflect the ball's direction
             //We need to get the normal of the plane, supposing that we always incide in a 90º angle (which is a lie, but still)
             //the components of the normal will be x' = -z, z'=+x
-            
-            Vector3f N = Vector3f(-colPos.z, colPos.y, +colPos.x);
-            Vector3f I = b.getV();
-            //R= 2*(-I dot N)*N + I
-            float dotProductIN = N.x * I.x + N.z + I.z;
-            Vector3f temp = Vector3f(2*dotProductIN * N.x, 2*dotProductIN * N.y, 2*dotProductIN * N.z);
-            Vector3f vReflected = Vector3f(temp.x+I.x, temp.y+I.y, temp.z+I.z);
-            b.setV(vReflected);
+            if (bound.isPhysical()){
+                Vector3f N = Vector3f(-colPos.z, colPos.y, colPos.x);
+                Vector3f I = b.getV();
+                //R= 2*(-I dot N)*N + I
+                float dotProductIN = N.x * I.x + N.z + I.z;
+                Vector3f temp = Vector3f(2*dotProductIN * N.x, 2*dotProductIN * N.y, 2*dotProductIN * N.z);
+                Vector3f vReflected = Vector3f(temp.x+I.x, temp.y+I.y, temp.z+I.z);
+                b.setV(vReflected);
+            } else {
+                //b.setParent(bound.getParent());
+                //IMPLEMENT THIS
+            }
 		}
     }
     //We always update the position, velocity and store them as initials

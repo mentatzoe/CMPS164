@@ -14,6 +14,7 @@ public:
 
 	std::vector<Vector3f> getVerts() { return vertList; }
 	std::vector<Vector3f> getNormals() { return normals; }
+    bool isPhysical(){return physical;};
 private:
 	std::vector<Vector3f> vertList;
 	std::vector<Vector3f> normals;

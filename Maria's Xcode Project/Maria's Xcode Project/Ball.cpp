@@ -18,7 +18,7 @@ Ball::Ball(int id, Vector3f pos)
 	dimensions.slices = 11;
 	dimensions.radius = .055;
 	dimensions.stacks = 5;
-    m = 0.045;
+    m = 5;
     v = Vector3f(0, 0, 0);
 }
 
