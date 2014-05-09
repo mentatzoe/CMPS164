@@ -1,6 +1,14 @@
 #include "Boundary.h"
 #include "LineCollider.h"
-#include <gl/freeglut.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL2/SDL.h>
+#else
+#include <GL/freeglut.h>
+#include <SDL.h>
+#endif
 #include <algorithm>
 
 Boundary::Boundary(Vector3f vert1, Vector3f vert2, float height, bool physical)

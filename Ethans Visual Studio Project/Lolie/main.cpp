@@ -6,6 +6,7 @@
 #include <GLUT/glut.h>
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
+#include <SDL2/SDL.h>
 #else
 #include <GL/freeglut.h>
 #include <SDL.h>
@@ -15,10 +16,14 @@
 #include "FileParser.h"
 #include "LevelCreator.h"
 #include "Camera.h"
+#include "PhysicsManager.h"
+#include "Ball.h"
 
 #ifndef M_PI    //if the pi is not defined in the cmath header file
 #define M_PI 3.1415926535       //define it
 #endif
+
+#define IMPULSE_FORCE 1
 
 //// GLOBALS ////
 
@@ -54,6 +59,9 @@ bool gRenderQuad = true;
 // Our Rendering Camera
 Camera camera;
 int cameraProfile = 0;
+
+//Physics engine and ball needed for it
+Ball* ball;
 
 //// END OF GLOBALS ////
 
@@ -231,6 +239,9 @@ void freeLookControls()
 				cameraProfile = 1;
 				camera.setTopDown();
 				break;
+            case SDLK_SPACE: //Give impulse to the ball
+                PhysicsManager::giveImpulse(camera.getViewDir(), IMPULSE_FORCE, *ball);
+                break;
 			default:
 				break;
 			}
@@ -271,6 +282,9 @@ void topDownControls()
 				cameraProfile = 0;
 				camera.setFreeLook();
 				break;
+            case SDLK_SPACE: //give impulse to the ball
+                    PhysicsManager::giveImpulse(camera.getViewDir(), IMPULSE_FORCE, *ball);
+                break;
 			default:
 				break;
 			}
