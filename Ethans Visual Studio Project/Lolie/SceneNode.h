@@ -6,13 +6,18 @@
 class SceneNode
 {
 public:
-	SceneNode();
-	~SceneNode();
+	void setParent(SceneNode* node) { parent = node; }
+	SceneNode* getParent() { return parent; }
 
 	void addChild(SceneNode* node);
-	void update(float dt);
+	std::vector<SceneNode*> getChildren() { return children; }
+
+	virtual void update(float dt) = 0;
+	virtual void draw() = 0;
 
 	virtual std::vector<Vector3f> getNormals();
+protected:
+	SceneNode();
 private:
 	SceneNode* parent;
 	std::vector<SceneNode*> children;

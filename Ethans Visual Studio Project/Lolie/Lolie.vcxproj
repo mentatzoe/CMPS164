@@ -93,6 +93,7 @@
     <ClInclude Include="LevelCreator.h" />
     <ClInclude Include="openglUtil.h" />
     <ClInclude Include="SceneNode.h" />
+    <ClInclude Include="Surface.h" />
     <ClInclude Include="Tee.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Token.h" />

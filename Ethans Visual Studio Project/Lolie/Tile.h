@@ -8,10 +8,15 @@ class Tile : public SceneNode
 {
 public:
 	Tile(int tileID, int numSides, std::vector<Vector3f> verts, std::vector<int> neigh);
+
 	std::vector<Vector3f> getVerts() { return vertList; }
 	std::vector<int> getNeighbors() { return neighbors; }
 	int getTileID() { return tileID; }
 	int getNumSides() { return numSides; }
+
+	void update(float dt);
+	void draw();
+
 	std::vector<Vector3f> getNormals() { return normals; }
 
 private:

@@ -69,48 +69,8 @@ void drawBoundary(Vector3f v1, Vector3f v2, float H)
 
 void drawCup(Cup cup)
 {
-	glPushMatrix();
-
-	// create the quadratic
-	GLUquadricObj *quadratic2;
-	quadratic2 = gluNewQuadric();
-
-	// Move the cylinder
-	Vector3f cupVect = cup.getPos();
-	glTranslatef(cupVect.x, cupVect.y + .05, cupVect.z);
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-
-	// Set the color
-	Vector4f color = cup.getColor();
-	glColor4f(color.x, color.y, color.z, color.w);
-
-	// Draw the cylinder
-	Cylinder dimensions = cup.getDimensions();
-	gluCylinder(quadratic2, dimensions.radius, dimensions.radius, dimensions.height, dimensions.slices, dimensions.stacks);
-	
-	glPopMatrix();
 }
 
 void drawTee(Tee tee)
 {
-	glPushMatrix();
-
-	// create the quadratic
-	GLUquadricObj *quadratic2;
-	quadratic2 = gluNewQuadric();
-
-	// Move the cylinder
-	Vector3f teeVect = tee.getPos();
-	glTranslatef(teeVect.x, teeVect.y + .05, teeVect.z);
-	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
-
-	// Set the color
-	Vector4f color = tee.getColor();
-	glColor4f(color.x, color.y, color.z, color.w);
-
-	// Draw the cylinder
-	Cylinder dimensions = tee.getDimensions();
-	gluCylinder(quadratic2, dimensions.radius, dimensions.radius, dimensions.height, dimensions.slices, dimensions.stacks);
-
-	glPopMatrix();
 }

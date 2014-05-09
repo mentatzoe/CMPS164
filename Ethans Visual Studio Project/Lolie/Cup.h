@@ -13,6 +13,9 @@ public:
 	int getTileID() { return tileID; }
 	Vector4f getColor() { return color; }
 	Cylinder getDimensions() { return dimensions; }
+
+	void update(float dt);
+	void draw();
 private:
 	Vector3f pos;
 	int tileID;

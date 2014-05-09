@@ -89,5 +89,8 @@
     <ClInclude Include="Tee.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

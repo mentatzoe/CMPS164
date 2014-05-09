@@ -153,6 +153,8 @@ bool initGL() {
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
+	glCullFace(GL_BACK);
+	glEnable(GL_CULL_FACE);
 
 	//Check for error
 	err = glGetError();
@@ -206,30 +208,13 @@ void render(Level lvl)
 	glPushMatrix();
 	glRotatef(orbitY, 0.0, 1.0, 0.0);
 
-	/*glPushMatrix();
-	glTranslatef(lightPosition[0], lightPosition[1], lightPosition[2]);
-	// Draw our light
-	drawCube();
-	glPopMatrix();*/
-
-	std::vector<Tile> tiles = lvl.getTileList();
-
 	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, mat_emission);
 
 	glTranslatef(loc[0], loc[1], loc[2]);
 
-	// Draw the tiles of the level
-	for (Tile &t : tiles){
-		drawTile(t);
-	}
-	
-	// Draw the cup and tee of the level
-	Cup cup = lvl.getCup();
-	Tee tee = lvl.getTee();
-	drawTee(tee);
-	drawCup(cup);
+	lvl.draw();
 
 	glPopMatrix();
 	SDL_GL_SwapWindow(gWindow);
@@ -241,7 +226,7 @@ int main(int argc, char* args[])
 	TokenList list = fp.tokenize(args[1]);
 	LevelCreator lc;
 	Level test = lc.createLevel(list);
-	test.print();
+
 	// Start SDL
 	if (!init()) {
 		system("pause");
