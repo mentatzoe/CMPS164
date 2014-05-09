@@ -10,7 +10,8 @@ public:
 	virtual bool getCollision(Collider2D c, Vector3f& result) { return false; }
     virtual Vector3f getA() {return A;};
     virtual Vector3f getB() {return B;};
-
+    virtual void setA(Vector3f va){A = va;};
+    virtual void setB(Vector3f vb){B = vb;};
 	friend class SceneNode;
 protected:
 	Collider2D() {};
