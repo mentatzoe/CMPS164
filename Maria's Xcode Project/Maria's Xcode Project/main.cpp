@@ -240,7 +240,7 @@ void freeLookControls(Level lvl)
 				camera.setTopDown();
 				break;
             case SDLK_SPACE: //Give impulse to the ball
-                PhysicsManager::giveImpulse(camera.getViewDir(), IMPULSE_FORCE, *lvl.getBall());
+                PhysicsManager::giveImpulse(normalize(camera.getViewDir()) * IMPULSE_FORCE, IMPULSE_FORCE, *lvl.getBall());
                 break;
 			default:
 				break;

@@ -11,7 +11,7 @@ Level LevelCreator::createLevel(TokenList tokenList)
 	int teeTileID, cupTileID;
 	std::vector<Vector3f> vertList;
 	std::vector<int> neighbors;
-	Level level;
+	Level* level = new Level();
 
 	while (curToken != tokenList.end()) {
 		//std::cout << "Examining curToken: " << (*curToken).data << "\n";
@@ -46,7 +46,7 @@ Level LevelCreator::createLevel(TokenList tokenList)
 
 			//std::cout << "     (After neighbors) curToken is now " << (*curToken).data << "\n";
 
-			level.addChild(new Tile(tileID, numSides, vertList, neighbors));
+			level->addChild(new Tile(tileID, numSides, vertList, neighbors));
 		}
 		else if (curToken->data.compare("tee") == 0) {
 			//std::cout << "     curToken is 'tee'\n";
@@ -73,14 +73,14 @@ Level LevelCreator::createLevel(TokenList tokenList)
 		neighbors.clear();
 	}
 
-	std::vector<SceneNode*> children = level.getChildren();
+	std::vector<SceneNode*> children = level->getChildren();
 	for (int i = 0; i < children.size(); i++) {
 		Tile* t = static_cast<Tile*> (children[i]);
 		if (teeTileID == (*t).getTileID()) {
             Ball* b = new Ball(teeTileID, teeVect);
-            level.setBall(b);
+            level->setBall(b);
 			//(*t).addChild(new Tee(teeTileID, teeVect));
-			(*t).addChild(static_cast<SceneNode*>(level.getBall()));
+			(*t).addChild(static_cast<SceneNode*>(level->getBall()));
 		}
 		if (cupTileID == (*t).getTileID()) {
 			(*t).addChild(new Cup(cupTileID, cupVect));
@@ -112,5 +112,5 @@ Level LevelCreator::createLevel(TokenList tokenList)
 	std::cout << "     Tee: [" << teeVect.x << ", " << teeVect.y << ", " << teeVect.z << "] on tile " << teeTileID << "\n";
 	std::cout << "     Cup: [" << cupVect.x << ", " << cupVect.y << ", " << cupVect.z << "] on tile " << cupTileID << "\n";*/
 
-	return level;
+	return *level;
 }

@@ -13,6 +13,7 @@ public:
 		Cup_t,
 		Ball_t,
 		Boundary_t,
+		Root_t,
 	};
 
 	void setParent(SceneNode* node) { parent = node; }

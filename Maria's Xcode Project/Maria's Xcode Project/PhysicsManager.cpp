@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "Cup.h"
 #include "Tee.h"
+#include "LineCollider.h"
 #define MASS = 0.045f
 
 Vector3f v_init, v;
@@ -29,7 +30,7 @@ void PhysicsManager::update(float dt, Ball& b)
 			}
 		}
 		if (checkCollision(b, (*siblings[i]), colPos)){
-			std::cout << "There was a collision!\n";
+			//std::cout << "There was a collision!\n";
 
 			// SWITCH: If Tee/IfBound/If Cup
 			switch (siblings[i]->getType()){
@@ -62,25 +63,45 @@ void PhysicsManager::update(float dt, Ball& b)
                     //std::cout<< "New velocity vector is ("<<vReflected.x<<","<< vReflected.y<<","<< vReflected.z<<")\n";
 				}
 				else {
+					std::cout << "We have collided with a tileChange Boundary\n";
+
+					LineCollider* a = static_cast<LineCollider*>(bound->getCollider());
+					LineCollider* bc = static_cast<LineCollider*>(b.getCollider());
+
+					std::cout << "bound is A(" << a->getA().x << "," << a->getA().y << "," << a->getA().z << "), B(" << a->getB().x << "," << a->getB().y << "," << a->getB().z << ")\n";
+					std::cout << "ball is A(" << bc->getA().x << "," << bc->getA().y << "," << bc->getA().z << "), B(" << bc->getB().x << "," << bc->getB().y << "," << bc->getB().z << ")\n";
+
 					Tile* parentTile = static_cast<Tile*>(bound->getParent());
+
 					// Iterate through list of tile's verts
-					for (int i = 0; i < parentTile->getVerts().size(); i++) {
+					std::vector<Vector3f> tileVerts = parentTile->getVerts();
+					std::vector<Vector3f> upper(tileVerts.begin(), tileVerts.end() - parentTile->getNumSides());
+					std::vector<Vector3f> boundVerts = bound->getVerts();
+					std::vector<int> neighbors = parentTile->getNeighbors();
+
+					for (int i = 0; i < upper.size(); i++) {
+
 						// find the pair of verts that created the boundary
-						std::vector<Vector3f> boundVerts = bound->getVerts();
-						if (boundVerts[0] == parentTile->getVerts()[i] && boundVerts[1] == parentTile->getVerts()[(i + 1) % parentTile->getVerts().size()]) {
-							// now the correct parent node for ball is the neigh[i]
-							std::vector<SceneNode*> tiles = b.getParent()->getParent()->getChildren();
+						if (boundVerts[0] == upper[i] && boundVerts[3] == upper[(i + 1) % upper.size()]) {
+							//std::cout << "We found the neighbor, it is: " << neighbors[i] << "\n";
+							// now the correct tileID for ball is the neigh[i]
+							SceneNode* level = parent->getParent();
+							std::vector<SceneNode*> tiles = parent->getParent()->getChildren();
+							//std::cout << "tiles.size() = " << tiles.size() << "\n";
 
 							for (SceneNode* tile : tiles) {
-								Tile* curTile = static_cast<Tile*>(tile);
-								if (curTile->getTileID() == parentTile->getNeighbors()[i]){
-									b.setParent(curTile);
+								//std::cout << "going through tiles...\n";
+								if (tile->getType() == SceneNode::Tile_t){
+									Tile* curTile = static_cast<Tile*>(tile);
+									if (curTile->getTileID() == neighbors[i]){
+										//std::cout << "We found a matching ID\n";
+										b.setParent(curTile);
+										std::cout << "Ball's Parent was changed!\n";
+									}
 								}
 							}
 						}
 					}
-					//b.setParent(bound.getParent());
-					//IMPLEMENT THIS
 				}
 
 				break;
@@ -98,7 +119,7 @@ void PhysicsManager::update(float dt, Ball& b)
             
 		}
     }
-    //We always update the position, velocity and store them as initials
+   //We always update the position, velocity and store them as initials
     //Get p_init and v_init from the ball
     v_init = b.getV();
     p_init = b.getPosition();
@@ -110,8 +131,8 @@ void PhysicsManager::update(float dt, Ball& b)
 
     
     
-    std::cout<< "Velocity vector is ("<<v.x<<","<< v.y<<","<< v.z<<")\n";
-    std::cout<< "Acceleration vector is ("<<a.x<<","<< a.y<<","<< a.z<<")\n\n";
+    //std::cout<< "Velocity vector is ("<<v.x<<","<< v.y<<","<< v.z<<")\n";
+    //std::cout<< "Acceleration vector is ("<<a.x<<","<< a.y<<","<< a.z<<")\n\n";
     //Calculate new velocity
     v = Vector3f(b.getV().x + (a.x * dt), b.getV().y + (a.y * dt), b.getV().z + (a.z * dt));
     //Calculate new position
@@ -129,16 +150,21 @@ void PhysicsManager::update(float dt, Ball& b)
     //std::cout<< "position is ("<<p.x<<","<< p.y<<","<< p.z<<")\n";
     Vector3f vN;
     if (v.x != 0 && v.y !=0 && v.z != 0){ Vector3f vN = normalize(v);
-        std::cout<< "Normalized Velocity vector is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
+        //std::cout<< "Normalized Velocity vector is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
         vN = Vector3f(-vN.x, -vN.y, -vN.z);
-        std::cout<< "Normalized Velocity vector after sign change is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
+        //std::cout<< "Normalized Velocity vector after sign change is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
     }
     else {
         vN = Vector3f(0, 0, 0);
     }
    
     a = Vector3f(a.x + (vN.x),a.y + (vN.y),a.z + (vN.z));
+}
 
+Vector3f PhysicsManager::getNextPosition(Vector3f p, Vector3f v, float dt){
+    return Vector3f(p.x + v.x*dt + 0.5*dt*dt*a.x,
+                    p.y + v.y*dt + 0.5*dt*dt*a.y,
+                    p.z + v.z*dt + 0.5*dt*dt*a.z);
 }
 
 bool PhysicsManager::checkCollision(SceneNode& node1, SceneNode& node2, Vector3f& result)
