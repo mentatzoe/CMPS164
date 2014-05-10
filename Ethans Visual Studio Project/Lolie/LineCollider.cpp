@@ -1,6 +1,10 @@
 #include "LineCollider.h"
 
-bool LineCollider::getCollision(Collider2D c, Vector3f& result){
+bool LineCollider::getCollision(Collider2D& c, Vector3f& result){
+	std::cout << "My A[" << getA().x << ", " << getA().y << ", " << getA().z << "] B[" << getB().x << ", " << getB().y << ", " << getB().z << "]\n";
+	//std::cout << "Checking Collision against line A[" << c.getA().x << ", " << c.getA().y << ", " << c.getA().z << "] B[" << c.getB().x << ", " << c.getB().y << ", " << c.getB().z << "]\n";
+	//system("pause");
+
     //return intersection(getA(), getB(), c.getA(), c.getB());
     // Store the values for fast access and easy
     // equations-to-code conversion
@@ -9,8 +13,12 @@ bool LineCollider::getCollision(Collider2D c, Vector3f& result){
     
     float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     // If d is zero, there is no intersection
-    if (d == 0) return false;
-    
+	if (d == 0){
+		std::cout << "D IS 0\n";
+		return false;
+	}
+	
+	std::cout << "D IS NOT 0\n\n\n\n";
     // Get the x and y
     float pre = (x1*y2 - y1*x2), post = (x3*y4 - y3*x4);
     float x = ( pre * (x3 - x4) - (x1 - x2) * post ) / d;
@@ -21,6 +29,7 @@ bool LineCollider::getCollision(Collider2D c, Vector3f& result){
         x < fmin(x3, x4) || x > fmax(x3, x4) ) return false;
     if ( y < fmin(y1, y2) || y > fmax(y1, y2) ||
         y < fmin(y3, y4) || y > fmax(y3, y4) ) return false;
+	
     
     result.x = x;
     result.z = y;

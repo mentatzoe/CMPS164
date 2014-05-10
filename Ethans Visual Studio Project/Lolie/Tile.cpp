@@ -19,6 +19,7 @@ Tile::Tile(int tileID, int numSides, std::vector<Vector3f> verts, std::vector<in
 , vertList(verts)
 , neighbors(neigh)
 {
+	setType(Tile_t);
 	// Set color to GREEN
 	color = { 0.0, 1.0, 0.0, 1.0 };
 

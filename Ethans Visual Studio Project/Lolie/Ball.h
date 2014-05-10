@@ -7,7 +7,8 @@
 class Ball : public SceneNode {
 public:
 	Ball(int id, Vector3f pos);
-	~Ball() {}
+	~Ball() {
+    }
 
 	void draw();
 	void update(float dt);

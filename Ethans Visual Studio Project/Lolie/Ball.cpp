@@ -1,5 +1,6 @@
 #include "Ball.h"
 #include "Tile.h"
+#include "LineCollider.h"
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #include <OpenGL/gl.h>
@@ -14,10 +15,15 @@ Ball::Ball(int id, Vector3f pos)
 : pos(pos)
 , tileID(id)
 {
+	setType(Ball_t);
 	color = { 1.0, 1.0, 1.0, 1.0 };
 	dimensions.slices = 11;
 	dimensions.radius = .055;
 	dimensions.stacks = 5;
+    m = 50000;
+    v = Vector3f(0, 0, 0);
+
+	setCollider(new LineCollider(pos, pos));
 }
 
 void Ball::update(float dt)
