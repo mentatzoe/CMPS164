@@ -23,7 +23,7 @@
 #define M_PI 3.1415926535       //define it
 #endif
 
-#define IMPULSE_FORCE 1
+#define IMPULSE_FORCE 3
 
 //// GLOBALS ////
 
@@ -35,7 +35,7 @@ float FoV = 90;
 float lightPosition[4] = { 0, 5, 0, 1 };
 float diffuseColour[4] = { .5, .5, .5, 1 };
 float ambientColour[4] = { 0, 0, 0, 1 };
-float specularColour[4] = { .1, .1, .1, 1 };
+float specularColour[4] = { .1f, .1f, .1f, 1 };
 
 GLfloat no_mat[] = { 0.0, 0.0, 0.0, 1.0 };
 GLfloat mat_ambient[] = { 0.7, 0.7, 0.7, 1.0 };
@@ -205,34 +205,37 @@ void freeLookControls(Level lvl)
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym){
 			case SDLK_LEFT:
-				camera.rotateY(5.0);
+				camera.rotateY(5.0f);
 				break;
 			case SDLK_RIGHT:
-				camera.rotateY(-5.0);
+				camera.rotateY(-5.0f);
 				break;
 			case SDLK_UP:
-				camera.rotateX(5.0);
+				camera.rotateX(5.0f);
 				break;
 			case SDLK_DOWN:
-				camera.rotateX(-5.0);
+				camera.rotateX(-5.0f);
 				break;
 			case SDLK_w:
-				camera.moveForwards(-0.1);
+				camera.moveForwards(-0.1f);
 				break;
 			case SDLK_a:
-				camera.strafeRight(-0.1);
+				camera.strafeRight(-0.1f);
 				break;
 			case SDLK_s:
-				camera.moveForwards(0.1);
+				camera.moveForwards(0.1f);
 				break;
 			case SDLK_d:
-				camera.strafeRight(0.1);
+				camera.strafeRight(0.1f);
 				break;
 			case SDLK_r:
-				camera.move(Vector3f(0, .3, 0));
+				camera.move(Vector3f(0, .3f, 0));
 				break;
 			case SDLK_f:
-				camera.move(Vector3f(0, -.3, 0));
+				camera.move(Vector3f(0, -.3f, 0));
+				break;
+			case SDLK_z:
+				system("pause");
 				break;
 			case SDLK_x:
 				// Switch to TopDown profile
@@ -260,22 +263,22 @@ void topDownControls()
 		case SDL_KEYDOWN:
 			switch (e.key.keysym.sym){
 			case SDLK_a:
-				camera.move(Vector3f(-.2, 0, 0));
+				camera.move(Vector3f(-.2f, 0, 0));
 				break;
 			case SDLK_d:
-				camera.move(Vector3f(.2, 0, 0));
+				camera.move(Vector3f(.2f, 0, 0));
 				break;
 			case SDLK_w:
-				camera.move(Vector3f(0, 0, -.2));
+				camera.move(Vector3f(0, 0, -.2f));
 				break;
 			case SDLK_s:
-				camera.move(Vector3f(0, 0, .2));
+				camera.move(Vector3f(0, 0, .2f));
 				break;
 			case SDLK_r:
-				camera.move(Vector3f(0, .3, 0));
+				camera.move(Vector3f(0, .3f, 0));
 				break;
 			case SDLK_f:
-				camera.move(Vector3f(0, -.3, 0));
+				camera.move(Vector3f(0, -.3f, 0));
 				break;
 			case SDLK_z:
 				// Switch to FreeLook profile
@@ -356,11 +359,11 @@ int main(int argc, char* args[])
 
 	// Main Loop
 	else {
-		Uint32 start_time_ms = SDL_GetTicks();
-		Uint32 prev_time = start_time_ms;
-		Uint32 curr_time;
-		float delta_time = .02;
-		float physics_lag_time = 0.0;
+		float start_time_ms = SDL_GetTicks();
+		float prev_time = start_time_ms;
+		float curr_time;
+		float delta_time = 10;
+		float physics_lag_time = 0.0f;
 
 		while (!quit) {
 			// Update game time
@@ -368,7 +371,8 @@ int main(int argc, char* args[])
 
 			// Calc time since last update
 			physics_lag_time += curr_time - prev_time;
-            delta_time = curr_time - prev_time;
+            //delta_time = curr_time - prev_time;
+			//std::cout << "Delta_Time: " << delta_time << "\n";
 
 			/*while (physics_lag_time > delta_time) {
 				// doPhysicsSimulaton(dt);
