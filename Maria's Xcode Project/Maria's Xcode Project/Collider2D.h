@@ -7,11 +7,11 @@
 class Collider2D
 {
 public:
-	virtual bool getCollision(Collider2D c, Vector3f& result) { return false; }
-    virtual Vector3f getA() {return A;};
-    virtual Vector3f getB() {return B;};
-    virtual void setA(Vector3f va){A = va;};
-    virtual void setB(Vector3f vb){B = vb;};
+	virtual bool getCollision(Collider2D& c, Vector3f& result) = 0;
+    Vector3f getA() {return A;};
+    Vector3f getB() {return B;};
+    void setA(Vector3f va){A = va;};
+    void setB(Vector3f vb){B = vb;};
 	friend class SceneNode;
 protected:
 	Collider2D() {};
@@ -53,6 +53,9 @@ public:
 		return Point(xval - b.xval, yval - b.yval);
 	}
 
+    Point operator-(const Point& other){
+        return Point(xval - other.xval, yval-other.yval);
+    }
 	// Move the existing point.
 	void move(double a, double b)
 	{

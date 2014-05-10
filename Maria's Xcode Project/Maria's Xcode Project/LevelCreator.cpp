@@ -79,7 +79,7 @@ Level LevelCreator::createLevel(TokenList tokenList)
 		if (teeTileID == (*t).getTileID()) {
             Ball* b = new Ball(teeTileID, teeVect);
             level.setBall(b);
-			(*t).addChild(new Tee(teeTileID, teeVect));
+			//(*t).addChild(new Tee(teeTileID, teeVect));
 			(*t).addChild(static_cast<SceneNode*>(level.getBall()));
 		}
 		if (cupTileID == (*t).getTileID()) {

@@ -26,6 +26,13 @@ public:
 		return Vector3f(x * scalar, y * scalar, z * scalar);
 	}
 
+	bool operator==(const Vector3f& other) {
+		if (x == other.x && y == other.y && z == other.z)
+			return true;
+		else
+			return false;
+	}
+
 	float x, y, z;
 };
 

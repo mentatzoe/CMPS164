@@ -1,6 +1,6 @@
 #include "CircleCollider.h"
 
-bool CircleCollider::getCollision(Collider2D col, Vector3f& result){
+bool CircleCollider::getCollision(Collider2D& col, Vector3f& result){
     //Pseudocode for circle collision
     //getting local points
     Point p1 = Point(col.getA().x-center.x, col.getA().z-center.z);
