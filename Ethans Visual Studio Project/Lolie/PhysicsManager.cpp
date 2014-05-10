@@ -96,7 +96,7 @@ void PhysicsManager::update(float dt, Ball& b)
 									if (curTile->getTileID() == neighbors[i]){
 										//std::cout << "We found a matching ID\n";
 										b.setParent(curTile);
-										std::cout << "Ball's Parent was changed!\n";
+										std::cout << "Ball's Parent was changed to tile " << curTile->getTileID() << "!\n";
 									}
 								}
 							}
@@ -136,17 +136,17 @@ void PhysicsManager::update(float dt, Ball& b)
     //Calculate new velocity
     v = Vector3f(b.getV().x + (a.x * dt), b.getV().y + (a.y * dt), b.getV().z + (a.z * dt));
     //Calculate new position
-    p = Vector3f(p_init.x + v_init.x*dt + 0.5*dt*dt*a.x,
-                 p_init.y + v_init.y*dt + 0.5*dt*dt*a.y,
-                 p_init.z + v_init.z*dt + 0.5*dt*dt*a.z);
+    p = Vector3f(p_init.x + v_init.x*dt + 0.5f*dt*dt*a.x,
+                 p_init.y + v_init.y*dt + 0.5f*dt*dt*a.y,
+                 p_init.z + v_init.z*dt + 0.5f*dt*dt*a.z);
     //Store new position and velocity in the ball
     b.setV(v);
     b.setPosition(p);
     //Update collider
     b.getCollider()->setA(p); //new origin point (current position)
-    b.getCollider()->setB(Vector3f(p.x + v.x*dt + 0.5*dt*dt*a.x,
-                                  p.y + v.y*dt + 0.5*dt*dt*a.y,
-                                  p.z + v.z*dt + 0.5*dt*dt*a.z)); //new destiny point (position on the next step)
+    b.getCollider()->setB(Vector3f(p.x + v.x*dt + 0.5f*dt*dt*a.x,
+                                  p.y + v.y*dt + 0.5f*dt*dt*a.y,
+                                  p.z + v.z*dt + 0.5f*dt*dt*a.z)); //new destiny point (position on the next step)
     //std::cout<< "position is ("<<p.x<<","<< p.y<<","<< p.z<<")\n";
     Vector3f vN;
     if (v.x != 0 && v.y !=0 && v.z != 0){ Vector3f vN = normalize(v);
@@ -159,6 +159,12 @@ void PhysicsManager::update(float dt, Ball& b)
     }
    
     a = Vector3f(a.x + (vN.x),a.y + (vN.y),a.z + (vN.z));
+}
+
+Vector3f PhysicsManager::getNextPosition(Vector3f p, Vector3f v, float dt){
+    return Vector3f(p.x + v.x*dt + 0.5f*dt*dt*a.x,
+                    p.y + v.y*dt + 0.5f*dt*dt*a.y,
+                    p.z + v.z*dt + 0.5f*dt*dt*a.z);
 }
 
 bool PhysicsManager::checkCollision(SceneNode& node1, SceneNode& node2, Vector3f& result)

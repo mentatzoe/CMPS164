@@ -47,10 +47,10 @@ void Camera::getViewDirection()
 {
 	Vector3f Step1, Step2;
 	//Rotate around Y-axis:
-	Step1.x = cos((rotatedY + 90.0) * PIdiv180);
-	Step1.z = -sin((rotatedY + 90.0) * PIdiv180);
+	Step1.x = cos((rotatedY + 90.0f) * PIdiv180);
+	Step1.z = -sin((rotatedY + 90.0f) * PIdiv180);
 	//Rotate around X-axis:
-	double cosX = cos(rotatedX * PIdiv180);
+	float cosX = cos(rotatedX * PIdiv180);
 	Step2.x = Step1.x * cosX;
 	Step2.z = Step1.z * cosX;
 	Step2.y = sin(rotatedX * PIdiv180);

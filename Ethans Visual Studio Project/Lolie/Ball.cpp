@@ -10,6 +10,7 @@
 #include <GL/freeglut.h>
 #include <SDL.h>
 #endif
+#include "PhysicsManager.h"
 
 Ball::Ball(int id, Vector3f pos)
 : pos(pos)
@@ -46,6 +47,8 @@ void Ball::update(float dt)
 
 	// Set the position of ball to the position of the collision + the radius in the direction of the normal.
 	pos.y = colPoint.y + dimensions.radius;
+    getCollider()->setA(pos);
+    getCollider()->setB(PhysicsManager::getNextPosition(pos, v, dt));
 
 
 
