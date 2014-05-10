@@ -9,6 +9,9 @@ Vector3f v_init, v;
 Vector3f p_init, p;
 Vector3f a = Vector3f(0, 0, 0);
 
+bool sameSign(Vector3f a, Vector3f b){
+    return (a.x < 0 == b.x < 0 )||( a.y < 0 == b.y < 0 )|| (a.z < 0 == b.z <0);
+}
 
 
 void PhysicsManager::update(float dt, Ball& b)
@@ -46,14 +49,17 @@ void PhysicsManager::update(float dt, Ball& b)
 				Boundary* bound = static_cast<Boundary*>(siblings[i]);
 
 				if (bound->isPhysical()){
-					std::cout << "We have collided with a physical Boundary\n";
-					Vector3f N = Vector3f(-colPos.z, colPos.y, colPos.x);
+					//std::cout << "We have collided with a physical Boundary\n";
+					//Vector3f N = Vector3f(-colPos.z, colPos.y, colPos.x);
+                    Vector3f N = bound->getNormals()[1];
 					Vector3f I = b.getV();
+                    
 					//R= 2*(-I dot N)*N + I
-					float dotProductIN = N.x * I.x + N.z + I.z;
-					Vector3f temp = Vector3f(2 * dotProductIN * N.x, 2 * dotProductIN * N.y, 2 * dotProductIN * N.z);
+					float dotProductIN = N.x * -I.x + N.z * -I.z;
+					Vector3f temp = Vector3f(2*dotProductIN * N.x,2*dotProductIN * N.y, 2*dotProductIN * N.z);
 					Vector3f vReflected = Vector3f(temp.x + I.x, temp.y + I.y, temp.z + I.z);
 					b.setV(vReflected);
+                    //std::cout<< "New velocity vector is ("<<vReflected.x<<","<< vReflected.y<<","<< vReflected.z<<")\n";
 				}
 				else {
 					std::cout << "We have collided with a tileChange Boundary\n";
@@ -105,14 +111,20 @@ void PhysicsManager::update(float dt, Ball& b)
             
 		}
     }
-    //We always update the position, velocity and store them as initials
+   //We always update the position, velocity and store them as initials
     //Get p_init and v_init from the ball
     v_init = b.getV();
     p_init = b.getPosition();
     
     //Check that a and v are opposite
-    //NOT IMPLEMENTED YET!!
+    /*if (!sameSign(v, a)){
+        a = Vector3f(-a.x,-a.y,-a.z);
+    }*/
+
     
+    
+    std::cout<< "Velocity vector is ("<<v.x<<","<< v.y<<","<< v.z<<")\n";
+    std::cout<< "Acceleration vector is ("<<a.x<<","<< a.y<<","<< a.z<<")\n\n";
     //Calculate new velocity
     v = Vector3f(b.getV().x + (a.x * dt), b.getV().y + (a.y * dt), b.getV().z + (a.z * dt));
     //Calculate new position
@@ -127,7 +139,18 @@ void PhysicsManager::update(float dt, Ball& b)
     b.getCollider()->setB(Vector3f(p.x + v.x*dt + 0.5*dt*dt*a.x,
                                   p.y + v.y*dt + 0.5*dt*dt*a.y,
                                   p.z + v.z*dt + 0.5*dt*dt*a.z)); //new destiny point (position on the next step)
-
+    //std::cout<< "position is ("<<p.x<<","<< p.y<<","<< p.z<<")\n";
+    Vector3f vN;
+    if (v.x != 0 && v.y !=0 && v.z != 0){ Vector3f vN = normalize(v);
+        std::cout<< "Normalized Velocity vector is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
+        vN = Vector3f(-vN.x, -vN.y, -vN.z);
+        std::cout<< "Normalized Velocity vector after sign change is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
+    }
+    else {
+        vN = Vector3f(0, 0, 0);
+    }
+   
+    a = Vector3f(a.x + (vN.x),a.y + (vN.y),a.z + (vN.z));
 }
 
 bool PhysicsManager::checkCollision(SceneNode& node1, SceneNode& node2, Vector3f& result)
