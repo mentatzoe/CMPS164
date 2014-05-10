@@ -11,6 +11,10 @@ float angle(Vector3f a, Vector3f b) {
 	return acosf(dot(a, b) / (mag_a * mag_b));
 }
 
+float magnitude(Vector3f a){
+    return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+}
+
 Vector3f cross(Vector3f a, Vector3f b) {
 	Vector3f result;
 	result.x = (a.y * b.z) - (a.z * b.y);

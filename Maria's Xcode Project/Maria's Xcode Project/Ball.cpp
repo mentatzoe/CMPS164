@@ -21,7 +21,7 @@ Ball::Ball(int id, Vector3f pos)
 	dimensions.slices = 11;
 	dimensions.radius = .055;
 	dimensions.stacks = 5;
-    m = 5000000;
+    m = 9000;
     v = Vector3f(0, 0, 0);
 
 	setCollider(new LineCollider(pos, pos));

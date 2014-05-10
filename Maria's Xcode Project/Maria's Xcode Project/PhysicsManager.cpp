@@ -63,13 +63,13 @@ void PhysicsManager::update(float dt, Ball& b)
                     //std::cout<< "New velocity vector is ("<<vReflected.x<<","<< vReflected.y<<","<< vReflected.z<<")\n";
 				}
 				else {
-					std::cout << "We have collided with a tileChange Boundary\n";
+					//std::cout << "We have collided with a tileChange Boundary\n";
 
 					LineCollider* a = static_cast<LineCollider*>(bound->getCollider());
 					LineCollider* bc = static_cast<LineCollider*>(b.getCollider());
 
-					std::cout << "bound is A(" << a->getA().x << "," << a->getA().y << "," << a->getA().z << "), B(" << a->getB().x << "," << a->getB().y << "," << a->getB().z << ")\n";
-					std::cout << "ball is A(" << bc->getA().x << "," << bc->getA().y << "," << bc->getA().z << "), B(" << bc->getB().x << "," << bc->getB().y << "," << bc->getB().z << ")\n";
+					//std::cout << "bound is A(" << a->getA().x << "," << a->getA().y << "," << a->getA().z << "), B(" << a->getB().x << "," << a->getB().y << "," << a->getB().z << ")\n";
+					//std::cout << "ball is A(" << bc->getA().x << "," << bc->getA().y << "," << bc->getA().z << "), B(" << bc->getB().x << "," << bc->getB().y << "," << bc->getB().z << ")\n";
 
 					Tile* parentTile = static_cast<Tile*>(bound->getParent());
 
@@ -96,7 +96,7 @@ void PhysicsManager::update(float dt, Ball& b)
 									if (curTile->getTileID() == neighbors[i]){
 										//std::cout << "We found a matching ID\n";
 										b.setParent(curTile);
-										std::cout << "Ball's Parent was changed to tile " << curTile->getTileID() << "!\n";
+										//std::cout << "Ball's Parent was changed to tile " << curTile->getTileID() << "!\n";
 									}
 								}
 							}
@@ -128,13 +128,27 @@ void PhysicsManager::update(float dt, Ball& b)
     /*if (!sameSign(v, a)){
         a = Vector3f(-a.x,-a.y,-a.z);
     }*/
-
     
     
+    v = Vector3f(b.getV().x + (a.x * dt), b.getV().y + (a.y * dt), b.getV().z + (a.z * dt));
     //std::cout<< "Velocity vector is ("<<v.x<<","<< v.y<<","<< v.z<<")\n";
     //std::cout<< "Acceleration vector is ("<<a.x<<","<< a.y<<","<< a.z<<")\n\n";
     //Calculate new velocity
-    v = Vector3f(b.getV().x + (a.x * dt), b.getV().y + (a.y * dt), b.getV().z + (a.z * dt));
+    if (a.x == 0 && a.y == 0 && a.z == 0 && !(v.x == 0 && v.y == 0 && v.z == 0)){
+        //std::cout << "hello";
+        float speed = magnitude(v);
+        Vector3f direction = normalize(v);
+        if (speed > 0) speed *= 0.95f;
+        else speed = 0;
+        v = direction * speed;
+    } else if (v.x == 0 && v.y == 0 && v.z == 0) {
+                //std::cout << "hi";
+        v = Vector3f(0, 0, 0);
+    } else {
+      //          std::cout << "bai";
+        //v = Vector3f(b.getV().x + (a.x * dt), b.getV().y + (a.y * dt), b.getV().z + (a.z * dt));
+    }
+
     //Calculate new position
     p = Vector3f(p_init.x + v_init.x*dt + 0.5f*dt*dt*a.x,
                  p_init.y + v_init.y*dt + 0.5f*dt*dt*a.y,
@@ -158,7 +172,7 @@ void PhysicsManager::update(float dt, Ball& b)
         vN = Vector3f(0, 0, 0);
     }
    
-    a = Vector3f(a.x + (vN.x),a.y + (vN.y),a.z + (vN.z));
+    a = Vector3f(a.x * vN.x,a.y * vN.y,a.z * vN.z);
 }
 
 Vector3f PhysicsManager::getNextPosition(Vector3f p, Vector3f v, float dt){

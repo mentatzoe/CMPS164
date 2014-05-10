@@ -49,6 +49,8 @@ float dot(Vector3f a, Vector3f b);
 
 float angle(float *a, float *b);
 
+float magnitude(Vector3f a);
+
 Vector3f cross(Vector3f a, Vector3f b);
 
 Vector3f calcSurfaceNormal(std::vector<Vector3f> vertList);
