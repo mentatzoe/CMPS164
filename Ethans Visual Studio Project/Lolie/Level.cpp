@@ -2,7 +2,10 @@
 #include <vector>
 #include "PhysicsManager.h"
 
-Level::Level() {}
+Level::Level() 
+{
+	setType(SceneNode::Root_t);
+}
 
 void Level::update(float dt)
 {

@@ -26,7 +26,7 @@ void PhysicsManager::update(float dt, Ball& b)
 			}
 		}
 		if (checkCollision(b, (*siblings[i]), colPos)){
-			std::cout << "There was a collision!\n";
+			//std::cout << "There was a collision!\n";
 
 			// SWITCH: If Tee/IfBound/If Cup
 			switch (siblings[i]->getType()){
@@ -56,25 +56,38 @@ void PhysicsManager::update(float dt, Ball& b)
 					b.setV(vReflected);
 				}
 				else {
+					std::cout << "We have collided with a tileChange Boundary\n";
 					Tile* parentTile = static_cast<Tile*>(bound->getParent());
+
 					// Iterate through list of tile's verts
-					for (int i = 0; i < parentTile->getVerts().size(); i++) {
+					std::vector<Vector3f> tileVerts = parentTile->getVerts();
+					std::vector<Vector3f> upper(tileVerts.begin(), tileVerts.end() - parentTile->getNumSides());
+					std::vector<Vector3f> boundVerts = bound->getVerts();
+					std::vector<int> neighbors = parentTile->getNeighbors();
+
+					for (int i = 0; i < upper.size(); i++) {
+
 						// find the pair of verts that created the boundary
-						std::vector<Vector3f> boundVerts = bound->getVerts();
-						if (boundVerts[0] == parentTile->getVerts()[i] && boundVerts[1] == parentTile->getVerts()[(i + 1) % parentTile->getVerts().size()]) {
-							// now the correct parent node for ball is the neigh[i]
-							std::vector<SceneNode*> tiles = b.getParent()->getParent()->getChildren();
+						if (boundVerts[0] == upper[i] && boundVerts[3] == upper[(i + 1) % upper.size()]) {
+							//std::cout << "We found the neighbor, it is: " << neighbors[i] << "\n";
+							// now the correct tileID for ball is the neigh[i]
+							SceneNode* level = parent->getParent();
+							std::vector<SceneNode*> tiles = parent->getParent()->getChildren();
+							//std::cout << "tiles.size() = " << tiles.size() << "\n";
 
 							for (SceneNode* tile : tiles) {
-								Tile* curTile = static_cast<Tile*>(tile);
-								if (curTile->getTileID() == parentTile->getNeighbors()[i]){
-									b.setParent(curTile);
+								//std::cout << "going through tiles...\n";
+								if (tile->getType() == SceneNode::Tile_t){
+									Tile* curTile = static_cast<Tile*>(tile);
+									if (curTile->getTileID() == neighbors[i]){
+										//std::cout << "We found a matching ID\n";
+										b.setParent(curTile);
+										std::cout << "Ball's Parent was changed!\n";
+									}
 								}
 							}
 						}
 					}
-					//b.setParent(bound.getParent());
-					//IMPLEMENT THIS
 				}
 
 				break;

@@ -74,6 +74,8 @@ void Boundary::draw()
 	}
 	glEnd();
 
+	std::reverse(verts.begin(), verts.end());
+
 	// Draw Children
 	std::vector<SceneNode*> children = getChildren();
 	for (auto itr = children.begin(); itr != children.end(); itr++) {

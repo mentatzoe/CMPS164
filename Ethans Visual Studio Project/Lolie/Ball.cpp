@@ -20,7 +20,7 @@ Ball::Ball(int id, Vector3f pos)
 	dimensions.slices = 11;
 	dimensions.radius = .055;
 	dimensions.stacks = 5;
-    m = 50000;
+    m = 5000000;
     v = Vector3f(0, 0, 0);
 
 	setCollider(new LineCollider(pos, pos));
@@ -30,6 +30,7 @@ void Ball::update(float dt)
 {
 	/// Update Y position ///
 	SceneNode* node = getParent();
+	Vector3f up(0, 1, 0);
 
 	// Asserting that Ball's parent is a tile
 	Tile* parent = static_cast<Tile*>(node);
@@ -38,16 +39,19 @@ void Ball::update(float dt)
 	// Line is p = d(l) + l0 where l0 is a point on the line (Ball's pos) and l is a vector in the direction of line (tile normal)
 
 	// Calculate scalar of the point of collision
-	float d = dot((parent->getVerts()[0] - pos), tileNormal) / dot(tileNormal, tileNormal);
+	float d = dot((parent->getVerts()[0] - pos), tileNormal) / dot(up, tileNormal);
 	
-	// Turn scalar and line equation into  point
-	Vector3f colPoint = (tileNormal * d) + pos;
+	// Turn scalar and line equation into point
+	Vector3f colPoint = (up * d) + pos;
 
 	// Set the position of ball to the position of the collision + the radius in the direction of the normal.
-	pos = colPoint + (tileNormal * dimensions.radius);
+	pos.y = colPoint.y + dimensions.radius;
+
+	getCollider()->setA(pos);
+	getCollider()->setB(pos);
 
 	// Update children
-	std::vector<SceneNode*> children = getChildren();
+ 	std::vector<SceneNode*> children = getChildren();
 	for (auto itr = children.begin(); itr != children.end(); itr++) {
 		(*itr)->update(dt);
 	}
