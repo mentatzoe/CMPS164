@@ -3,6 +3,7 @@ double Dot(Point& a,Point& b)                        { return (a.x()*b.x()) + (a
 double PerpDot(Point& a,Point& b)                    { return (a.y()*b.x()) - (a.x()*b.y()); }
 
 bool LineCollider::getCollision(Collider2D& col, Vector3f& result){
+
     Point A1 (getA().x, getA().z);
     Point A2 (getB().x, getB().z);
     Point B1 (col.getA().x, col.getA().z);

@@ -3,6 +3,7 @@
 #include "Tile.h"
 #include "Cup.h"
 #include "Tee.h"
+#include "LineCollider.h"
 #define MASS = 0.045f
 
 Vector3f v_init, v;
@@ -63,6 +64,13 @@ void PhysicsManager::update(float dt, Ball& b)
 				}
 				else {
 					std::cout << "We have collided with a tileChange Boundary\n";
+
+					LineCollider* a = static_cast<LineCollider*>(bound->getCollider());
+					LineCollider* bc = static_cast<LineCollider*>(b.getCollider());
+
+					std::cout << "bound is A(" << a->getA().x << "," << a->getA().y << "," << a->getA().z << "), B(" << a->getB().x << "," << a->getB().y << "," << a->getB().z << ")\n";
+					std::cout << "ball is A(" << bc->getA().x << "," << bc->getA().y << "," << bc->getA().z << "), B(" << bc->getB().x << "," << bc->getB().y << "," << bc->getB().z << ")\n";
+
 					Tile* parentTile = static_cast<Tile*>(bound->getParent());
 
 					// Iterate through list of tile's verts
@@ -123,8 +131,8 @@ void PhysicsManager::update(float dt, Ball& b)
 
     
     
-    std::cout<< "Velocity vector is ("<<v.x<<","<< v.y<<","<< v.z<<")\n";
-    std::cout<< "Acceleration vector is ("<<a.x<<","<< a.y<<","<< a.z<<")\n\n";
+    //std::cout<< "Velocity vector is ("<<v.x<<","<< v.y<<","<< v.z<<")\n";
+    //std::cout<< "Acceleration vector is ("<<a.x<<","<< a.y<<","<< a.z<<")\n\n";
     //Calculate new velocity
     v = Vector3f(b.getV().x + (a.x * dt), b.getV().y + (a.y * dt), b.getV().z + (a.z * dt));
     //Calculate new position
@@ -142,9 +150,9 @@ void PhysicsManager::update(float dt, Ball& b)
     //std::cout<< "position is ("<<p.x<<","<< p.y<<","<< p.z<<")\n";
     Vector3f vN;
     if (v.x != 0 && v.y !=0 && v.z != 0){ Vector3f vN = normalize(v);
-        std::cout<< "Normalized Velocity vector is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
+        //std::cout<< "Normalized Velocity vector is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
         vN = Vector3f(-vN.x, -vN.y, -vN.z);
-        std::cout<< "Normalized Velocity vector after sign change is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
+        //std::cout<< "Normalized Velocity vector after sign change is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
     }
     else {
         vN = Vector3f(0, 0, 0);
