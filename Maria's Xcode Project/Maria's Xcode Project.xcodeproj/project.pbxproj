@@ -83,9 +83,6 @@
 		4FE219F3191D162200424821 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
 		4FE219F4191D162200424821 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
 		4FE219F5191D162200424821 /* Tee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tee.h; sourceTree = "<group>"; };
-		4FE219F6191D162200424821 /* testcourse1.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testcourse1.db; sourceTree = "<group>"; };
-		4FE219F7191D162200424821 /* testcourse2.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testcourse2.db; sourceTree = "<group>"; };
-		4FE219F8191D162200424821 /* testcourse3.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testcourse3.db; sourceTree = "<group>"; };
 		4FE219F9191D162200424821 /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
 		4FE219FA191D162200424821 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
 		4FE219FB191D162200424821 /* openglUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openglUtil.h; sourceTree = "<group>"; };
@@ -179,9 +176,6 @@
 				4FE219F4191D162200424821 /* Surface.h */,
 				4FE219E7191D162200424821 /* Tee.cpp */,
 				4FE219F5191D162200424821 /* Tee.h */,
-				4FE219F6191D162200424821 /* testcourse1.db */,
-				4FE219F7191D162200424821 /* testcourse2.db */,
-				4FE219F8191D162200424821 /* testcourse3.db */,
 				4FE219F9191D162200424821 /* Tile.cpp */,
 				4FE219FA191D162200424821 /* Tile.h */,
 				4FE21A05191D162200424821 /* Token.h */,

@@ -138,7 +138,7 @@ void PhysicsManager::update(float dt, Ball& b)
         //std::cout << "hello";
         float speed = magnitude(v);
         Vector3f direction = normalize(v);
-        if (speed > 0) speed *= 0.95f;
+        if (speed > 0) speed *= 0.99f;
         else speed = 0;
         v = direction * speed;
     } else if (v.x == 0 && v.y == 0 && v.z == 0) {
