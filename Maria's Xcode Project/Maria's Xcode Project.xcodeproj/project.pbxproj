@@ -7,20 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F0F6C3B190AFF9D004022CB /* openglUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F0F6C38190AFF9D004022CB /* openglUtil.cpp */; };
-		4F0F6C3C190AFF9D004022CB /* utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F0F6C3A190AFF9D004022CB /* utility.cpp */; };
 		4F3290D719072F9A00FB737D /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3290D619072F9A00FB737D /* SDL2.framework */; };
-		4F3290DF19073AF300FB737D /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F3290DD19073AF300FB737D /* Game.cpp */; };
-		4F3290E219073C3300FB737D /* RenderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F3290E019073C3300FB737D /* RenderManager.cpp */; };
-		4FA2050918FDF33F007F09B5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FA2050818FDF33F007F09B5 /* main.cpp */; };
 		4FA2050B18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */; };
 		4FA2051218FDF3BE007F09B5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA2051118FDF3BE007F09B5 /* Cocoa.framework */; };
 		4FA2051418FDF3C4007F09B5 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA2051318FDF3C4007F09B5 /* GLUT.framework */; };
 		4FA2051618FDF3D0007F09B5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA2051518FDF3D0007F09B5 /* OpenGL.framework */; };
-		4FDC5F951900A8E400B12A69 /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F8A1900A8E400B12A69 /* FileParser.cpp */; };
-		4FDC5F961900A8E400B12A69 /* Level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F8D1900A8E400B12A69 /* Level.cpp */; };
-		4FDC5F971900A8E400B12A69 /* LevelCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F8F1900A8E400B12A69 /* LevelCreator.cpp */; };
-		4FDC5F981900A8E400B12A69 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDC5F911900A8E400B12A69 /* Tile.cpp */; };
+		4FE21A06191D162200424821 /* Ball.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219D7191D162200424821 /* Ball.cpp */; };
+		4FE21A07191D162200424821 /* Boundary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219D8191D162200424821 /* Boundary.cpp */; };
+		4FE21A08191D162200424821 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219D9191D162200424821 /* Camera.cpp */; };
+		4FE21A09191D162200424821 /* CircleCollider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219DB191D162200424821 /* CircleCollider.cpp */; };
+		4FE21A0A191D162200424821 /* Collider2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219DD191D162200424821 /* Collider2D.cpp */; };
+		4FE21A0B191D162200424821 /* Cup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219DF191D162200424821 /* Cup.cpp */; };
+		4FE21A0C191D162200424821 /* LineCollider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219E0191D162200424821 /* LineCollider.cpp */; };
+		4FE21A0D191D162200424821 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219E2191D162200424821 /* main.cpp */; };
+		4FE21A0E191D162200424821 /* PhysicsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219E3191D162200424821 /* PhysicsManager.cpp */; };
+		4FE21A0F191D162200424821 /* SceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219E5191D162200424821 /* SceneNode.cpp */; };
+		4FE21A10191D162200424821 /* Tee.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219E7191D162200424821 /* Tee.cpp */; };
+		4FE21A11191D162200424821 /* LevelCreator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219EA191D162200424821 /* LevelCreator.cpp */; };
+		4FE21A12191D162200424821 /* Level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219EF191D162200424821 /* Level.cpp */; };
+		4FE21A13191D162200424821 /* openglUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219F1191D162200424821 /* openglUtil.cpp */; };
+		4FE21A14191D162200424821 /* Sphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219F2191D162200424821 /* Sphere.cpp */; };
+		4FE21A15191D162200424821 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219F9191D162200424821 /* Tile.cpp */; };
+		4FE21A16191D162200424821 /* utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219FC191D162200424821 /* utility.cpp */; };
+		4FE21A17191D162200424821 /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219FF191D162200424821 /* FileParser.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -37,31 +46,59 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4F0F6C38190AFF9D004022CB /* openglUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = openglUtil.cpp; sourceTree = "<group>"; };
-		4F0F6C39190AFF9D004022CB /* openglUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openglUtil.h; sourceTree = "<group>"; };
-		4F0F6C3A190AFF9D004022CB /* utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utility.cpp; sourceTree = "<group>"; };
 		4F3290D619072F9A00FB737D /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
-		4F3290DD19073AF300FB737D /* Game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
-		4F3290DE19073AF300FB737D /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
-		4F3290E019073C3300FB737D /* RenderManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderManager.cpp; sourceTree = "<group>"; };
-		4F3290E119073C3300FB737D /* RenderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderManager.h; sourceTree = "<group>"; };
 		4FA2050518FDF33F007F09B5 /* Maria's Xcode Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Maria's Xcode Project"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4FA2050818FDF33F007F09B5 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Maria_s_Xcode_Project.1; sourceTree = "<group>"; };
 		4FA2051118FDF3BE007F09B5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		4FA2051318FDF3C4007F09B5 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		4FA2051518FDF3D0007F09B5 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		4FDC5F8A1900A8E400B12A69 /* FileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
-		4FDC5F8B1900A8E400B12A69 /* FileParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileParser.h; sourceTree = "<group>"; };
-		4FDC5F8C1900A8E400B12A69 /* hole.00.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hole.00.db; sourceTree = "<group>"; };
-		4FDC5F8D1900A8E400B12A69 /* Level.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Level.cpp; sourceTree = "<group>"; };
-		4FDC5F8E1900A8E400B12A69 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level.h; sourceTree = "<group>"; };
-		4FDC5F8F1900A8E400B12A69 /* LevelCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelCreator.cpp; sourceTree = "<group>"; };
-		4FDC5F901900A8E400B12A69 /* LevelCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelCreator.h; sourceTree = "<group>"; };
-		4FDC5F911900A8E400B12A69 /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
-		4FDC5F921900A8E400B12A69 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
-		4FDC5F931900A8E400B12A69 /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
-		4FDC5F941900A8E400B12A69 /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		4FE219D7191D162200424821 /* Ball.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ball.cpp; sourceTree = "<group>"; };
+		4FE219D8191D162200424821 /* Boundary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Boundary.cpp; sourceTree = "<group>"; };
+		4FE219D9191D162200424821 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		4FE219DA191D162200424821 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
+		4FE219DB191D162200424821 /* CircleCollider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircleCollider.cpp; sourceTree = "<group>"; };
+		4FE219DC191D162200424821 /* CircleCollider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleCollider.h; sourceTree = "<group>"; };
+		4FE219DD191D162200424821 /* Collider2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Collider2D.cpp; sourceTree = "<group>"; };
+		4FE219DE191D162200424821 /* Collider2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Collider2D.h; sourceTree = "<group>"; };
+		4FE219DF191D162200424821 /* Cup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cup.cpp; sourceTree = "<group>"; };
+		4FE219E0191D162200424821 /* LineCollider.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LineCollider.cpp; sourceTree = "<group>"; };
+		4FE219E1191D162200424821 /* LineCollider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineCollider.h; sourceTree = "<group>"; };
+		4FE219E2191D162200424821 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		4FE219E3191D162200424821 /* PhysicsManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicsManager.cpp; sourceTree = "<group>"; };
+		4FE219E4191D162200424821 /* PhysicsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhysicsManager.h; sourceTree = "<group>"; };
+		4FE219E5191D162200424821 /* SceneNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneNode.cpp; sourceTree = "<group>"; };
+		4FE219E6191D162200424821 /* SceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneNode.h; sourceTree = "<group>"; };
+		4FE219E7191D162200424821 /* Tee.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tee.cpp; sourceTree = "<group>"; };
+		4FE219E8191D162200424821 /* Ball.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ball.h; sourceTree = "<group>"; };
+		4FE219E9191D162200424821 /* Level.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Level.h; sourceTree = "<group>"; };
+		4FE219EA191D162200424821 /* LevelCreator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LevelCreator.cpp; sourceTree = "<group>"; };
+		4FE219EB191D162200424821 /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		4FE219EC191D162200424821 /* Boundary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Boundary.h; sourceTree = "<group>"; };
+		4FE219ED191D162200424821 /* Cup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cup.h; sourceTree = "<group>"; };
+		4FE219EE191D162200424821 /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drawable.h; sourceTree = "<group>"; };
+		4FE219EF191D162200424821 /* Level.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Level.cpp; sourceTree = "<group>"; };
+		4FE219F0191D162200424821 /* Libraries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Libraries.h; sourceTree = "<group>"; };
+		4FE219F1191D162200424821 /* openglUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = openglUtil.cpp; sourceTree = "<group>"; };
+		4FE219F2191D162200424821 /* Sphere.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sphere.cpp; sourceTree = "<group>"; };
+		4FE219F3191D162200424821 /* Sphere.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sphere.h; sourceTree = "<group>"; };
+		4FE219F4191D162200424821 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
+		4FE219F5191D162200424821 /* Tee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tee.h; sourceTree = "<group>"; };
+		4FE219F6191D162200424821 /* testcourse1.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testcourse1.db; sourceTree = "<group>"; };
+		4FE219F7191D162200424821 /* testcourse2.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testcourse2.db; sourceTree = "<group>"; };
+		4FE219F8191D162200424821 /* testcourse3.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = testcourse3.db; sourceTree = "<group>"; };
+		4FE219F9191D162200424821 /* Tile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tile.cpp; sourceTree = "<group>"; };
+		4FE219FA191D162200424821 /* Tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
+		4FE219FB191D162200424821 /* openglUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = openglUtil.h; sourceTree = "<group>"; };
+		4FE219FC191D162200424821 /* utility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utility.cpp; sourceTree = "<group>"; };
+		4FE219FD191D162200424821 /* Game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		4FE219FE191D162200424821 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
+		4FE219FF191D162200424821 /* FileParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileParser.cpp; sourceTree = "<group>"; };
+		4FE21A00191D162200424821 /* FileParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileParser.h; sourceTree = "<group>"; };
+		4FE21A01191D162200424821 /* hole.00.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hole.00.db; sourceTree = "<group>"; };
+		4FE21A02191D162200424821 /* hole.01.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hole.01.db; sourceTree = "<group>"; };
+		4FE21A03191D162200424821 /* hole.02.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hole.02.db; sourceTree = "<group>"; };
+		4FE21A04191D162200424821 /* LevelCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelCreator.h; sourceTree = "<group>"; };
+		4FE21A05191D162200424821 /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,34 +116,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4F3290D819073A9800FB737D /* engine */ = {
-			isa = PBXGroup;
-			children = (
-				4FDC5F941900A8E400B12A69 /* utility.h */,
-				4FDC5F931900A8E400B12A69 /* Token.h */,
-				4FDC5F8A1900A8E400B12A69 /* FileParser.cpp */,
-				4FDC5F8B1900A8E400B12A69 /* FileParser.h */,
-				4F3290E019073C3300FB737D /* RenderManager.cpp */,
-				4F3290E119073C3300FB737D /* RenderManager.h */,
-			);
-			name = engine;
-			sourceTree = "<group>";
-		};
-		4F3290DA19073ACC00FB737D /* minigolf */ = {
-			isa = PBXGroup;
-			children = (
-				4FDC5F8D1900A8E400B12A69 /* Level.cpp */,
-				4FDC5F8E1900A8E400B12A69 /* Level.h */,
-				4FDC5F8F1900A8E400B12A69 /* LevelCreator.cpp */,
-				4FDC5F901900A8E400B12A69 /* LevelCreator.h */,
-				4FDC5F911900A8E400B12A69 /* Tile.cpp */,
-				4FDC5F921900A8E400B12A69 /* Tile.h */,
-				4F3290DD19073AF300FB737D /* Game.cpp */,
-				4F3290DE19073AF300FB737D /* Game.h */,
-			);
-			name = minigolf;
-			sourceTree = "<group>";
-		};
 		4FA204FC18FDF33F007F09B5 = {
 			isa = PBXGroup;
 			children = (
@@ -130,14 +139,54 @@
 		4FA2050718FDF33F007F09B5 /* Maria's Xcode Project */ = {
 			isa = PBXGroup;
 			children = (
-				4F3290DA19073ACC00FB737D /* minigolf */,
-				4F3290D819073A9800FB737D /* engine */,
-				4FDC5F8C1900A8E400B12A69 /* hole.00.db */,
-				4FA2050818FDF33F007F09B5 /* main.cpp */,
-				4F0F6C38190AFF9D004022CB /* openglUtil.cpp */,
-				4F0F6C39190AFF9D004022CB /* openglUtil.h */,
-				4F0F6C3A190AFF9D004022CB /* utility.cpp */,
+				4FE219D7191D162200424821 /* Ball.cpp */,
+				4FE219E8191D162200424821 /* Ball.h */,
+				4FE219D8191D162200424821 /* Boundary.cpp */,
+				4FE219EC191D162200424821 /* Boundary.h */,
+				4FE219D9191D162200424821 /* Camera.cpp */,
+				4FE219DA191D162200424821 /* Camera.h */,
+				4FE219DB191D162200424821 /* CircleCollider.cpp */,
+				4FE219DC191D162200424821 /* CircleCollider.h */,
+				4FE219DD191D162200424821 /* Collider2D.cpp */,
+				4FE219DE191D162200424821 /* Collider2D.h */,
+				4FE219DF191D162200424821 /* Cup.cpp */,
+				4FE219ED191D162200424821 /* Cup.h */,
+				4FE219EE191D162200424821 /* Drawable.h */,
+				4FE219FF191D162200424821 /* FileParser.cpp */,
+				4FE21A00191D162200424821 /* FileParser.h */,
+				4FE219FD191D162200424821 /* Game.h */,
+				4FE21A01191D162200424821 /* hole.00.db */,
+				4FE21A02191D162200424821 /* hole.01.db */,
+				4FE21A03191D162200424821 /* hole.02.db */,
+				4FE219FE191D162200424821 /* InputManager.h */,
+				4FE219EF191D162200424821 /* Level.cpp */,
+				4FE219E9191D162200424821 /* Level.h */,
+				4FE219EA191D162200424821 /* LevelCreator.cpp */,
+				4FE21A04191D162200424821 /* LevelCreator.h */,
+				4FE219F0191D162200424821 /* Libraries.h */,
+				4FE219E0191D162200424821 /* LineCollider.cpp */,
+				4FE219E1191D162200424821 /* LineCollider.h */,
+				4FE219E2191D162200424821 /* main.cpp */,
 				4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */,
+				4FE219F1191D162200424821 /* openglUtil.cpp */,
+				4FE219FB191D162200424821 /* openglUtil.h */,
+				4FE219E3191D162200424821 /* PhysicsManager.cpp */,
+				4FE219E4191D162200424821 /* PhysicsManager.h */,
+				4FE219E5191D162200424821 /* SceneNode.cpp */,
+				4FE219E6191D162200424821 /* SceneNode.h */,
+				4FE219F2191D162200424821 /* Sphere.cpp */,
+				4FE219F3191D162200424821 /* Sphere.h */,
+				4FE219F4191D162200424821 /* Surface.h */,
+				4FE219E7191D162200424821 /* Tee.cpp */,
+				4FE219F5191D162200424821 /* Tee.h */,
+				4FE219F6191D162200424821 /* testcourse1.db */,
+				4FE219F7191D162200424821 /* testcourse2.db */,
+				4FE219F8191D162200424821 /* testcourse3.db */,
+				4FE219F9191D162200424821 /* Tile.cpp */,
+				4FE219FA191D162200424821 /* Tile.h */,
+				4FE21A05191D162200424821 /* Token.h */,
+				4FE219FC191D162200424821 /* utility.cpp */,
+				4FE219EB191D162200424821 /* utility.h */,
 			);
 			path = "Maria's Xcode Project";
 			sourceTree = "<group>";
@@ -193,15 +242,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F0F6C3C190AFF9D004022CB /* utility.cpp in Sources */,
-				4FDC5F961900A8E400B12A69 /* Level.cpp in Sources */,
-				4FDC5F971900A8E400B12A69 /* LevelCreator.cpp in Sources */,
-				4F0F6C3B190AFF9D004022CB /* openglUtil.cpp in Sources */,
-				4FDC5F951900A8E400B12A69 /* FileParser.cpp in Sources */,
-				4F3290E219073C3300FB737D /* RenderManager.cpp in Sources */,
-				4F3290DF19073AF300FB737D /* Game.cpp in Sources */,
-				4FA2050918FDF33F007F09B5 /* main.cpp in Sources */,
-				4FDC5F981900A8E400B12A69 /* Tile.cpp in Sources */,
+				4FE21A0B191D162200424821 /* Cup.cpp in Sources */,
+				4FE21A11191D162200424821 /* LevelCreator.cpp in Sources */,
+				4FE21A13191D162200424821 /* openglUtil.cpp in Sources */,
+				4FE21A12191D162200424821 /* Level.cpp in Sources */,
+				4FE21A06191D162200424821 /* Ball.cpp in Sources */,
+				4FE21A08191D162200424821 /* Camera.cpp in Sources */,
+				4FE21A0E191D162200424821 /* PhysicsManager.cpp in Sources */,
+				4FE21A16191D162200424821 /* utility.cpp in Sources */,
+				4FE21A15191D162200424821 /* Tile.cpp in Sources */,
+				4FE21A07191D162200424821 /* Boundary.cpp in Sources */,
+				4FE21A17191D162200424821 /* FileParser.cpp in Sources */,
+				4FE21A0A191D162200424821 /* Collider2D.cpp in Sources */,
+				4FE21A0F191D162200424821 /* SceneNode.cpp in Sources */,
+				4FE21A09191D162200424821 /* CircleCollider.cpp in Sources */,
+				4FE21A10191D162200424821 /* Tee.cpp in Sources */,
+				4FE21A0D191D162200424821 /* main.cpp in Sources */,
+				4FE21A14191D162200424821 /* Sphere.cpp in Sources */,
+				4FE21A0C191D162200424821 /* LineCollider.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

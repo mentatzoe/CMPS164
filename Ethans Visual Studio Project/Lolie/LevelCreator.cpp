@@ -6,12 +6,12 @@ Level LevelCreator::createLevel(TokenList tokenList)
 	auto curToken = tokenList.begin();
 	int tileID = 0;
 	int numSides = 0;
-	std::vector<Tile> tileList;
 	Vector3f teeVect;
 	Vector3f cupVect;
 	int teeTileID, cupTileID;
 	std::vector<Vector3f> vertList;
 	std::vector<int> neighbors;
+	Level* level = new Level();
 
 	while (curToken != tokenList.end()) {
 		//std::cout << "Examining curToken: " << (*curToken).data << "\n";
@@ -46,8 +46,7 @@ Level LevelCreator::createLevel(TokenList tokenList)
 
 			//std::cout << "     (After neighbors) curToken is now " << (*curToken).data << "\n";
 
-			Tile tile(tileID, numSides, vertList, neighbors);
-			tileList.push_back(tile);
+			level->addChild(new Tile(tileID, numSides, vertList, neighbors));
 		}
 		else if (curToken->data.compare("tee") == 0) {
 			//std::cout << "     curToken is 'tee'\n";
@@ -74,8 +73,44 @@ Level LevelCreator::createLevel(TokenList tokenList)
 		neighbors.clear();
 	}
 
-	Tee tee(teeTileID, teeVect);
-	Cup cup(cupTileID, cupVect);
-	Level level(tileList, tee, cup);
-	return level;
+	std::vector<SceneNode*> children = level->getChildren();
+	for (int i = 0; i < children.size(); i++) {
+		Tile* t = static_cast<Tile*> (children[i]);
+		if (teeTileID == (*t).getTileID()) {
+            Ball* b = new Ball(teeTileID, teeVect);
+            level->setBall(b);
+			//(*t).addChild(new Tee(teeTileID, teeVect));
+			(*t).addChild(static_cast<SceneNode*>(level->getBall()));
+		}
+		if (cupTileID == (*t).getTileID()) {
+			(*t).addChild(new Cup(cupTileID, cupVect));
+		}
+	}
+
+	/*// Print everything
+	std::cout << "Printing Level Status:\n";
+	for (auto itr = tileList.begin(); itr != tileList.end(); itr++){
+		std::cout << "     Tile with ID = " << (*itr).getTileID() << " and numSides = " << (*itr).getNumSides() << "\n";
+		std::vector<Vector3f> verts = (*itr).getVerts();
+		for (int i = 0; i < verts.size(); i++) {
+			std::cout << "          Vertex " << i << ": [" << verts[i].x << ", " << verts[i].y << ", " << verts[i].z << "]\n";
+		}
+		std::vector<int> neighbors = (*itr).getNeighbors();
+		std::cout << "          Neighbors list: ";
+		for (int i = 0; i < neighbors.size(); i++){
+			std::cout << neighbors[i] << ", ";
+		}
+		std::cout << "\n";
+		std::vector<Vector3f> normals = (*itr).getNormals();
+
+		for (int i = 0; i < normals.size(); i++) {
+			std::cout << "          Normal " << i << ": [" << normals[i].x << ", " << normals[i].y << ", " << normals[i].z << "]\n";
+		}
+		std::cout << "\n";
+	}
+
+	std::cout << "     Tee: [" << teeVect.x << ", " << teeVect.y << ", " << teeVect.z << "] on tile " << teeTileID << "\n";
+	std::cout << "     Cup: [" << cupVect.x << ", " << cupVect.y << ", " << cupVect.z << "] on tile " << cupTileID << "\n";*/
+
+	return *level;
 }

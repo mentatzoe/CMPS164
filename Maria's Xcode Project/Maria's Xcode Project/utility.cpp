@@ -11,6 +11,10 @@ float angle(Vector3f a, Vector3f b) {
 	return acosf(dot(a, b) / (mag_a * mag_b));
 }
 
+float magnitude(Vector3f a){
+    return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+}
+
 Vector3f cross(Vector3f a, Vector3f b) {
 	Vector3f result;
 	result.x = (a.y * b.z) - (a.z * b.y);
@@ -34,7 +38,7 @@ Vector3f calcSurfaceNormal(std::vector<Vector3f> vertList) {
 
 		normal.x = normal.x + ((curVert.y - nextVert.y) * (curVert.z + nextVert.z));
 		normal.y = normal.y + ((curVert.z - nextVert.z) * (curVert.x + nextVert.x));
-		normal.z = normal.z + ((curVert.x - nextVert.x) * (curVert.z + nextVert.y));
+		normal.z = normal.z + ((curVert.x - nextVert.x) * (curVert.y + nextVert.y));
 	}
 
 	return normalize(normal);

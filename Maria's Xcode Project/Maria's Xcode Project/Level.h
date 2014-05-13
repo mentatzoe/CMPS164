@@ -2,23 +2,22 @@
 #define LEVEL_H
 
 #include "Tile.h"
+#include "Cup.h"
+#include "Tee.h"
+#include "Ball.h"
 
-class Level
+class Level : public SceneNode
 {
 public:
-	Level(std::vector<Tile> tileList, Vector4f teeVect, Vector4f cupVect)
-		: tileList(tileList)
-		, tee(teeVect)
-		, cup(cupVect) {}
-    Level() {}
-	void print();
-    std::vector<Tile> getTileList() {return tileList;};
-    Vector4f getTee() {return tee;};
-    Vector4f getCup() {return cup;};
+	Level();
+	~Level() {}
+
+	void update(float dt);
+	void draw();
+    Ball* getBall(){return b;};
+    void setBall(Ball* ba){b = ba;};
 private:
-	std::vector<Tile> tileList;
-	Vector4f tee;
-	Vector4f cup;
+    Ball* b;
 };
 
 #endif /* LEVEL_H */

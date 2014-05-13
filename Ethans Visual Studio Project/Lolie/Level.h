@@ -4,23 +4,20 @@
 #include "Tile.h"
 #include "Cup.h"
 #include "Tee.h"
+#include "Ball.h"
 
-class Level
+class Level : public SceneNode
 {
 public:
-	Level(std::vector<Tile> tileList, Tee tee, Cup cup)
-		: tileList(tileList)
-		, tee(tee)
-		, cup(cup) {}
+	Level();
 	~Level() {}
-	void print();
-    std::vector<Tile> getTileList() {return tileList;};
-    Tee getTee() {return tee;};
-    Cup getCup() {return cup;};
+
+	void update(float dt);
+	void draw();
+    Ball* getBall(){return b;};
+    void setBall(Ball* ba){b = ba;};
 private:
-	std::vector<Tile> tileList;
-	Tee tee;
-	Cup cup;
+    Ball* b;
 };
 
 #endif /* LEVEL_H */

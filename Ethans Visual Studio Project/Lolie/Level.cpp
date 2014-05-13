@@ -1,31 +1,28 @@
 #include "Level.h"
-#include <iostream>
+#include <vector>
+#include "PhysicsManager.h"
 
-void Level::print()
+Level::Level() 
 {
-	std::cout << "Printing Level Status:\n";
-	for (auto itr = tileList.begin(); itr != tileList.end(); itr++){
-		std::cout << "     Tile with ID = " << (*itr).getTileID() << " and numSides = " << (*itr).getNumSides() << "\n";
-		std::vector<Vector3f> verts = (*itr).getVerts();
-		for (int i = 0; i < verts.size(); i++) {
-			std::cout << "          Vertex " << i << ": [" << verts[i].x << ", " << verts[i].y << ", " << verts[i].z << "]\n";
-		}
-		std::vector<int> neighbors = (*itr).getNeighbors();
-		std::cout << "          Neighbors list: ";
-		for (int i = 0; i < neighbors.size(); i++){
-			std::cout << neighbors[i] << ", ";
-		}
-		std::cout << "\n";
-		std::vector<Vector3f> normals = (*itr).getNormals();
+	setType(SceneNode::Root_t);
+}
 
-		for (int i = 0; i < normals.size(); i++) {
-			std::cout << "          Normal " << i << ": [" << normals[i].x << ", " << normals[i].y << ", " << normals[i].z << "]\n";
-		}
-		std::cout << "\n";
+void Level::update(float dt)
+{
+	PhysicsManager::update(dt, *b);
+
+	// Update children
+	std::vector<SceneNode*> children = getChildren();
+	for (auto itr = children.begin(); itr != children.end(); itr++) {
+		(*itr)->update(dt);
 	}
-	Vector3f teePos = tee.getPos();
-	Vector3f cupPos = cup.getPos();
+}
 
-	std::cout << "     Tee: [" << teePos.x << ", " << teePos.y << ", " << teePos.z << "] on tile " << tee.getTileID() << "\n";
-	std::cout << "     Cup: [" << cupPos.x << ", " << cupPos.y << ", " << cupPos.z << "] on tile " << cup.getTileID() << "\n";
+void Level::draw()
+{
+	// Draw children
+	std::vector<SceneNode*> children = getChildren();
+	for (auto itr = children.begin(); itr != children.end(); itr++) {
+		(*itr)->draw();
+	}
 }
