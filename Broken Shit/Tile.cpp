@@ -1,6 +1,14 @@
 #include "Tile.h"
 #include "Boundary.h"
-#include <gl/freeglut.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL2/SDL.h>
+#else
+#include <GL/freeglut.h>
+#include <SDL.h>
+#endif
 #include <iostream>
 #include <algorithm>
 
@@ -11,6 +19,7 @@ Tile::Tile(int tileID, int numSides, std::vector<Vector3f> verts, std::vector<in
 , vertList(verts)
 , neighbors(neigh)
 {
+	setType(Tile_t);
 	// Set color to GREEN
 	color = { 0.0, 1.0, 0.0, 1.0 };
 
@@ -50,7 +59,7 @@ Tile::Tile(int tileID, int numSides, std::vector<Vector3f> verts, std::vector<in
 
 	for (int i = 0; i < neigh.size(); i++){
 		//Boundary bound(verts[i], verts[(i + 1) % verts.size()], .2, neigh[i] != 0);
-		addChild(new Boundary(upper[i], upper[(i + 1) % upper.size()], .2, neigh[i] == 0));
+		addChild(new Boundary(upper[i], upper[(i + 1) % upper.size()], 0.2f, neigh[i] == 0));
 	}
 }
 

@@ -11,6 +11,21 @@ float angle(Vector3f a, Vector3f b) {
 	return acosf(dot(a, b) / (mag_a * mag_b));
 }
 
+float magnitude(Vector3f a) {
+    return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+}
+
+float distance(Vector3f posA, Vector3f posB) {
+	return sqrtf((posB.x - posA.x) * (posB.x - posA.x) +
+		(posB.y - posA.y) * (posB.y - posA.y) +
+		(posB.z - posA.z) * (posB.z - posA.z));
+}
+
+float distanceNoY(Vector3f posA, Vector3f posB) {
+	return sqrtf((posB.x - posA.x) * (posB.x - posA.x) +
+		(posB.z - posA.z) * (posB.z - posA.z));
+}
+
 Vector3f cross(Vector3f a, Vector3f b) {
 	Vector3f result;
 	result.x = (a.y * b.z) - (a.z * b.y);

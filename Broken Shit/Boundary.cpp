@@ -1,14 +1,26 @@
 #include "Boundary.h"
-#include <gl/freeglut.h>
+#include "LineCollider.h"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL2/SDL.h>
+#else
+#include <GL/freeglut.h>
+#include <SDL.h>
+#endif
 #include <algorithm>
 
 Boundary::Boundary(Vector3f vert1, Vector3f vert2, float height, bool physical)
 : physical(physical)
 {
+	setType(Boundary_t);
 	color.x = 1.0;
 	color.y = 0.65;
 	color.z = 0.0;
 	color.w = 1.0;
+
+	setCollider(new LineCollider(vert1, vert2));
 
 	Vector3f vert11(vert1.x, vert1.y + height, vert1.z);
 	Vector3f vert22(vert2.x, vert2.y + height, vert2.z);
@@ -61,6 +73,8 @@ void Boundary::draw()
 		glVertex3f(verts[i].x, verts[i].y, verts[i].z);
 	}
 	glEnd();
+
+	std::reverse(verts.begin(), verts.end());
 
 	// Draw Children
 	std::vector<SceneNode*> children = getChildren();

@@ -71,27 +71,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Boundary.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CircleCollider.cpp" />
+    <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="Cup.cpp" />
     <ClCompile Include="FileParser.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelCreator.cpp" />
+    <ClCompile Include="LineCollider.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="openglUtil.cpp" />
     <ClCompile Include="SceneNode.cpp" />
+    <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Tee.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="Boundary.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CircleCollider.h" />
+    <ClInclude Include="Collider2D.h" />
     <ClInclude Include="Cup.h" />
     <ClInclude Include="FileParser.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelCreator.h" />
+    <ClInclude Include="LineCollider.h" />
     <ClInclude Include="openglUtil.h" />
+    <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="SceneNode.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Tee.h" />

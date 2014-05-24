@@ -1,4 +1,12 @@
-#include <gl/freeglut.h>
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL2/SDL.h>
+#else
+#include <GL/freeglut.h>
+#include <SDL.h>
+#endif
 #include "openglUtil.h"
 
 void drawTile(Tile tile) {
@@ -46,7 +54,7 @@ void drawTile(Tile tile) {
 	for (int i = 0; i < neighs.size(); i++){
 		if (neighs[i] == 0) {
 			// No neighbor, draw boundary between verts i and i+1
-			drawBoundary(verts[i], verts[(i + 1) % verts.size()], .2);
+			drawBoundary(verts[i], verts[(i + 1) % verts.size()], .2f);
 		}
 	}
 }

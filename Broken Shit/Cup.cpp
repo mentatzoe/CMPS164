@@ -1,15 +1,27 @@
 #include "Cup.h"
-#include <gl/freeglut.h>
+#include "CircleCollider.h"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL2/SDL.h>
+#else
+#include <GL/freeglut.h>
+#include <SDL.h>
+#endif
 
 Cup::Cup(int id, Vector3f pos)
 : pos(pos)
 , tileID(id)
 {
+	setType(Cup_t);
 	color = { 0.0, 0.0, 0.0, 1.0 };
 	dimensions.height = .05;
 	dimensions.slices = 7;
 	dimensions.radius = .06; 
 	dimensions.stacks = 3;
+
+	setCollider(new CircleCollider(pos, dimensions.radius));
 }
 
 void Cup::update(float dt)
@@ -26,8 +38,8 @@ void Cup::draw()
 	glPushMatrix();
 
 	// create the quadratic
-	GLUquadricObj *quadratic2;
-	quadratic2 = gluNewQuadric();
+	GLUquadricObj *quadratic;
+	quadratic = gluNewQuadric();
 
 	// Move the cylinder
 	glTranslatef(pos.x, pos.y + .05, pos.z);
@@ -37,7 +49,7 @@ void Cup::draw()
 	glColor4f(color.x, color.y, color.z, color.w);
 
 	// Draw the cylinder
-	gluCylinder(quadratic2, dimensions.radius, dimensions.radius, dimensions.height, dimensions.slices, dimensions.stacks);
+	gluCylinder(quadratic, dimensions.radius, dimensions.radius, dimensions.height, dimensions.slices, dimensions.stacks);
 
 	glPopMatrix();
 

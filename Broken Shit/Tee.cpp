@@ -1,15 +1,27 @@
 #include "Tee.h"
-#include <gl/freeglut.h>
+#include "CircleCollider.h"
+#ifdef __APPLE__
+#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <SDL2/SDL.h>
+#else
+#include <GL/freeglut.h>
+#include <SDL.h>
+#endif
 
 Tee::Tee(int id, Vector3f pos)
 : pos(pos)
 , tileID(id)
 {
+	setType(Tee_t);
 	color = { 0.0, 1.0, 1.0, 1.0 };
-	dimensions.height = .05;
+	dimensions.height = .05f;
 	dimensions.slices = 7;
-	dimensions.radius = .02;
+	dimensions.radius = .02f;
 	dimensions.stacks = 3;
+
+	setCollider(new CircleCollider(pos, dimensions.radius));
 }
 
 void Tee::update(float dt)
@@ -30,7 +42,7 @@ void Tee::draw()
 	quadratic2 = gluNewQuadric();
 
 	// Move the cylinder
-	glTranslatef(pos.x, pos.y + .05, pos.z);
+	glTranslatef(pos.x, pos.y + .05f, pos.z);
 	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
 	// Set the color
