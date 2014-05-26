@@ -49,6 +49,8 @@ void Ball::update(float dt)
 	pos.y = colPoint.y + dimensions.radius;
     getCollider()->setA(pos);
 
+	std::cout << "Set Ball Y to " << pos.y << "\n";
+
 	// Update children
  	std::vector<SceneNode*> children = getChildren();
 	for (auto itr = children.begin(); itr != children.end(); itr++) {

@@ -12,7 +12,7 @@ float angle(Vector3f a, Vector3f b) {
 }
 
 float magnitude(Vector3f a) {
-    return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+    return sqrt((a.x * a.x) + (a.y * a.y) + (a.z * a.z));
 }
 
 float distance(Vector3f posA, Vector3f posB) {

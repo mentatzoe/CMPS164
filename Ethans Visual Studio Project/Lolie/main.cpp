@@ -83,7 +83,7 @@ bool init(int argc, char* args[]) {
 
 		// Create Window
 		gWindow = SDL_CreateWindow(
-			"Lolie 164"		// Window name
+			"Lolie 164: Assignment 2"		// Window name
 			, SDL_WINDOWPOS_UNDEFINED		// Window X Position
 			, SDL_WINDOWPOS_UNDEFINED		// Window Y Position
 			, WINDOW_WIDTH					// Window Width
@@ -234,15 +234,13 @@ void freeLookControls(Level lvl)
 			case SDLK_f:
 				camera.move(Vector3f(0, -.3f, 0));
 				break;
+			case SDLK_z:
+				system("pause");
+				break;
 			case SDLK_x:
 				// Switch to TopDown profile
 				cameraProfile = 1;
 				camera.setTopDown();
-				break;
-			case SDLK_c:
-				// Switch to ballCamera profile
-				cameraProfile = 2;
-				camera.setballCamera(lvl.getBall());
 				break;
             case SDLK_SPACE: //Give impulse to the ball
                 PhysicsManager::giveImpulse(normalize(camera.getViewDir()) * IMPULSE_FORCE, IMPULSE_FORCE, *lvl.getBall());
@@ -254,37 +252,7 @@ void freeLookControls(Level lvl)
 	}
 }
 
-void ballCameraControls(Level lvl)
-{
-	SDL_Event e;
-	while (SDL_PollEvent(&e)) {
-		switch (e.type){
-		case SDL_QUIT:
-			quit = true;
-			break;
-		case SDL_KEYDOWN:
-			switch (e.key.keysym.sym){
-			case SDLK_z:
-				// Switch to FreeLook profile
-				cameraProfile = 0;
-				camera.setFreeLook();
-				break;
-			case SDLK_x:
-				// Switch to TopDown profile
-				cameraProfile = 1;
-				camera.setTopDown();
-				break;
-			case SDLK_SPACE: //Give impulse to the ball
-				PhysicsManager::giveImpulse(normalize(camera.getViewDir()) * IMPULSE_FORCE, IMPULSE_FORCE, *lvl.getBall());
-				break;
-			default:
-				break;
-			}
-		}
-	}
-}
-
-void topDownControls(Level lvl)
+void topDownControls()
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
@@ -317,11 +285,9 @@ void topDownControls(Level lvl)
 				cameraProfile = 0;
 				camera.setFreeLook();
 				break;
-			case SDLK_c:
-				// Switch to ballCamera profile
-				cameraProfile = 2;
-				camera.setballCamera(lvl.getBall());
-				break;
+            case SDLK_SPACE: //give impulse to the ball
+                    PhysicsManager::giveImpulse(camera.getViewDir(), IMPULSE_FORCE, *ball);
+                break;
 			default:
 				break;
 			}
@@ -335,11 +301,7 @@ void handleEvents(Level lvl)
 		freeLookControls(lvl);
 	}
 	else if (cameraProfile == 1){
-		topDownControls(lvl);
-	}
-	else if (cameraProfile = 2) {
-		camera.setballCamera(lvl.getBall());
-		ballCameraControls(lvl);
+		topDownControls();
 	}
 }
 
@@ -395,32 +357,17 @@ int main(int argc, char* args[])
 		exit(0);
 	}
 
-	
-
 	// Main Loop
 	else {
-		cameraProfile = 0;
-		camera.setFreeLook();
 		float start_time_ms = SDL_GetTicks();
 		float prev_time = start_time_ms;
 		float curr_time;
 		float delta_time = 10;
-		float physics_lag_time = 0.0f;
 
 		while (!quit) {
 			// Update game time
 			curr_time = SDL_GetTicks() - start_time_ms;
-
-			// Calc time since last update
-			physics_lag_time += curr_time - prev_time;
-            //delta_time = curr_time - prev_time;
-			//std::cout << "Delta_Time: " << delta_time << "\n";
-
-			/*while (physics_lag_time > delta_time) {
-				// doPhysicsSimulaton(dt);
-				physics_lag_time -= delta_time;
-			}*/
-
+			delta_time = curr_time - prev_time;
 
 			// Process Events
 			handleEvents(test);
@@ -428,12 +375,6 @@ int main(int argc, char* args[])
 			update(delta_time, test);
 			// Draw
 			draw(test);
-
-			camera.update();
-			//Vector3f rotates = camera.getRotates();
-			/*std::cout << "Camera pos: [" << camera.getPosition().x << ", " << camera.getPosition().y << ", " << camera.getPosition().z << "]\n";
-			std::cout << "Camera Rotate: [" << rotates.x << ", " << rotates.y << ", " << rotates.z << "]\n";
-			std::cout << "Ball pos: [" << test.getBall()->getPosition().x << ", " << test.getBall()->getPosition().y << ", " << test.getBall()->getPosition().z << "]\n";*/
 
 			prev_time = curr_time;
 		}

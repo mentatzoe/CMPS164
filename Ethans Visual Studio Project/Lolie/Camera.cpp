@@ -25,11 +25,6 @@ void Camera::setPosition(Vector3f pos)
 	position = pos;
 }
 
-void Camera::update()
-{
-	getViewDirection();
-}
-
 void Camera::setFreeLook()
 {
 	position = Vector3f(0, 3, 3);
@@ -46,15 +41,6 @@ void Camera::setTopDown()
 
 	rotatedX = rotatedY = rotatedZ = 0.0;
 	rotateX(-90);
-}
-
-void Camera::setballCamera(Ball* ball)
-{
-	Vector3f ballPos = ball->getPosition();
-	position = Vector3f(ballPos.x -.1f, ballPos.y+.195f, ballPos.z+.12f);
-	rotatedX = rotatedY = rotatedZ = 0.0;
-	rotateX(-30);
-	rotateY(-30);
 }
 
 void Camera::getViewDirection()
@@ -131,8 +117,4 @@ void Camera::rotateZ(float angle)
 {
 	rotatedZ += angle;
 	viewDirChanged = true;
-}
-
-Vector3f Camera::getRotates(){
-	return Vector3f(rotatedX, rotatedY, rotatedZ);
 }

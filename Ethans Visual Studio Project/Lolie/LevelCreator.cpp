@@ -31,7 +31,7 @@ Level LevelCreator::createLevel(TokenList tokenList)
 
 			// Add the bottom layer of verts to the vert list
 			for (int i = 0; i < numSides; i++) {
-				Vector3f vert(vertList[i].x, vertList[i].y - .1, vertList[i].z);
+				Vector3f vert(vertList[i].x, vertList[i].y - .1f, vertList[i].z);
 				vertList.push_back(vert);
 			}
 
