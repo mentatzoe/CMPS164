@@ -17,6 +17,7 @@ public:
     float getMass(){return m;};
     Vector3f getV(){return v;};
     void setV(Vector3f vel){ v = vel;};
+	void printPhysics();
     
 private:
 	Vector3f pos;

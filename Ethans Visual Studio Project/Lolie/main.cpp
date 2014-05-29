@@ -23,7 +23,7 @@
 #define M_PI 3.1415926535       //define it
 #endif
 
-#define IMPULSE_FORCE 3
+#define IMPULSE_FORCE 2
 
 //// GLOBALS ////
 
@@ -37,14 +37,7 @@ float diffuseColour[4] = { .5, .5, .5, 1 };
 float ambientColour[4] = { 0, 0, 0, 1 };
 float specularColour[4] = { .1f, .1f, .1f, 1 };
 
-GLfloat no_mat[] = { 0.0, 0.0, 0.0, 1.0 };
-GLfloat mat_ambient[] = { 0.7, 0.7, 0.7, 1.0 };
-GLfloat mat_ambient_color[] = { 0.8, 0.8, 0.2, 1.0 };
-GLfloat mat_diffuse[] = { 0.1, 0.5, 0.8, 1.0 };
 GLfloat mat_specular[] = { 0.5, 0.5, 0.5, 1.0 };
-GLfloat no_shininess[] = { 0.0 };
-GLfloat low_shininess[] = { 5.0 };
-GLfloat high_shininess[] = { 100.0 };
 GLfloat mat_emission[] = { 0, 0, 0, 1 };
 
 // Game window
@@ -52,9 +45,6 @@ SDL_Window* gWindow = NULL;
 
 //OpenGL context
 SDL_GLContext gContext;
-
-// Render Flag
-bool gRenderQuad = true;
 
 // Our Rendering Camera
 Camera camera;
@@ -184,17 +174,7 @@ void close()
 	SDL_Quit();
 }
 
-void handleCamera()
-{
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(FoV, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 100);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	gluLookAt(0, 5, 0, 0, 0, 0, 0, 1, 0);
-}
-
-void freeLookControls(Level lvl)
+void freeLookControls(Level lvl, float dt)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
@@ -243,7 +223,7 @@ void freeLookControls(Level lvl)
 				camera.setTopDown();
 				break;
             case SDLK_SPACE: //Give impulse to the ball
-                PhysicsManager::giveImpulse(normalize(camera.getViewDir()) * IMPULSE_FORCE, IMPULSE_FORCE, *lvl.getBall());
+                PhysicsManager::giveImpulse(normalize(camera.getViewDir()) * IMPULSE_FORCE, dt, *lvl.getBall());
                 break;
 			default:
 				break;
@@ -295,10 +275,10 @@ void topDownControls()
 	}
 }
 
-void handleEvents(Level lvl)
+void handleEvents(Level lvl, float dt)
 {
 	if (cameraProfile == 0){
-		freeLookControls(lvl);
+		freeLookControls(lvl, dt);
 	}
 	else if (cameraProfile == 1){
 		topDownControls();
@@ -315,8 +295,6 @@ void draw(Level lvl)
 {
 	//Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//handleCamera();
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -370,7 +348,7 @@ int main(int argc, char* args[])
 			delta_time = curr_time - prev_time;
 
 			// Process Events
-			handleEvents(test);
+			handleEvents(test, delta_time);
 			// Update
 			update(delta_time, test);
 			// Draw

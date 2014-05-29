@@ -1,6 +1,3 @@
-#include "Ball.h"
-#include "Tile.h"
-#include "LineCollider.h"
 #ifdef __APPLE__
 #include <GLUT/glut.h>
 #include <OpenGL/gl.h>
@@ -10,6 +7,10 @@
 #include <GL/freeglut.h>
 #include <SDL.h>
 #endif
+
+#include "Ball.h"
+#include "Tile.h"
+#include "LineCollider.h"
 #include "PhysicsManager.h"
 
 Ball::Ball(int id, Vector3f pos)
@@ -83,4 +84,12 @@ void Ball::draw()
 	for (auto itr = children.begin(); itr != children.end(); itr++) {
 		(*itr)->draw();
 	}
+}
+
+void Ball::printPhysics()
+{
+	std::cout << "     A - Position: (" << pos.x << ", " << pos.y << ", " << pos.z << ")\n";
+	std::cout << "     B - Position: (" << getCollider()->getB().x << ", " << getCollider()->getB().y << ", " << getCollider()->getB().z << ")\n";
+	std::cout << "     Velocity: (" << v.x << ", " << v.y << ", " << v.z << ")\n";
+	std::cout << "     Parent Tile: " << static_cast<Tile*>(getParent())->getTileID() << "\n";
 }
