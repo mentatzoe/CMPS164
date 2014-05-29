@@ -39,36 +39,13 @@ void PhysicsManager::update(float dt, Ball& b)
 	tileNormal = parentTile->getNormals()[0];
 
 	// THETA = Angle of inclination, PHI = Angle of tilt
-	theta = acos(dot(tileNormal, up) / (magnitude(tileNormal) * magnitude(up)));
-	tileNormal.y = 0;
-	if (tileNormal.x > 0){
-		phi = acos(dot(tileNormal, z) / (magnitude(tileNormal) * magnitude(z)));
-	}
-	else{
-		phi = -acos(dot(tileNormal, z) / (magnitude(tileNormal) * magnitude(z)));
-	}
+	theta = calcIncline(tileNormal);
+	phi = calcTilt(tileNormal);
 
-	if (phi == -PI) phi = 0;
-
-	//std::cout << "sin(phi) = " << sin(phi) << "\n";
-	//std::cout << "cos(phi) = " << cos(phi) << "\n";
-
-	if (theta > 0){
-		//std::cout << "sin(theta) = " << sin(theta * (PI/180)) << "\n";
-		a = Vector3f(-1 * (-0.0000058 * sin(theta) * sin(phi)), 0, -1 * (-0.0000058 * sin(theta) * cos(phi)));
-	}
-	else{
-		a = Vector3f(0, 0, 0);
-	}
-	//std::cout << "a = (" << a.x << ", " << a.y << ", " << a.z << ")\n";
-	//std::cout << "theta = " << theta << ", phi = " << phi << "\n";
-
-
+	a = calcAcceleration(theta, phi);
 
 	// Calculate new position
-	p = Vector3f(p_init.x + v_init.x*dt + 0.5f*dt*dt*a.x,
-		p_init.y + v_init.y*dt + 0.5f*dt*dt*a.y,
-		p_init.z + v_init.z*dt + 0.5f*dt*dt*a.z);
+	p = getNextPosition(p_init, v_init, dt, a);
 
 	// Set point B of linecollider to new point (gives us the line)	
 	// Assuming A is already original position.
@@ -135,9 +112,7 @@ void PhysicsManager::update(float dt, Ball& b)
 						//std::cout << "dt = " << dt << ", timeLeft = " << timeLeft << "\n";
 
 						// Find new line given initial position is colPos and new velocity/pos and new time
-						p_new = Vector3f(colPos.x + vReflected.x*timeLeft + 0.5f*timeLeft*timeLeft*a.x,
-							colPos.y + vReflected.y*timeLeft + 0.5f*timeLeft*timeLeft*a.y,
-							colPos.z + vReflected.z*timeLeft + 0.5f*timeLeft*timeLeft*a.z);
+						p_new = getNextPosition(colPos, vReflected, timeLeft, a);
 
 						//std::cout << "vReflected = (" << p_new.x << ", " << p_new.y << ", " << p_new.z << ")\n";
 
@@ -221,30 +196,13 @@ void PhysicsManager::update(float dt, Ball& b)
 						tileNormal = static_cast<Tile*>(b.getParent())->getNormals()[0];
 
 						// THETA = Angle of inclination, PHI = Angle of tilt
-						theta = acos(dot(tileNormal, up) / (magnitude(tileNormal) * magnitude(up)));
-						tileNormal.y = 0;
-						if (tileNormal.x > 0){
-							phi = acos(dot(tileNormal, z) / (magnitude(tileNormal) * magnitude(z)));
-						}
-						else{
-							phi = -acos(dot(tileNormal, z) / (magnitude(tileNormal) * magnitude(z)));
-						}
-						
-						//std::cout << "sin(theta) = " << sin(theta * (PI / 180)) << "\n";
-						if (theta > 0){
-							//std::cout << "sin(theta) = " << sin(theta * (PI / 180)) << "\n";
-							a = Vector3f(-1 * (-0.0000058 * sin(theta) * sin(phi)), 0, -1 * (-0.0000058 * sin(theta) * cos(phi)));
-						}
-						else{
-							a = Vector3f(0, 0, 0);
-						}
-						//std::cout << "a on new tile = (" << a.x << ", " << a.y << ", " << a.z << ")\n";
-						//std::cout << "theta = " << theta << ", phi = " << phi << "\n";
+						theta = calcIncline(tileNormal);
+						phi = calcTilt(tileNormal);
+
+						a = calcAcceleration(theta, phi);
 
 						// Find new line given initial position is colPos and new time
-						p_new = Vector3f(colPos.x + b.getV().x*timeLeft + 0.5f*timeLeft*timeLeft*a.x,
-							colPos.y + b.getV().y*timeLeft + 0.5f*timeLeft*timeLeft*a.y,
-							colPos.z + b.getV().z*timeLeft + 0.5f*timeLeft*timeLeft*a.z);
+						p = getNextPosition(colPos, b.getV(), timeLeft, a);
 
 						// Update the new pos
 						b.getCollider()->setB(p_new);
@@ -266,42 +224,66 @@ void PhysicsManager::update(float dt, Ball& b)
 	}
 
 	// We finished with no collisions, calculate final pos
-	p_new = Vector3f(b.getPosition().x + b.getV().x*timeLeft + 0.5f*timeLeft*timeLeft*a.x,
-		b.getPosition().y + b.getV().y*timeLeft + 0.5f*timeLeft*timeLeft*a.y,
-		b.getPosition().z + b.getV().z*timeLeft + 0.5f*timeLeft*timeLeft*a.z);
+	p_new = getNextPosition(b.getPosition(), b.getV(), timeLeft, a);
+
 	b.setPosition(p_new);
 	b.getCollider()->setA(p_new);
 
 	// Update V given A
-	v = b.getV();
-	v.x += a.x * timeLeft;
-	v.y += a.y * timeLeft;
-	v.z += a.z * timeLeft;
-	b.setV(v);
-
-	/*// Mystery acceleration shit
-	Vector3f vN;
-	if (v.x != 0 && v.y != 0 && v.z != 0){
-		Vector3f vN = normalize(v);
-		//std::cout<< "Normalized Velocity vector is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
-		vN = Vector3f(-vN.x, -vN.y, -vN.z);
-		//std::cout<< "Normalized Velocity vector after sign change is ("<<vN.x<<","<< vN.y<<","<< vN.z<<")\n";
-	}
-	else {
-		vN = Vector3f(0, 0, 0);
-	}*/
-
-	//a = Vector3f(a.x * vN.x, a.y * vN.y, a.z * vN.z);
+	b.setV(updateV(b.getV(), a, timeLeft));
 
 	std::cout << "     Velocity: (" << b.getV().x << ", " << b.getV().y << ", " << b.getV().z << ")\n";
 
 	std::cout << "=============================\n";
 }
 
-Vector3f PhysicsManager::getNextPosition(Vector3f p, Vector3f v, float dt){
+float PhysicsManager::calcIncline(Vector3f normal)
+{
+	float theta = acos(dot(normal, up) / (magnitude(normal) * magnitude(up)));
+	return theta;
+}
+
+float PhysicsManager::calcTilt(Vector3f normal)
+{
+	float phi;
+	normal.y = 0;
+	if (normal.x > 0){
+		phi = acos(dot(normal, z) / (magnitude(normal) * magnitude(z)));
+	}
+	else{
+		phi = -acos(dot(normal, z) / (magnitude(normal) * magnitude(z)));
+	}
+
+	if (phi == -PI) phi = 0;
+
+	return phi;
+}
+
+Vector3f PhysicsManager::calcAcceleration(float theta, float phi)
+{
+	Vector3f a;
+	if (theta > 0){
+		a = Vector3f(-1 * (-0.0000058 * sin(theta) * sin(phi)), 0, -1 * (-0.0000058 * sin(theta) * cos(phi)));
+	}
+	else{
+		a = Vector3f(0, 0, 0);
+	}
+	return a;
+}
+
+Vector3f PhysicsManager::getNextPosition(Vector3f p, Vector3f v, float dt, Vector3f a){
     return Vector3f(p.x + v.x*dt + 0.5f*dt*dt*a.x,
                     p.y + v.y*dt + 0.5f*dt*dt*a.y,
                     p.z + v.z*dt + 0.5f*dt*dt*a.z);
+}
+
+Vector3f PhysicsManager::updateV(Vector3f v, Vector3f a, float dt)
+{
+	Vector3f v_new;
+	v_new.x = v.x + (a.x * dt);
+	v_new.y = v.y + (a.y * dt);
+	v_new.z = v.z + (a.z * dt);
+	return v_new;
 }
 
 bool PhysicsManager::checkCollision(SceneNode& node1, SceneNode& node2, Vector3f& result)
