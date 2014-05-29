@@ -48,9 +48,8 @@ void Ball::update(float dt)
 	// Set the position of ball to the position of the collision + the radius in the direction of the normal.
 	pos.y = colPoint.y + dimensions.radius;
     getCollider()->setA(pos);
-    getCollider()->setB(PhysicsManager::getNextPosition(pos, v, dt));
 
-
+	//std::cout << "Set Ball Y to " << pos.y << "\n";
 
 	// Update children
  	std::vector<SceneNode*> children = getChildren();

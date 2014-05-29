@@ -363,22 +363,11 @@ int main(int argc, char* args[])
 		float prev_time = start_time_ms;
 		float curr_time;
 		float delta_time = 10;
-		float physics_lag_time = 0.0f;
 
 		while (!quit) {
 			// Update game time
 			curr_time = SDL_GetTicks() - start_time_ms;
-
-			// Calc time since last update
-			physics_lag_time += curr_time - prev_time;
-            //delta_time = curr_time - prev_time;
-			//std::cout << "Delta_Time: " << delta_time << "\n";
-
-			/*while (physics_lag_time > delta_time) {
-				// doPhysicsSimulaton(dt);
-				physics_lag_time -= delta_time;
-			}*/
-
+			delta_time = curr_time - prev_time;
 
 			// Process Events
 			handleEvents(test);

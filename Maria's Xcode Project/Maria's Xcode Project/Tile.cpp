@@ -59,7 +59,7 @@ Tile::Tile(int tileID, int numSides, std::vector<Vector3f> verts, std::vector<in
 
 	for (int i = 0; i < neigh.size(); i++){
 		//Boundary bound(verts[i], verts[(i + 1) % verts.size()], .2, neigh[i] != 0);
-		addChild(new Boundary(upper[i], upper[(i + 1) % upper.size()], .2, neigh[i] == 0));
+		addChild(new Boundary(upper[i], upper[(i + 1) % upper.size()], 0.2f, neigh[i] == 0));
 	}
 }
 

@@ -56,6 +56,14 @@ public:
     Point operator-(const Point& other){
         return Point(xval - other.xval, yval-other.yval);
     }
+
+	Point operator*(const Point& other){
+		return Point(xval * other.xval, yval * other.yval);
+	}
+
+	Point operator+(const Point& other){
+		return Point(xval + other.xval, yval + other.yval);
+	}
 	// Move the existing point.
 	void move(double a, double b)
 	{
