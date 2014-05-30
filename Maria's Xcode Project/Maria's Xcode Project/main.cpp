@@ -63,7 +63,7 @@ int cameraProfile = 0;
 //Physics engine and ball needed for it
 Ball* ball;
 
-static int currLevel = 0;
+static int currLevel = 5;
 
 //// END OF GLOBALS ////
 
@@ -354,7 +354,7 @@ int main(int argc, char* args[])
 	//Level test = lc.createLevel(list);
     Course course = lc.createCourse(list);
     
-    Level test = course.levels[currLevel];
+
     
 	// Start SDL
 	if (!init(argc, args)) {
@@ -364,6 +364,8 @@ int main(int argc, char* args[])
 
 	// Main Loop
 	else {
+        Level test = course.levels[currLevel];
+        std::cout << test.levelName << "\n";
 		float start_time_ms = SDL_GetTicks();
 		float prev_time = start_time_ms;
 		float curr_time;

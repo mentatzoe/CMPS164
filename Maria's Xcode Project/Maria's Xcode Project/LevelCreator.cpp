@@ -9,27 +9,30 @@ Course LevelCreator::createCourse(TokenList tokenList)
     int numLevels = 0; //still not sure if we want this
     std::string cName;
 	Course* course = new Course();
-    std::string lName;
-    int par;
 
     
     while(curToken != tokenList.end()){
-        std::cout << "Examining curToken1: " << (*curToken).data << "\n";
+        //std::cout << "Examining curToken1: " << (*curToken).data << "\n";
         if (curToken->data.compare("course")==0){
             course->courseName = std::string((*std::next(curToken, 1)).data);
 			numLevels = std::stoi((*std::next(curToken, 2)).data);
 			curToken += 3;
-            std::cout << "Token at1: " << (*curToken).data << "\n";
-            std::cout << "Title is: " << course->courseName << "\n";
-            std::cout << "Levels are: " << numLevels << "\n";
         }
         
-        else if (curToken->data.compare("end_hole")==0) {
-            curToken++;
+        else if (curToken->data.compare("end_hole")==0){
+            curToken ++;
         }
         
+        /*
+            If we find a "begin_hole" token, 
+            we enter a new loop in which 
+            we create a new level and set it up
+            the same way createLevel works (+ name + par)
+         */
         else if (curToken->data.compare("begin_hole")==0) {
-            curToken++;
+            //std::cout << "-----------------BEGIN HOLE-----------------------" << "\n";
+            std::string lName = "";
+            int par;
             int tileID = 0;
             int numSides = 0;
             Vector3f teeVect;
@@ -39,18 +42,13 @@ Course LevelCreator::createCourse(TokenList tokenList)
             std::vector<int> neighbors;
             Level* level = new Level();
             curToken ++;
-            while (curToken->data.compare("end_hole")!=0){
-                std::cout << "Examining curToken1: " << (*curToken).data << "\n";
-                while (curToken->data.compare("end_hole")!=0) {
+            while (true){
                     //std::cout << "Examining curToken: " << (*curToken).data << "\n";
                     if (curToken->data.compare("tile") == 0) {
                         //std::cout << "     curToken is 'tile'\n";
                         tileID = std::stoi((*std::next(curToken, 1)).data);
                         numSides = std::stoi((*std::next(curToken, 2)).data);
                         curToken += 3;
-                        
-                        //std::cout << "     (After tileID/numSides) curToken is now " << (*curToken).data << "\n";
-                        
                         for (int i = 0; i < 3 * numSides; i += 3) {
                             //std::cout << "curToken as a float is currently " << std::stof((std::next(curToken, i))->data) << "\n";
                             Vector3f vert(std::stof((std::next(curToken, i))->data), std::stof((std::next(curToken, i + 1))->data), std::stof((std::next(curToken, i + 2))->data));
@@ -92,19 +90,49 @@ Course LevelCreator::createCourse(TokenList tokenList)
                         cupTileID = std::stof((*std::next(curToken, 1)).data);			// TileID
                         curToken += 5;
                     }
-                    else if(curToken->data.compare("name")==0){ //Needs refactor to get actual strings
-                        std::cout << "Examining curToken2: " << (*curToken).data << "\n";
-                        lName = std::string((*std::next(curToken, 1)).data);
-                        std::cout << "Creating level: " << lName << "\n";
-                        curToken += 2;
-                        std::cout << "Token at2: " << (*curToken).data << "\n";
+                    
+                    /*
+                     When dealing with names, 
+                     we try to see if the last character of the token is a quote.
+                     In that case, we remove the quotes and store the string.
+                     If not, we keep appending them until we find a word whose last char is a string.
+                     (This should be implemented recursively)
+                     */
+                    else if (curToken->data.compare("name")==0){
+                        //std::cout << "-----------------NAME PROCESSING-----------------------" << "\n";
+                        std::string token = std::string(std::next(curToken, 1)->data);
+                        if (strcmp(&token.at(token.length()-1),"\"") == 0){
+                            //Still needs to take the quotes off
+                            lName = std::string((*std::next(curToken, 1)).data);
+                            curToken += 2;
+                        } else {
+                            curToken++;
+                            std::string token = std::string(curToken->data);
+                            //std::cout << token << "\n";
+                            while(true){
+                                lName.append(std::string(curToken->data));
+                                lName.append(" ");
+                                curToken++;
+                                std::string token = std::string(curToken->data);
+                                if (strncmp(&token.at(token.length()-1),"\"",1) == 0){
+                                    lName.append(std::string(curToken->data));
+                                    break;
+                                }
+                            }
+                        }
                     }
                     
                     else if(curToken->data.compare("par")==0){
-                        std::cout << "Examining curToken3: " << (*curToken).data << "\n";
-                        int par = std::stoi((*std::next(curToken, 1)).data);
-                        std::cout << "Level par: " << par << "\n";
-                        curToken += 2;
+                        //std::cout << "-----------------BEGIN PAR-----------------------" << "\n";
+                        curToken++;
+                        level->par = std::stoi(curToken->data);
+                        //std::cout << "Level par: " << par << "\n";
+                        //std::cout << curToken->data << "\n";
+                    }
+                
+                    else if (curToken->data.compare("end_hole")==0) {
+                        //std::cout << "-----------------END HOLE-----------------------" << "\n";
+                        break;
                     }
                     else {
                         // Something wrong happened somewhere
@@ -128,13 +156,14 @@ Course LevelCreator::createCourse(TokenList tokenList)
                         (*t).addChild(new Cup(cupTileID, cupVect));
                     }
                 }
-                
+                std::cout << "---------------------" << "\n";
+                std::cout << "Level name is " << lName << "\n";
+                std::cout << "Par is " << level->par << "\n";
                 level->levelName = lName;
                 level->par = par;
                 course->levels.push_back(*level);
             }
         }
-    }
     return *course;
 }
 
