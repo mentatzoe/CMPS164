@@ -12,7 +12,6 @@
 #include <iostream>
 #include <algorithm>
 
-
 Tile::Tile(int tileID, int numSides, std::vector<Vector3f> verts, std::vector<int> neigh)
 : tileID(tileID)
 , numSides(numSides)

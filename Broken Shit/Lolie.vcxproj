@@ -67,7 +67,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>glew32.lib;freeglut.lib;SDL2.lib;SDL2main.lib;opengl32;glew32%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\DEVELOPMENT\freeglut\lib;C:\DEVELOPMENT\glew-1.10.0\lib\Release\Win32;C:\DEVELOPMENT\SDL2-2.0.3\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\DEVELOPMENT\freeglut-2.8.1\lib;C:\DEVELOPMENT\glew-1.10.0\lib\Release\Win32;C:\DEVELOPMENT\SDL2-2.0.3\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -75,14 +75,12 @@
     <ClCompile Include="Boundary.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CircleCollider.cpp" />
-    <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="Cup.cpp" />
     <ClCompile Include="FileParser.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelCreator.cpp" />
     <ClCompile Include="LineCollider.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="openglUtil.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
     <ClCompile Include="Tee.cpp" />
@@ -97,15 +95,11 @@
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="Cup.h" />
     <ClInclude Include="FileParser.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelCreator.h" />
     <ClInclude Include="LineCollider.h" />
-    <ClInclude Include="openglUtil.h" />
     <ClInclude Include="PhysicsManager.h" />
     <ClInclude Include="SceneNode.h" />
-    <ClInclude Include="Surface.h" />
     <ClInclude Include="Tee.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Token.h" />
