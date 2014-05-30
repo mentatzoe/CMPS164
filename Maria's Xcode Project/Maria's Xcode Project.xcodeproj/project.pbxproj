@@ -30,6 +30,7 @@
 		4FE21A15191D162200424821 /* Tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219F9191D162200424821 /* Tile.cpp */; };
 		4FE21A16191D162200424821 /* utility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219FC191D162200424821 /* utility.cpp */; };
 		4FE21A17191D162200424821 /* FileParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FE219FF191D162200424821 /* FileParser.cpp */; };
+		4FF08DE319385AC10009BD8D /* Course.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FF08DE119385AC10009BD8D /* Course.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -96,6 +97,8 @@
 		4FE21A03191D162200424821 /* hole.02.db */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hole.02.db; sourceTree = "<group>"; };
 		4FE21A04191D162200424821 /* LevelCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelCreator.h; sourceTree = "<group>"; };
 		4FE21A05191D162200424821 /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Token.h; sourceTree = "<group>"; };
+		4FF08DE119385AC10009BD8D /* Course.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Course.cpp; sourceTree = "<group>"; };
+		4FF08DE219385AC10009BD8D /* Course.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Course.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +161,8 @@
 				4FE219FE191D162200424821 /* InputManager.h */,
 				4FE219EF191D162200424821 /* Level.cpp */,
 				4FE219E9191D162200424821 /* Level.h */,
+				4FF08DE119385AC10009BD8D /* Course.cpp */,
+				4FF08DE219385AC10009BD8D /* Course.h */,
 				4FE219EA191D162200424821 /* LevelCreator.cpp */,
 				4FE21A04191D162200424821 /* LevelCreator.h */,
 				4FE219F0191D162200424821 /* Libraries.h */,
@@ -245,6 +250,7 @@
 				4FE21A0E191D162200424821 /* PhysicsManager.cpp in Sources */,
 				4FE21A16191D162200424821 /* utility.cpp in Sources */,
 				4FE21A15191D162200424821 /* Tile.cpp in Sources */,
+				4FF08DE319385AC10009BD8D /* Course.cpp in Sources */,
 				4FE21A07191D162200424821 /* Boundary.cpp in Sources */,
 				4FE21A17191D162200424821 /* FileParser.cpp in Sources */,
 				4FE21A0A191D162200424821 /* Collider2D.cpp in Sources */,

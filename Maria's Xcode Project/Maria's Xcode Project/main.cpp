@@ -63,6 +63,8 @@ int cameraProfile = 0;
 //Physics engine and ball needed for it
 Ball* ball;
 
+static int currLevel = 0;
+
 //// END OF GLOBALS ////
 
 /// Forward Declarations /// 
@@ -349,8 +351,11 @@ int main(int argc, char* args[])
 	FileParser fp;
 	TokenList list = fp.tokenize(args[1]);
 	LevelCreator lc;
-	Level test = lc.createLevel(list);
-
+	//Level test = lc.createLevel(list);
+    Course course = lc.createCourse(list);
+    
+    Level test = course.levels[currLevel];
+    
 	// Start SDL
 	if (!init(argc, args)) {
 		system("pause");

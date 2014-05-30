@@ -16,6 +16,8 @@ public:
 	void draw();
     Ball* getBall(){return b;};
     void setBall(Ball* ba){b = ba;};
+    std::string levelName;
+    int par;
 private:
     Ball* b;
 };

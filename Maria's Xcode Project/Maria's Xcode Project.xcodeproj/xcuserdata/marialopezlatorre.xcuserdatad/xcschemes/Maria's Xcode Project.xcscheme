@@ -60,7 +60,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "hole.01.db"
+            argument = "course.db"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
