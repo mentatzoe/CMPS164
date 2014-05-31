@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F24DDE419395961004F95F0 /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F24DDE219395961004F95F0 /* SDL2_ttf.framework */; };
+		4F24DDE519395961004F95F0 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F24DDE319395961004F95F0 /* SDL2_image.framework */; };
 		4F3290D719072F9A00FB737D /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3290D619072F9A00FB737D /* SDL2.framework */; };
 		4FA2050B18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */; };
 		4FA2051218FDF3BE007F09B5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA2051118FDF3BE007F09B5 /* Cocoa.framework */; };
@@ -47,6 +49,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4F24DDDC193956F4004F95F0 /* libSDL2_ttf-2.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libSDL2_ttf-2.0.0.dylib"; path = "../../../../../../usr/local/lib/libSDL2_ttf-2.0.0.dylib"; sourceTree = "<group>"; };
+		4F24DDE019395862004F95F0 /* libSDL2_ttf.la */ = {isa = PBXFileReference; lastKnownFileType = text; name = libSDL2_ttf.la; path = ../../../../../../usr/local/lib/libSDL2_ttf.la; sourceTree = "<group>"; };
+		4F24DDE219395961004F95F0 /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../../../../../../Library/Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
+		4F24DDE319395961004F95F0 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		4F3290D619072F9A00FB737D /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		4FA2050518FDF33F007F09B5 /* Maria's Xcode Project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Maria's Xcode Project"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Maria_s_Xcode_Project.1; sourceTree = "<group>"; };
@@ -106,6 +112,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F24DDE419395961004F95F0 /* SDL2_ttf.framework in Frameworks */,
+				4F24DDE519395961004F95F0 /* SDL2_image.framework in Frameworks */,
 				4F3290D719072F9A00FB737D /* SDL2.framework in Frameworks */,
 				4FA2051618FDF3D0007F09B5 /* OpenGL.framework in Frameworks */,
 				4FA2051418FDF3C4007F09B5 /* GLUT.framework in Frameworks */,
@@ -119,6 +127,10 @@
 		4FA204FC18FDF33F007F09B5 = {
 			isa = PBXGroup;
 			children = (
+				4F24DDE219395961004F95F0 /* SDL2_ttf.framework */,
+				4F24DDE319395961004F95F0 /* SDL2_image.framework */,
+				4F24DDE019395862004F95F0 /* libSDL2_ttf.la */,
+				4F24DDDC193956F4004F95F0 /* libSDL2_ttf-2.0.0.dylib */,
 				4F3290D619072F9A00FB737D /* SDL2.framework */,
 				4FA2051518FDF3D0007F09B5 /* OpenGL.framework */,
 				4FA2051318FDF3C4007F09B5 /* GLUT.framework */,
