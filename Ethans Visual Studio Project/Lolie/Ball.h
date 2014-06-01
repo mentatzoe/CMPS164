@@ -12,13 +12,16 @@ public:
 
 	void draw();
 	void update(float dt);
+
     Vector3f getPosition(){return pos;};
     void setPosition(Vector3f p){pos = p;};
-    float getMass(){return m;};
+
     Vector3f getV(){return v;};
     void setV(Vector3f vel){ v = vel;};
+
+	float getMass(){ return m; };
+
 	void printPhysics();
-    
 private:
 	Vector3f pos;
     Vector3f v;

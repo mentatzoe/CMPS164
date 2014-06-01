@@ -11,6 +11,7 @@ public:
 
 	std::vector<Vector3f> getVerts() { return vertList; }
 	std::vector<int> getNeighbors() { return neighbors; }
+
 	int getTileID() { return tileID; }
 	int getNumSides() { return numSides; }
 

@@ -403,13 +403,10 @@ int main(int argc, char* args[])
 	//Level test = lc.createLevel(list);
     Course course = lc.createCourse(list);
     
-	std::cout << "Hellow";
-    
 	// Start SDL
 	if (!init(argc, args)) {
 		system("pause");
 		exit(0);
-		std::cout << "Hellow";
 	}
     
 	// Main Loop

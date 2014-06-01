@@ -5,7 +5,6 @@
 #include "Tee.h"
 #include "LineCollider.h"
 
-//const float MASS = 0.045f;
 const float PI = 3.14159f;
 
 Vector3f a(0, 0, 0);
@@ -33,8 +32,7 @@ void PhysicsManager::update(float dt, Ball& b)
 	// Calculate new position
 	p = getNextPosition(p_init, v_init, dt, a);
 
-	// Set point B of linecollider to new point (gives us the line)	
-	// Assuming A is already original position.
+	// Set Line Collider
 	b.getCollider()->setA(p_init);
 	b.getCollider()->setB(p);
 
@@ -60,10 +58,14 @@ void PhysicsManager::update(float dt, Ball& b)
 					break;
 				case SceneNode::Tee_t:
 					//Tee* tee = static_cast<Tee*>(siblings[i]);
-					b.setV(Vector3f(0, 0, 0));
+				//	b.setV(Vector3f(0, 0, 0));
 					break;
 				case SceneNode::Cup_t:
 					//Cup* cup = static_cast<Cup*>(siblings[i]);
+					std::cout << "Hit the cup!\n";
+					if (magnitude(b.getV()) < .0001 && magnitude(b.getV()) != 0){
+						std::cout << "MADE IT IN!\n";
+					}
 					break;
 				case SceneNode::Ball_t:
 					break;
