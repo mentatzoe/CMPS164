@@ -7,9 +7,13 @@
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <SDL2/SDL.h>
+#include <SDL2_ttf/SDL_ttf.h>
+#include <SDL2_image/SDL_image.h>
 #else
 #include <GL/freeglut.h>
 #include <SDL.h>
+#include <SDL_ttf.h>
+#include <SDL_image.h>
 #endif
 
 #include <iostream>
@@ -23,7 +27,7 @@
 #define M_PI 3.1415926535       //define it
 #endif
 
-#define IMPULSE_FORCE 2
+#define IMPULSE_FORCE 3
 
 //// GLOBALS ////
 
@@ -37,7 +41,14 @@ float diffuseColour[4] = { .5, .5, .5, 1 };
 float ambientColour[4] = { 0, 0, 0, 1 };
 float specularColour[4] = { .1f, .1f, .1f, 1 };
 
+GLfloat no_mat[] = { 0.0, 0.0, 0.0, 1.0 };
+GLfloat mat_ambient[] = { 0.7, 0.7, 0.7, 1.0 };
+GLfloat mat_ambient_color[] = { 0.8, 0.8, 0.2, 1.0 };
+GLfloat mat_diffuse[] = { 0.1, 0.5, 0.8, 1.0 };
 GLfloat mat_specular[] = { 0.5, 0.5, 0.5, 1.0 };
+GLfloat no_shininess[] = { 0.0 };
+GLfloat low_shininess[] = { 5.0 };
+GLfloat high_shininess[] = { 100.0 };
 GLfloat mat_emission[] = { 0, 0, 0, 1 };
 
 // Game window
@@ -46,12 +57,17 @@ SDL_Window* gWindow = NULL;
 //OpenGL context
 SDL_GLContext gContext;
 
+// Render Flag
+bool gRenderQuad = true;
+
 // Our Rendering Camera
 Camera camera;
 int cameraProfile = 0;
 
 //Physics engine and ball needed for it
 Ball* ball;
+
+static int currLevel = 5;
 
 //// END OF GLOBALS ////
 
@@ -174,7 +190,17 @@ void close()
 	SDL_Quit();
 }
 
-void freeLookControls(Level lvl, float dt)
+void handleCamera()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(FoV, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 100);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gluLookAt(0, 5, 0, 0, 0, 0, 0, 1, 0);
+}
+
+void freeLookControls(Level lvl)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
@@ -223,7 +249,7 @@ void freeLookControls(Level lvl, float dt)
 				camera.setTopDown();
 				break;
             case SDLK_SPACE: //Give impulse to the ball
-                PhysicsManager::giveImpulse(normalize(camera.getViewDir()) * IMPULSE_FORCE, dt, *lvl.getBall());
+                PhysicsManager::giveImpulse(normalize(camera.getViewDir()) * IMPULSE_FORCE, IMPULSE_FORCE, *lvl.getBall());
                 break;
 			default:
 				break;
@@ -275,10 +301,10 @@ void topDownControls()
 	}
 }
 
-void handleEvents(Level lvl, float dt)
+void handleEvents(Level lvl)
 {
 	if (cameraProfile == 0){
-		freeLookControls(lvl, dt);
+		freeLookControls(lvl);
 	}
 	else if (cameraProfile == 1){
 		topDownControls();
@@ -295,6 +321,8 @@ void draw(Level lvl)
 {
 	//Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//handleCamera();
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -322,21 +350,72 @@ void draw(Level lvl)
 	SDL_GL_SwapWindow(gWindow);
 }
 
+/*void drawHUD(Level lvl){
+    // Initialize SDL_ttf library
+    
+    if (TTF_Init() != 0)
+    {
+        std::cout << "TTF_Init() Failed: " << TTF_GetError() << "\n";
+        SDL_Quit();
+        exit(1);
+    }
+    
+    // Load a font
+    TTF_Font *font;
+    //WE NEED TO SPECIFY THE PATH ACCORDING TO THE USED OS
+    font = TTF_OpenFont("/Library/Fonts/Microsoft/Arial.ttf", 24);
+    if (font == NULL)
+    {
+        std::cout << "TTF_OpenFont() Failed: " << TTF_GetError() << "\n";
+        TTF_Quit();
+        SDL_Quit();
+        exit(1);
+    }
+    
+    
+    // Write text to surface
+    SDL_Surface *text;
+    SDL_Color text_color = {35, 25, 255};
+    text = TTF_RenderText_Solid(font,
+                                "A journey of a thousand miles begins with a single step.",
+                                text_color);
+    
+    if (text == NULL)
+    {
+        std::cout << "TTF_RenderText_Solid() Failed: " << TTF_GetError() << "\n";
+        TTF_Quit();
+        SDL_Quit();
+        exit(1);
+    }
+    // Apply the text to the display
+    //IF ONLY I KNEW HOW!!!
+//    if (SDL_BlitSurface(text, NULL, &display, NULL) != 0)
+//    {
+//        std::cout << "SDL_BlitSurface() Failed: " << SDL_GetError() << "\n";
+//    }
+}*/
+
 int main(int argc, char* args[])
 {
 	FileParser fp;
 	TokenList list = fp.tokenize(args[1]);
 	LevelCreator lc;
-	Level test = lc.createLevel(list);
-
+	//Level test = lc.createLevel(list);
+    Course course = lc.createCourse(list);
+    
+	std::cout << "Hellow";
+    
 	// Start SDL
 	if (!init(argc, args)) {
 		system("pause");
 		exit(0);
+		std::cout << "Hellow";
 	}
-
+    
 	// Main Loop
 	else {
+        Level test = course.levels[currLevel];
+        std::cout << test.levelName << "\n";
 		float start_time_ms = SDL_GetTicks();
 		float prev_time = start_time_ms;
 		float curr_time;
@@ -348,11 +427,13 @@ int main(int argc, char* args[])
 			delta_time = curr_time - prev_time;
 
 			// Process Events
-			handleEvents(test, delta_time);
+			handleEvents(test);
 			// Update
 			update(delta_time, test);
 			// Draw
+			std::cout << "Hellow";
 			draw(test);
+            //drawHUD(test);
 
 			prev_time = curr_time;
 		}
