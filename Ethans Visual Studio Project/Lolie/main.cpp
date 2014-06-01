@@ -67,7 +67,7 @@ int cameraProfile = 0;
 //Physics engine and ball needed for it
 Ball* ball;
 
-static int currLevel = 5;
+static int currLevel = 1;
 
 //// END OF GLOBALS ////
 
@@ -428,7 +428,6 @@ int main(int argc, char* args[])
 			// Update
 			update(delta_time, test);
 			// Draw
-			std::cout << "Hellow";
 			draw(test);
             //drawHUD(test);
 

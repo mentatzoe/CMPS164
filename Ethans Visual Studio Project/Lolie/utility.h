@@ -25,6 +25,10 @@ public:
 	Vector3f operator*(const float& scalar) {
 		return Vector3f(x * scalar, y * scalar, z * scalar);
 	}
+	
+	Vector3f operator/(const float& scalar) {
+		return Vector3f(x / scalar, y / scalar, z / scalar);
+	}
 
 	bool operator==(const Vector3f& other) {
 		if (x == other.x && y == other.y && z == other.z)

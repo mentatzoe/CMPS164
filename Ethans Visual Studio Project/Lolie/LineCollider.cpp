@@ -61,23 +61,44 @@ bool LineCollider::getCircleCollision(Collider2D& col, Vector3f& result)
 {
 	CircleCollider* cir_col = static_cast<CircleCollider*>(&col);
 
-	std::cout << "Checking collision between line from (" << getA().x << ", " << getA().y << ", " << getA().z << ") to (" << getB().x << ", " << getB().y << ", " << getB().z << ") with circle of radius " << cir_col->getRadius() << " at point (" << cir_col->getCenter().x << ", " << cir_col->getCenter().y << ", " << cir_col->getCenter().z << ")\n";
+	//std::cout << "Checking collision between line from (" << getA().x << ", " << getA().y << ", " << getA().z << ") to (" << getB().x << ", " << getB().y << ", " << getB().z << ") with circle of radius " << cir_col->getRadius() << " at point (" << cir_col->getCenter().x << ", " << cir_col->getCenter().y << ", " << cir_col->getCenter().z << ")\n";
 
-	Vector3f LocalP1 = getA() - cir_col->getCenter();
-	Vector3f LocalP2 = getB() - cir_col->getCenter();
+	// Declarations
+	float radius = cir_col->getRadius();
+	Vector3f cirPos = cir_col->getCenter();
+	Vector3f p1 = getA();
+	Vector3f p2 = getB();
 
-	// Precalculate this value. We use it often
-	Vector3f P2MinusP1 = LocalP2 - LocalP1;
+	// Get line
+	Vector3f seg_v = p2 - p1;
+	Vector3f pt_v = cirPos - p1;
 
-	float a = (P2MinusP1.x) * (P2MinusP1.x) + (P2MinusP1.z) * (P2MinusP1.z);
-	float b = 2 * ((P2MinusP1.x * LocalP1.x) + (P2MinusP1.z * LocalP1.z));
-	float c = (LocalP1.x * LocalP1.x) + (LocalP1.z * LocalP1.z) - (cir_col->getRadius() * cir_col->getRadius());
-	float delta = (b * b) - (4 * a * c);
-	std::cout << "     delta = " << delta << ", a = " << a << " , b = " << b << ", c = " << c << "\n";
-	if (delta < 0) // No intersection
+	// Get projection (scalar) of circle onto line
+	float proj_s = dot(pt_v, (seg_v / magnitude(seg_v)));
+	
+	// If the projection is < 0 or > magnitude(seg_v), then there is no collision
+	if (proj_s < 0 || proj_s > magnitude(seg_v)){
 		return false;
-	else if (delta == 0) // One intersection
+	}
+	// else the circle is within the bounds of the line
+
+	// Calculate actual project vector
+	Vector3f proj_v = (seg_v / magnitude(seg_v)) * proj_s;
+	
+	// convert it to world coordinates
+	Vector3f closest = p1 + proj_v;
+	// Closest is now the closest point on the line to the circle's position
+
+	// Calc vector from closest to the circle
+	Vector3f dist_v = cirPos - closest;
+
+	// If the distance to the line is less than the radius, they are colliding
+	if (magnitude(dist_v) < radius){
+		result = closest;
 		return true;
-	else if (delta > 0) // Two intersections
-		return true;
+	}
+	// Else they aren't
+	else{
+		return false;
+	}
 }

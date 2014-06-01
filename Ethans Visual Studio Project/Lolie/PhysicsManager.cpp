@@ -63,7 +63,7 @@ void PhysicsManager::update(float dt, Ball& b)
 				case SceneNode::Cup_t:
 					//Cup* cup = static_cast<Cup*>(siblings[i]);
 					std::cout << "Hit the cup!\n";
-					if (magnitude(b.getV()) < .0001 && magnitude(b.getV()) != 0){
+					if (magnitude(b.getV()) < .0004 && magnitude(b.getV()) != 0){
 						std::cout << "MADE IT IN!\n";
 					}
 					break;
