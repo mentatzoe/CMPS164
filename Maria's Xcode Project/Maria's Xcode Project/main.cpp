@@ -31,6 +31,8 @@
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
+const char* WINDOW_TITLE = "Mini Golf";
+
 const bool USE_VSYNC = 1;			// 1 On, 0 Off, -1 Late Swap Tearing
 bool quit = false;
 float FoV = 90;
@@ -52,6 +54,9 @@ GLfloat mat_emission[] = { 0, 0, 0, 1 };
 // Game window
 SDL_Window* gWindow = NULL;
 
+//SDL renderer
+SDL_Renderer *gRenderer = NULL;
+
 //OpenGL context
 SDL_GLContext gContext;
 
@@ -65,7 +70,7 @@ int cameraProfile = 0;
 //Physics engine and ball needed for it
 Ball* ball;
 
-static int currLevel = 5;
+static int currLevel = 9;
 
 //// END OF GLOBALS ////
 
@@ -98,6 +103,13 @@ bool init(int argc, char* args[]) {
 			std::cout << "SDL_CreateWindow has failed. SDL Error: " << SDL_GetError() << "\n";
 			success = false;
 		}
+        
+        /* Create a Render */
+        gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+        if (gRenderer == nullptr) {
+            std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
+            return 1;
+        }
 		else {
 			// Create context
 			gContext = SDL_GL_CreateContext(gWindow);
@@ -174,6 +186,11 @@ bool initGL(int argc, char* args[]) {
 		std::cout << "Failed to initialize OpenGL. Error: " << gluErrorString(err) << "\n";
 		success = false;
 	}
+    
+    if (TTF_Init() != 0){
+        std::cout << "TTF_Init" << "\n";
+        exit(1);
+    }
 
 	glutInit(&argc, args);
 
@@ -348,50 +365,6 @@ void draw(Level lvl)
 	SDL_GL_SwapWindow(gWindow);
 }
 
-void drawHUD(Level lvl){
-    // Initialize SDL_ttf library
-    
-    if (TTF_Init() != 0)
-    {
-        std::cout << "TTF_Init() Failed: " << TTF_GetError() << "\n";
-        SDL_Quit();
-        exit(1);
-    }
-    
-    // Load a font
-    TTF_Font *font;
-    //WE NEED TO SPECIFY THE PATH ACCORDING TO THE USED OS
-    font = TTF_OpenFont("/Library/Fonts/Microsoft/Arial.ttf", 24);
-    if (font == NULL)
-    {
-        std::cout << "TTF_OpenFont() Failed: " << TTF_GetError() << "\n";
-        TTF_Quit();
-        SDL_Quit();
-        exit(1);
-    }
-    
-    
-    // Write text to surface
-    SDL_Surface *text;
-    SDL_Color text_color = {35, 25, 255};
-    text = TTF_RenderText_Solid(font,
-                                "A journey of a thousand miles begins with a single step.",
-                                text_color);
-    
-    if (text == NULL)
-    {
-        std::cout << "TTF_RenderText_Solid() Failed: " << TTF_GetError() << "\n";
-        TTF_Quit();
-        SDL_Quit();
-        exit(1);
-    }
-    // Apply the text to the display
-    //IF ONLY I KNEW HOW!!!
-//    if (SDL_BlitSurface(text, NULL, &display, NULL) != 0)
-//    {
-//        std::cout << "SDL_BlitSurface() Failed: " << SDL_GetError() << "\n";
-//    }
-}
 
 int main(int argc, char* args[])
 {
@@ -417,7 +390,7 @@ int main(int argc, char* args[])
 		float prev_time = start_time_ms;
 		float curr_time;
 		float delta_time = 10;
-
+        
 		while (!quit) {
 			// Update game time
 			curr_time = SDL_GetTicks() - start_time_ms;
@@ -429,7 +402,8 @@ int main(int argc, char* args[])
 			update(delta_time, test);
 			// Draw
 			draw(test);
-            drawHUD(test);
+          
+            //drawHUD(test);
 
 			prev_time = curr_time;
 		}
