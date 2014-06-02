@@ -78,6 +78,7 @@
     <ClCompile Include="Course.cpp" />
     <ClCompile Include="Cup.cpp" />
     <ClCompile Include="FileParser.cpp" />
+    <ClCompile Include="GameInfo.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelCreator.cpp" />
     <ClCompile Include="LineCollider.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="Course.h" />
     <ClInclude Include="Cup.h" />
     <ClInclude Include="FileParser.h" />
+    <ClInclude Include="GameInfo.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelCreator.h" />
     <ClInclude Include="LineCollider.h" />

@@ -22,6 +22,7 @@
 #include "Camera.h"
 #include "PhysicsManager.h"
 #include "Ball.h"
+#include "GameInfo.h"
 
 #ifndef M_PI    //if the pi is not defined in the cmath header file
 #define M_PI 3.1415926535       //define it
@@ -62,12 +63,9 @@ bool gRenderQuad = true;
 
 // Our Rendering Camera
 Camera camera;
-int cameraProfile = 0;
 
 //Physics engine and ball needed for it
 Ball* ball;
-
-static int currLevel = 1;
 
 //// END OF GLOBALS ////
 
@@ -245,7 +243,7 @@ void freeLookControls(Level lvl)
 				break;
 			case SDLK_x:
 				// Switch to TopDown profile
-				cameraProfile = 1;
+				GameInfo::setTopDown();
 				camera.setTopDown();
 				break;
             case SDLK_SPACE: //Give impulse to the ball
@@ -288,7 +286,7 @@ void topDownControls()
 				break;
 			case SDLK_z:
 				// Switch to FreeLook profile
-				cameraProfile = 0;
+				GameInfo::setFreeLook();
 				camera.setFreeLook();
 				break;
             case SDLK_SPACE: //give impulse to the ball
@@ -303,10 +301,10 @@ void topDownControls()
 
 void handleEvents(Level lvl)
 {
-	if (cameraProfile == 0){
+	if (GameInfo::cameraProfile == 0){
 		freeLookControls(lvl);
 	}
-	else if (cameraProfile == 1){
+	else if (GameInfo::cameraProfile == 1){
 		topDownControls();
 	}
 }
@@ -411,14 +409,14 @@ int main(int argc, char* args[])
     
 	// Main Loop
 	else {
-        Level test = course.levels[currLevel];
-        std::cout << test.levelName << "\n";
+        //std::cout << test.levelName << "\n";
 		float start_time_ms = SDL_GetTicks();
 		float prev_time = start_time_ms;
 		float curr_time;
 		float delta_time = 10;
 
 		while (!quit) {
+			Level test = course.levels[GameInfo::currLevel];
 			// Update game time
 			curr_time = SDL_GetTicks() - start_time_ms;
 			delta_time = curr_time - prev_time;

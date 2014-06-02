@@ -4,6 +4,7 @@
 #include "Cup.h"
 #include "Tee.h"
 #include "LineCollider.h"
+#include "GameInfo.h"
 
 const float PI = 3.14159f;
 
@@ -63,8 +64,9 @@ void PhysicsManager::update(float dt, Ball& b)
 				case SceneNode::Cup_t:
 					//Cup* cup = static_cast<Cup*>(siblings[i]);
 					std::cout << "Hit the cup!\n";
-					if (magnitude(b.getV()) < .0004 && magnitude(b.getV()) != 0){
+					if (magnitude(b.getV()) < .0008 && magnitude(b.getV()) != 0){
 						std::cout << "MADE IT IN!\n";
+						GameInfo::nextLevel();
 					}
 					break;
 				case SceneNode::Ball_t:
