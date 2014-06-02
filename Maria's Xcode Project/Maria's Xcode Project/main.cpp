@@ -70,11 +70,12 @@ int cameraProfile = 0;
 //Physics engine and ball needed for it
 Ball* ball;
 
-static int currLevel = 9;
+static int currLevel = 17;
 
 //// END OF GLOBALS ////
 
-/// Forward Declarations /// 
+/// Forward Declarations ///
+
 bool initGL(int argc, char* args[]);
 
 bool init(int argc, char* args[]) {
@@ -332,18 +333,50 @@ void update(float delta_time, Level lvl)
 	lvl.update(delta_time);
 }
 
+void drawHUD(Level lvl){
+    
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0.0, WINDOW_WIDTH, 0.0, WINDOW_HEIGHT);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glDisable(GL_LIGHTING);
+    glPushMatrix();
+    glLoadIdentity();
+    glColor3f(0.0, 1.0, 1.0); // Green
+    glRasterPos2i(10, 10);
+    std::string s = lvl.levelName;
+    void * font = GLUT_BITMAP_HELVETICA_18;
+    
+    for (std::string::iterator i = s.begin(); i != s.end(); ++i)
+    {
+        char c = *i;
+        glutBitmapCharacter(font, c);
+    }
+
+    glEnable(GL_LIGHTING);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+}
+
 void draw(Level lvl)
 {
 	//Clear color buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//handleCamera();
-
+    
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(FoV, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 100);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
 
 	camera.render();
 
@@ -361,7 +394,9 @@ void draw(Level lvl)
 	lvl.draw();
 
 	glPopMatrix();
-
+    
+    drawHUD(lvl);
+    
 	SDL_GL_SwapWindow(gWindow);
 }
 
