@@ -67,6 +67,7 @@ void PhysicsManager::update(float dt, Ball& b)
 					if (magnitude(b.getV()) < .0008 && magnitude(b.getV()) != 0){
 						std::cout << "MADE IT IN!\n";
 						GameInfo::nextLevel();
+                        GameInfo::strokes = 0;
 					}
 					break;
 				case SceneNode::Ball_t:

@@ -12,6 +12,8 @@
 #else
 #include <GL/freeglut.h>
 #include <SDL.h>
+#include <SDL_ttf.h>
+#include <SDL_image.h>
 #endif
 
 #include <iostream>
@@ -20,6 +22,8 @@
 #include "Camera.h"
 #include "PhysicsManager.h"
 #include "Ball.h"
+#include "GameInfo.h"
+#include "HUD.h"
 
 #ifndef M_PI    //if the pi is not defined in the cmath header file
 #define M_PI 3.1415926535       //define it
@@ -31,8 +35,6 @@
 
 const int WINDOW_WIDTH = 640;
 const int WINDOW_HEIGHT = 480;
-const char* WINDOW_TITLE = "Mini Golf";
-
 const bool USE_VSYNC = 1;			// 1 On, 0 Off, -1 Late Swap Tearing
 bool quit = false;
 float FoV = 90;
@@ -54,9 +56,6 @@ GLfloat mat_emission[] = { 0, 0, 0, 1 };
 // Game window
 SDL_Window* gWindow = NULL;
 
-//SDL renderer
-SDL_Renderer *gRenderer = NULL;
-
 //OpenGL context
 SDL_GLContext gContext;
 
@@ -65,17 +64,14 @@ bool gRenderQuad = true;
 
 // Our Rendering Camera
 Camera camera;
-int cameraProfile = 0;
 
 //Physics engine and ball needed for it
 Ball* ball;
 
-static int currLevel = 17;
 
 //// END OF GLOBALS ////
 
-/// Forward Declarations ///
-
+/// Forward Declarations /// 
 bool initGL(int argc, char* args[]);
 
 bool init(int argc, char* args[]) {
@@ -104,13 +100,6 @@ bool init(int argc, char* args[]) {
 			std::cout << "SDL_CreateWindow has failed. SDL Error: " << SDL_GetError() << "\n";
 			success = false;
 		}
-        
-        /* Create a Render */
-        gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
-        if (gRenderer == nullptr) {
-            std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-            return 1;
-        }
 		else {
 			// Create context
 			gContext = SDL_GL_CreateContext(gWindow);
@@ -187,11 +176,6 @@ bool initGL(int argc, char* args[]) {
 		std::cout << "Failed to initialize OpenGL. Error: " << gluErrorString(err) << "\n";
 		success = false;
 	}
-    
-    if (TTF_Init() != 0){
-        std::cout << "TTF_Init" << "\n";
-        exit(1);
-    }
 
 	glutInit(&argc, args);
 
@@ -261,11 +245,12 @@ void freeLookControls(Level lvl)
 				break;
 			case SDLK_x:
 				// Switch to TopDown profile
-				cameraProfile = 1;
+				GameInfo::setTopDown();
 				camera.setTopDown();
 				break;
             case SDLK_SPACE: //Give impulse to the ball
                 PhysicsManager::giveImpulse(normalize(camera.getViewDir()) * IMPULSE_FORCE, IMPULSE_FORCE, *lvl.getBall());
+                GameInfo::strokes++;
                 break;
 			default:
 				break;
@@ -304,7 +289,7 @@ void topDownControls()
 				break;
 			case SDLK_z:
 				// Switch to FreeLook profile
-				cameraProfile = 0;
+				GameInfo::setFreeLook();
 				camera.setFreeLook();
 				break;
             case SDLK_SPACE: //give impulse to the ball
@@ -319,10 +304,10 @@ void topDownControls()
 
 void handleEvents(Level lvl)
 {
-	if (cameraProfile == 0){
+	if (GameInfo::cameraProfile == 0){
 		freeLookControls(lvl);
 	}
-	else if (cameraProfile == 1){
+	else if (GameInfo::cameraProfile == 1){
 		topDownControls();
 	}
 }
@@ -334,27 +319,34 @@ void update(float delta_time, Level lvl)
 }
 
 void drawHUD(Level lvl){
-    
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadIdentity();
     gluOrtho2D(0.0, WINDOW_WIDTH, 0.0, WINDOW_HEIGHT);
-    
     glMatrixMode(GL_MODELVIEW);
     glDisable(GL_LIGHTING);
     glPushMatrix();
     glLoadIdentity();
-    glColor3f(0.0, 1.0, 1.0); // Green
-    glRasterPos2i(10, 10);
-    std::string s = lvl.levelName;
-    void * font = GLUT_BITMAP_HELVETICA_18;
-    
-    for (std::string::iterator i = s.begin(); i != s.end(); ++i)
-    {
-        char c = *i;
-        glutBitmapCharacter(font, c);
-    }
 
+    //Drawing the title
+    HUD::drawTitle(lvl.levelName, 10, 460, 0.0, 0.0, 1.0);
+    
+    //Constructing the "par" text
+    char par[10];
+    std::cout << lvl.par << "\n";
+    sprintf(par,"Par: %d", lvl.par);
+    HUD::drawSomeText(par, 10, 10, 0.0, 0.0, 1.0);
+    std::cout << par << "\n";
+    
+
+    //Constructing the "strokes" text
+    char strokes[50];
+    std::cout << GameInfo::strokes << "\n";
+    sprintf(strokes,"Strokes: %d", GameInfo::strokes);
+    HUD::drawSomeText(strokes, 80, 10, 0.0, 0.0, 1.0);
+    std::cout << strokes << "\n";
+    
+    
     glEnable(GL_LIGHTING);
     
     glMatrixMode(GL_MODELVIEW);
@@ -362,6 +354,7 @@ void drawHUD(Level lvl){
     
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
+    
 }
 
 void draw(Level lvl)
@@ -370,13 +363,12 @@ void draw(Level lvl)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//handleCamera();
-    
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(FoV, WINDOW_WIDTH / WINDOW_HEIGHT, 0.1, 100);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
 
 	camera.render();
 
@@ -396,10 +388,54 @@ void draw(Level lvl)
 	glPopMatrix();
     
     drawHUD(lvl);
-    
+
 	SDL_GL_SwapWindow(gWindow);
 }
 
+/*void drawHUD(Level lvl){
+    // Initialize SDL_ttf library
+    
+    if (TTF_Init() != 0)
+    {
+        std::cout << "TTF_Init() Failed: " << TTF_GetError() << "\n";
+        SDL_Quit();
+        exit(1);
+    }
+    
+    // Load a font
+    TTF_Font *font;
+    //WE NEED TO SPECIFY THE PATH ACCORDING TO THE USED OS
+    font = TTF_OpenFont("/Library/Fonts/Microsoft/Arial.ttf", 24);
+    if (font == NULL)
+    {
+        std::cout << "TTF_OpenFont() Failed: " << TTF_GetError() << "\n";
+        TTF_Quit();
+        SDL_Quit();
+        exit(1);
+    }
+    
+    
+    // Write text to surface
+    SDL_Surface *text;
+    SDL_Color text_color = {35, 25, 255};
+    text = TTF_RenderText_Solid(font,
+                                "A journey of a thousand miles begins with a single step.",
+                                text_color);
+    
+    if (text == NULL)
+    {
+        std::cout << "TTF_RenderText_Solid() Failed: " << TTF_GetError() << "\n";
+        TTF_Quit();
+        SDL_Quit();
+        exit(1);
+    }
+    // Apply the text to the display
+    //IF ONLY I KNEW HOW!!!
+//    if (SDL_BlitSurface(text, NULL, &display, NULL) != 0)
+//    {
+//        std::cout << "SDL_BlitSurface() Failed: " << SDL_GetError() << "\n";
+//    }
+}*/
 
 int main(int argc, char* args[])
 {
@@ -409,8 +445,6 @@ int main(int argc, char* args[])
 	//Level test = lc.createLevel(list);
     Course course = lc.createCourse(list);
     
-
-    
 	// Start SDL
 	if (!init(argc, args)) {
 		system("pause");
@@ -419,14 +453,14 @@ int main(int argc, char* args[])
     
 	// Main Loop
 	else {
-        Level test = course.levels[currLevel];
-        std::cout << test.levelName << "\n";
+        //std::cout << test.levelName << "\n";
 		float start_time_ms = SDL_GetTicks();
 		float prev_time = start_time_ms;
 		float curr_time;
 		float delta_time = 10;
-        
+
 		while (!quit) {
+			Level test = course.levels[GameInfo::currLevel];
 			// Update game time
 			curr_time = SDL_GetTicks() - start_time_ms;
 			delta_time = curr_time - prev_time;
@@ -437,7 +471,6 @@ int main(int argc, char* args[])
 			update(delta_time, test);
 			// Draw
 			draw(test);
-          
             //drawHUD(test);
 
 			prev_time = curr_time;

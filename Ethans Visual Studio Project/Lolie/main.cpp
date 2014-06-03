@@ -23,6 +23,7 @@
 #include "PhysicsManager.h"
 #include "Ball.h"
 #include "GameInfo.h"
+#include "HUD.h"
 
 #ifndef M_PI    //if the pi is not defined in the cmath header file
 #define M_PI 3.1415926535       //define it
@@ -66,6 +67,7 @@ Camera camera;
 
 //Physics engine and ball needed for it
 Ball* ball;
+
 
 //// END OF GLOBALS ////
 
@@ -248,6 +250,7 @@ void freeLookControls(Level lvl)
 				break;
             case SDLK_SPACE: //Give impulse to the ball
                 PhysicsManager::giveImpulse(normalize(camera.getViewDir()) * IMPULSE_FORCE, IMPULSE_FORCE, *lvl.getBall());
+                GameInfo::strokes++;
                 break;
 			default:
 				break;
@@ -315,6 +318,45 @@ void update(float delta_time, Level lvl)
 	lvl.update(delta_time);
 }
 
+void drawHUD(Level lvl){
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    gluOrtho2D(0.0, WINDOW_WIDTH, 0.0, WINDOW_HEIGHT);
+    glMatrixMode(GL_MODELVIEW);
+    glDisable(GL_LIGHTING);
+    glPushMatrix();
+    glLoadIdentity();
+
+    //Drawing the title
+    HUD::drawTitle(lvl.levelName, 10, 460, 0.0, 0.0, 1.0);
+    
+    //Constructing the "par" text
+    char par[10];
+    std::cout << lvl.par << "\n";
+    sprintf(par,"Par: %d", lvl.par);
+    HUD::drawSomeText(par, 10, 10, 0.0, 0.0, 1.0);
+    std::cout << par << "\n";
+    
+
+    //Constructing the "strokes" text
+    char strokes[50];
+    std::cout << GameInfo::strokes << "\n";
+    sprintf(strokes,"Strokes: %d", GameInfo::strokes);
+    HUD::drawSomeText(strokes, 80, 10, 0.0, 0.0, 1.0);
+    std::cout << strokes << "\n";
+    
+    
+    glEnable(GL_LIGHTING);
+    
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+    
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    
+}
+
 void draw(Level lvl)
 {
 	//Clear color buffer
@@ -344,6 +386,8 @@ void draw(Level lvl)
 	lvl.draw();
 
 	glPopMatrix();
+    
+    drawHUD(lvl);
 
 	SDL_GL_SwapWindow(gWindow);
 }

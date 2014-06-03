@@ -9,7 +9,11 @@ class CircleCollider : public Collider2D{
 public:
     CircleCollider(Vector3f c, float r)
     : center(c)
-    , radius(r){}
+	, radius(r){
+		setType(Circle_t);
+	}
+	Vector3f getCenter() { return center; }
+	float getRadius() { return radius; }
     bool getCollision(Collider2D& c, Vector3f& result); // Checks if there's been a collision
 private:
     Vector3f center;

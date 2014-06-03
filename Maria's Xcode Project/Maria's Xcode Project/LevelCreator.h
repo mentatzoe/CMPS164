@@ -12,7 +12,7 @@ public:
     Course createCourse(TokenList tokenList);
 
 private:
-    Level createLevelInsideCourse(TokenList tokenList, std::__wrap_iter<Token*> curToken);
+    //Level createLevelInsideCourse(TokenList tokenList, std::__wrap_iter<Token*> curToken);
 };
 
 #endif /* LEVELCREATOR_H */

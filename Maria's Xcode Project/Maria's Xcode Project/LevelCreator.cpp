@@ -32,7 +32,7 @@ Course LevelCreator::createCourse(TokenList tokenList)
         else if (curToken->data.compare("begin_hole")==0) {
             //std::cout << "-----------------BEGIN HOLE-----------------------" << "\n";
             std::string lName = "";
-            int par;
+            int par = 0;
             int tileID = 0;
             int numSides = 0;
             Vector3f teeVect;
@@ -284,6 +284,7 @@ Level LevelCreator::createLevel(TokenList tokenList)
 /*
  This function would work if found a way of sending the current token (the iterator)
  */
+/*
 Level LevelCreator::createLevelInsideCourse(TokenList tokenList, std::__wrap_iter<Token*> curToken){
     //    auto curToken = tokenList.begin();
 	int tileID = 0;
@@ -369,7 +370,7 @@ Level LevelCreator::createLevelInsideCourse(TokenList tokenList, std::__wrap_ite
 		}
 	}
     
-	/*// Print everything
+	// Print everything
      std::cout << "Printing Level Status:\n";
      for (auto itr = tileList.begin(); itr != tileList.end(); itr++){
      std::cout << "     Tile with ID = " << (*itr).getTileID() << " and numSides = " << (*itr).getNumSides() << "\n";
@@ -392,11 +393,12 @@ Level LevelCreator::createLevelInsideCourse(TokenList tokenList, std::__wrap_ite
      }
      
      std::cout << "     Tee: [" << teeVect.x << ", " << teeVect.y << ", " << teeVect.z << "] on tile " << teeTileID << "\n";
-     std::cout << "     Cup: [" << cupVect.x << ", " << cupVect.y << ", " << cupVect.z << "] on tile " << cupTileID << "\n";*/
+     std::cout << "     Cup: [" << cupVect.x << ", " << cupVect.y << ", " << cupVect.z << "] on tile " << cupTileID << "\n";
     
     
     return *level;
 }
+*/
 
 
 

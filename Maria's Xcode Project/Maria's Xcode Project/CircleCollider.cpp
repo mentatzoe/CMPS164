@@ -1,5 +1,7 @@
 #include "CircleCollider.h"
 
+
+
 bool CircleCollider::getCollision(Collider2D& col, Vector3f& result){
     //Pseudocode for circle collision
     //getting local points
