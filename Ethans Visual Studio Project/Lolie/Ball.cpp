@@ -76,7 +76,6 @@ void Ball::draw()
 	// Draw Sphere
 	gluSphere(quadratic, dimensions.radius, dimensions.slices, dimensions.stacks);
 
-
 	glPopMatrix();
 
 	// Draw children

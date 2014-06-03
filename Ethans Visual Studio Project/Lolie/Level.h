@@ -9,13 +9,20 @@
 class Level : public SceneNode
 {
 public:
+	// Constructor
 	Level();
 	~Level() {}
 
+
+	// Tick
 	void update(float dt);
 	void draw();
-    Ball* getBall(){return b;};
+	
+	// Getters / Setters
+	Ball* getBall(){return b;};
     void setBall(Ball* ba){b = ba;};
+
+	// Member Variables
     std::string levelName;
     int par;
 private:

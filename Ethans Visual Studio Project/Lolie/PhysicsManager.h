@@ -9,18 +9,13 @@
 class PhysicsManager 
 {
 public:
-	enum Type {
-		Tile_t,
-		Tee_t,
-		Cup_t,
-		Ball_t,
-		Boundary_t,
-		Root_t,
-	};
-
+	// Tick
 	static void update(float dt, Ball& b);
-    static void giveImpulse(Vector3f f, float dt, Ball& b);
+    
+	// Functions
+	static void giveImpulse(Vector3f f, float dt, Ball& b);
 private:
+	// Private Functions
 	static Vector3f getNextPosition(Vector3f p, Vector3f v, float dt, Vector3f a);
 	static bool checkCollision(SceneNode& node1, SceneNode& node2, Vector3f& result);
 	static float calcIncline(Vector3f normal);

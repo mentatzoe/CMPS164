@@ -8,11 +8,9 @@
 class LevelCreator
 {
 public:
+	// Functions
 	Level createLevel(TokenList tokenList);
     Course createCourse(TokenList tokenList);
-
-private:
-    //Level createLevelInsideCourse(TokenList tokenList, std::__wrap_iter<Token*> curToken);
 };
 
 #endif /* LEVELCREATOR_H */

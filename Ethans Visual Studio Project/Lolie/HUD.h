@@ -7,6 +7,7 @@
 class HUD
 {
 public:
+	// Functions
     static void drawTitle(std::string s, int posX, int posY, float r, float g, float b);
     static void drawPar(int p);
     static void drawStrokes(int s);

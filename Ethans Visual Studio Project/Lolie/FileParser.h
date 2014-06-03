@@ -10,6 +10,7 @@
 class FileParser
 {
 public:
+	// Functions
 	TokenList tokenize(std::string filename);
 };
 
