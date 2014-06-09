@@ -49,7 +49,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\DEVELOPMENT\freeglut\lib;C:\DEVELOPMENT\glew-1.10.0\lib\Release\Win32;C:\DEVELOPMENT\SDL2-2.0.3\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;freeglut.lib;SDL2.lib;SDL2main.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;SDL2.lib;SDL2main.lib;SDL2_mixer.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -71,6 +71,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Boundary.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -91,6 +92,7 @@
     <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Boundary.h" />
     <ClInclude Include="Camera.h" />
@@ -103,6 +105,7 @@
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelCreator.h" />
+    <ClInclude Include="Libraries.h" />
     <ClInclude Include="LineCollider.h" />
     <ClInclude Include="openglUtil.h" />
     <ClInclude Include="PhysicsManager.h" />
