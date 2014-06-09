@@ -7,25 +7,24 @@
 class Tile : public SceneNode
 {
 public:
+	// Constructor
 	Tile(int tileID, int numSides, std::vector<Vector3f> verts, std::vector<int> neigh);
 
+	// Getters / Setters
 	std::vector<Vector3f> getVerts() { return vertList; }
 	std::vector<int> getNeighbors() { return neighbors; }
-
 	int getTileID() { return tileID; }
 	int getNumSides() { return numSides; }
-
-	void update(float dt);
-	void draw();
-
 	std::vector<Vector3f> getNormals() { return normals; }
 
+	// Tick
+	void update(float dt);
+	void draw();
 private:
-	std::vector<Vector3f> vertList;
+	// Member Variables
+	std::vector<Vector3f> vertList, normals;
 	std::vector<int> neighbors;
-	std::vector<Vector3f> normals;
-	int tileID;
-	int numSides;
+	int tileID, numSides;
 	Vector4f color;
 };
 

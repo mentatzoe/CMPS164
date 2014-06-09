@@ -1,6 +1,8 @@
 #include "LineCollider.h"
 #include "CircleCollider.h"
 #include <iostream>
+
+// Some utility functions
 double Dot(Point& a, Point& b)                        { return (a.x()*b.x()) + (a.y()*b.y()); }
 double PerpDot(Point& a, Point& b)                    { return (a.y()*b.x()) - (a.x()*b.y()); }
 

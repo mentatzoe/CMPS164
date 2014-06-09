@@ -243,6 +243,9 @@ void freeLookControls(Level lvl)
 			case SDLK_z:
 				system("pause");
 				break;
+            case SDLK_t:
+                GameInfo::currLevel ++;
+                break;
 			case SDLK_x:
 				// Switch to TopDown profile
 				GameInfo::setTopDown();
@@ -338,14 +341,12 @@ void drawHUD(Level lvl){
     HUD::drawSomeText(par, 10, 10, 0.0, 0.0, 1.0);
     std::cout << par << "\n";
     
-
     //Constructing the "strokes" text
     char strokes[50];
     std::cout << GameInfo::strokes << "\n";
     sprintf(strokes,"Strokes: %d", GameInfo::strokes);
     HUD::drawSomeText(strokes, 80, 10, 0.0, 0.0, 1.0);
     std::cout << strokes << "\n";
-    
     
     glEnable(GL_LIGHTING);
     
@@ -370,6 +371,7 @@ void draw(Level lvl)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
+	// Render Camera
 	camera.render();
 
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
@@ -383,66 +385,23 @@ void draw(Level lvl)
 
 	glPushMatrix();
 
+	// Draw Level
 	lvl.draw();
 
 	glPopMatrix();
     
+	// Draw HUD
     drawHUD(lvl);
 
 	SDL_GL_SwapWindow(gWindow);
 }
-
-/*void drawHUD(Level lvl){
-    // Initialize SDL_ttf library
-    
-    if (TTF_Init() != 0)
-    {
-        std::cout << "TTF_Init() Failed: " << TTF_GetError() << "\n";
-        SDL_Quit();
-        exit(1);
-    }
-    
-    // Load a font
-    TTF_Font *font;
-    //WE NEED TO SPECIFY THE PATH ACCORDING TO THE USED OS
-    font = TTF_OpenFont("/Library/Fonts/Microsoft/Arial.ttf", 24);
-    if (font == NULL)
-    {
-        std::cout << "TTF_OpenFont() Failed: " << TTF_GetError() << "\n";
-        TTF_Quit();
-        SDL_Quit();
-        exit(1);
-    }
-    
-    
-    // Write text to surface
-    SDL_Surface *text;
-    SDL_Color text_color = {35, 25, 255};
-    text = TTF_RenderText_Solid(font,
-                                "A journey of a thousand miles begins with a single step.",
-                                text_color);
-    
-    if (text == NULL)
-    {
-        std::cout << "TTF_RenderText_Solid() Failed: " << TTF_GetError() << "\n";
-        TTF_Quit();
-        SDL_Quit();
-        exit(1);
-    }
-    // Apply the text to the display
-    //IF ONLY I KNEW HOW!!!
-//    if (SDL_BlitSurface(text, NULL, &display, NULL) != 0)
-//    {
-//        std::cout << "SDL_BlitSurface() Failed: " << SDL_GetError() << "\n";
-//    }
-}*/
 
 int main(int argc, char* args[])
 {
 	FileParser fp;
 	TokenList list = fp.tokenize(args[1]);
 	LevelCreator lc;
-	//Level test = lc.createLevel(list);
+
     Course course = lc.createCourse(list);
     
 	// Start SDL
@@ -453,26 +412,31 @@ int main(int argc, char* args[])
     
 	// Main Loop
 	else {
-        //std::cout << test.levelName << "\n";
 		float start_time_ms = SDL_GetTicks();
 		float prev_time = start_time_ms;
 		float curr_time;
 		float delta_time = 10;
 
 		while (!quit) {
+			// Make sure we referance the correct level
 			Level test = course.levels[GameInfo::currLevel];
+            Level* test2 = &course.levels[GameInfo::currLevel];
+            std::cout << test2->par <<"\n";
+            
 			// Update game time
 			curr_time = SDL_GetTicks() - start_time_ms;
 			delta_time = curr_time - prev_time;
 
 			// Process Events
 			handleEvents(test);
+
 			// Update
 			update(delta_time, test);
+
 			// Draw
 			draw(test);
-            //drawHUD(test);
 
+			// Set previous time
 			prev_time = curr_time;
 		}
 	}
