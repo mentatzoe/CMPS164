@@ -10,6 +10,8 @@
 		4F24DDE419395961004F95F0 /* SDL2_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F24DDE219395961004F95F0 /* SDL2_ttf.framework */; };
 		4F24DDE519395961004F95F0 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F24DDE319395961004F95F0 /* SDL2_image.framework */; };
 		4F3290D719072F9A00FB737D /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3290D619072F9A00FB737D /* SDL2.framework */; };
+		4F36132419464124003A9EA3 /* SDL2_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F36132319464124003A9EA3 /* SDL2_mixer.framework */; };
+		4F36132B194641C0003A9EA3 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F361326194641C0003A9EA3 /* Audio.cpp */; };
 		4F8CB65E193D2143009B2F9C /* GameInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F8CB65C193D2143009B2F9C /* GameInfo.cpp */; };
 		4F8CB661193D2425009B2F9C /* HUD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F8CB65F193D2425009B2F9C /* HUD.cpp */; };
 		4FA2050B18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FA2050A18FDF33F007F09B5 /* Maria_s_Xcode_Project.1 */; };
@@ -56,6 +58,13 @@
 		4F24DDE219395961004F95F0 /* SDL2_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_ttf.framework; path = ../../../../../../Library/Frameworks/SDL2_ttf.framework; sourceTree = "<group>"; };
 		4F24DDE319395961004F95F0 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
 		4F3290D619072F9A00FB737D /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		4F36132319464124003A9EA3 /* SDL2_mixer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_mixer.framework; path = ../../../../../../Library/Frameworks/SDL2_mixer.framework; sourceTree = "<group>"; };
+		4F361325194641C0003A9EA3 /* Audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Audio.h; sourceTree = "<group>"; };
+		4F361326194641C0003A9EA3 /* Audio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
+		4F361327194641C0003A9EA3 /* cup.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cup.wav; sourceTree = "<group>"; };
+		4F361328194641C0003A9EA3 /* hitting.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hitting.wav; sourceTree = "<group>"; };
+		4F361329194641C0003A9EA3 /* wall.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = wall.wav; sourceTree = "<group>"; };
+		4F36132A194641C0003A9EA3 /* woo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = woo.wav; sourceTree = "<group>"; };
 		4F8CB65C193D2143009B2F9C /* GameInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameInfo.cpp; sourceTree = "<group>"; };
 		4F8CB65D193D2143009B2F9C /* GameInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameInfo.h; sourceTree = "<group>"; };
 		4F8CB65F193D2425009B2F9C /* HUD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HUD.cpp; sourceTree = "<group>"; };
@@ -118,6 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F36132419464124003A9EA3 /* SDL2_mixer.framework in Frameworks */,
 				4F24DDE419395961004F95F0 /* SDL2_ttf.framework in Frameworks */,
 				4F24DDE519395961004F95F0 /* SDL2_image.framework in Frameworks */,
 				4F3290D719072F9A00FB737D /* SDL2.framework in Frameworks */,
@@ -133,6 +143,7 @@
 		4FA204FC18FDF33F007F09B5 = {
 			isa = PBXGroup;
 			children = (
+				4F36132319464124003A9EA3 /* SDL2_mixer.framework */,
 				4F24DDE219395961004F95F0 /* SDL2_ttf.framework */,
 				4F24DDE319395961004F95F0 /* SDL2_image.framework */,
 				4F24DDE019395862004F95F0 /* libSDL2_ttf.la */,
@@ -187,6 +198,12 @@
 				4FE219E0191D162200424821 /* LineCollider.cpp */,
 				4FE219E1191D162200424821 /* LineCollider.h */,
 				4FE219E2191D162200424821 /* main.cpp */,
+				4F361325194641C0003A9EA3 /* Audio.h */,
+				4F361326194641C0003A9EA3 /* Audio.cpp */,
+				4F361327194641C0003A9EA3 /* cup.wav */,
+				4F361328194641C0003A9EA3 /* hitting.wav */,
+				4F361329194641C0003A9EA3 /* wall.wav */,
+				4F36132A194641C0003A9EA3 /* woo.wav */,
 				4F8CB65C193D2143009B2F9C /* GameInfo.cpp */,
 				4F8CB65F193D2425009B2F9C /* HUD.cpp */,
 				4F8CB660193D2425009B2F9C /* HUD.h */,
@@ -265,6 +282,7 @@
 			files = (
 				4FE21A0B191D162200424821 /* Cup.cpp in Sources */,
 				4FE21A11191D162200424821 /* LevelCreator.cpp in Sources */,
+				4F36132B194641C0003A9EA3 /* Audio.cpp in Sources */,
 				4FE21A13191D162200424821 /* openglUtil.cpp in Sources */,
 				4F8CB661193D2425009B2F9C /* HUD.cpp in Sources */,
 				4FE21A12191D162200424821 /* Level.cpp in Sources */,

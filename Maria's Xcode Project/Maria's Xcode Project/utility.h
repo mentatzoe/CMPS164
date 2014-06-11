@@ -65,6 +65,8 @@ Vector3f calcSurfaceNormal(std::vector<Vector3f> vertList);
 
 Vector3f normalize(Vector3f orig);
 
+bool loadMedia();
+
 struct Cylinder {
 	float radius, height, slices, stacks;
 };

@@ -9,11 +9,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2_ttf/SDL_ttf.h>
 #include <SDL2_image/SDL_image.h>
+#include <SDL2_mixer/SDL_mixer.h>
 #else
 #include <GL/freeglut.h>
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #endif
 
 #include <iostream>
@@ -24,6 +26,7 @@
 #include "Ball.h"
 #include "GameInfo.h"
 #include "HUD.h"
+#include "Audio.h"
 
 #ifndef M_PI    //if the pi is not defined in the cmath header file
 #define M_PI 3.1415926535       //define it
@@ -78,7 +81,7 @@ bool init(int argc, char* args[]) {
 	bool success = true;
 
 	// Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
 		std::cout << "SDL_Init has failed. Error code: " << SDL_GetError() << "\n";
 		success = false;
 	}
@@ -117,10 +120,17 @@ bool init(int argc, char* args[]) {
 				if (!initGL(argc, args)){
 					success = false;
 				}
+				else {
+					// Initialize SDL_mixer
+					if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+					{
+						printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+						success = false;
+					}
+				}
 			}
 		}
 	}
-
 	return success;
 }
 
@@ -243,16 +253,20 @@ void freeLookControls(Level lvl)
 			case SDLK_z:
 				system("pause");
 				break;
-            case SDLK_t:
-                GameInfo::currLevel ++;
-                break;
 			case SDLK_x:
 				// Switch to TopDown profile
 				GameInfo::setTopDown();
 				camera.setTopDown();
 				break;
+                case SDLK_t:
+                    GameInfo::currLevel++;
+                    break;
+                case SDLK_g:
+                    GameInfo::currLevel--;
+                    break;
             case SDLK_SPACE: //Give impulse to the ball
                 PhysicsManager::giveImpulse(normalize(camera.getViewDir()) * IMPULSE_FORCE, IMPULSE_FORCE, *lvl.getBall());
+				Audio::playSound(Audio::Hit);
                 GameInfo::strokes++;
                 break;
 			default:
@@ -409,9 +423,15 @@ int main(int argc, char* args[])
 		system("pause");
 		exit(0);
 	}
+
+	// Load sound files for audio
+	if (!Audio::loadMedia()){
+		exit(0);
+	}
     
 	// Main Loop
 	else {
+		Mix_PlayMusic(Audio::gMusic, -1);
 		float start_time_ms = SDL_GetTicks();
 		float prev_time = start_time_ms;
 		float curr_time;
@@ -420,9 +440,7 @@ int main(int argc, char* args[])
 		while (!quit) {
 			// Make sure we referance the correct level
 			Level test = course.levels[GameInfo::currLevel];
-            Level* test2 = &course.levels[GameInfo::currLevel];
-            std::cout << test2->par <<"\n";
-            
+
 			// Update game time
 			curr_time = SDL_GetTicks() - start_time_ms;
 			delta_time = curr_time - prev_time;
@@ -435,6 +453,11 @@ int main(int argc, char* args[])
 
 			// Draw
 			draw(test);
+
+			// Play music if stopped
+			if (Mix_PlayingMusic() == 0){
+				Mix_PlayMusic(Audio::gMusic, -1);
+			}
 
 			// Set previous time
 			prev_time = curr_time;

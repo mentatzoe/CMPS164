@@ -5,6 +5,7 @@
 #include "Tee.h"
 #include "LineCollider.h"
 #include "GameInfo.h"
+#include "Audio.h"
 
 const float PI = 3.14159f;
 
@@ -66,6 +67,8 @@ void PhysicsManager::update(float dt, Ball& b)
 					std::cout << "Hit the cup!\n";
 					if (magnitude(b.getV()) < .0008 && magnitude(b.getV()) != 0){
 						std::cout << "MADE IT IN!\n";
+						Audio::playSound(Audio::Cup);
+						Audio::playSound(Audio::Cheer);
 						GameInfo::nextLevel();
                         GameInfo::strokes = 0;
 					}
@@ -93,6 +96,8 @@ void PhysicsManager::update(float dt, Ball& b)
 						b.setV(vReflected);
 						b.getCollider()->setA(colPos);
 						b.getCollider()->setB(p_new);
+
+						Audio::playSound(Audio::Wall);
 
 						// Loop to see if anything has been collided with
 						continue;
