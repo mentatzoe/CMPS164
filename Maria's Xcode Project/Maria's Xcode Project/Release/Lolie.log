@@ -1,0 +1,46 @@
+﻿Build started 4/25/2014 5:49:53 PM.
+     1>Project "C:\Users\Moogooloo\documents\visual studio 2013\Projects\Lolie\Lolie\Lolie.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         D:\Storage's Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\DEVELOPMENT\freeglut\include /I"C:\DEVELOPMENT\glew-1.10.0\include" /I"C:\DEVELOPMENT\SDL2-2.0.3\include" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt FileParser.cpp Level.cpp LevelCreator.cpp main.cpp openglUtil.cpp Tile.cpp utility.cpp
+         FileParser.cpp
+         Level.cpp
+     1>Level.cpp(10): warning C4018: '<' : signed/unsigned mismatch
+     1>Level.cpp(15): warning C4018: '<' : signed/unsigned mismatch
+         LevelCreator.cpp
+     1>LevelCreator.cpp(35): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+         main.cpp
+     1>main.cpp(37): warning C4305: 'initializing' : truncation from 'double' to 'float'
+     1>main.cpp(40): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>main.cpp(41): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>main.cpp(42): warning C4305: 'initializing' : truncation from 'double' to 'GLfloat'
+     1>main.cpp(224): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>main.cpp(233): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>main.cpp(242): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>main.cpp(300): warning C4305: '-=' : truncation from 'double' to 'float'
+     1>main.cpp(303): warning C4305: '-=' : truncation from 'double' to 'float'
+     1>main.cpp(306): warning C4305: '+=' : truncation from 'double' to 'float'
+     1>main.cpp(309): warning C4305: '+=' : truncation from 'double' to 'float'
+     1>main.cpp(312): warning C4305: '+=' : truncation from 'double' to 'float'
+     1>main.cpp(315): warning C4305: '-=' : truncation from 'double' to 'float'
+         openglUtil.cpp
+     1>openglUtil.cpp(68): warning C4018: '<' : signed/unsigned mismatch
+     1>openglUtil.cpp(154): warning C4018: '<' : signed/unsigned mismatch
+     1>openglUtil.cpp(157): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>openglUtil.cpp(171): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+         Tile.cpp
+         utility.cpp
+     1>utility.cpp(31): warning C4018: '<' : signed/unsigned mismatch
+       Link:
+         D:\Storage's Program Files\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Moogooloo\documents\visual studio 2013\Projects\Lolie\Release\Lolie.exe" /NOLOGO /LIBPATH:C:\DEVELOPMENT\freeglut\lib /LIBPATH:"C:\DEVELOPMENT\glew-1.10.0\lib\Release\Win32" /LIBPATH:"C:\DEVELOPMENT\SDL2-2.0.3\lib\x86" glew32.lib freeglut.lib SDL2.lib SDL2main.lib opengl32 glew32kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Moogooloo\documents\visual studio 2013\Projects\Lolie\Release\Lolie.pdb" /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Moogooloo\documents\visual studio 2013\Projects\Lolie\Release\Lolie.lib" /MACHINE:X86 /SAFESEH Release\FileParser.obj
+         Release\Level.obj
+         Release\LevelCreator.obj
+         Release\main.obj
+         Release\openglUtil.obj
+         Release\Tile.obj
+         Release\utility.obj
+     1>LINK : fatal error LNK1181: cannot open input file 'opengl32.obj'
+     1>Done Building Project "C:\Users\Moogooloo\documents\visual studio 2013\Projects\Lolie\Lolie\Lolie.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.60

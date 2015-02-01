@@ -1,0 +1,6 @@
+Lot of copy pasted code
+Very long functions
+Large classes/files
+Situations where you have a single module doing a ton of unrealated things
+2 modules have a lot of dependancies on each other
+
