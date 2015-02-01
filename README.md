@@ -1,4 +1,4 @@
 CMPS164
 =======
 
-Repo for Maria and Ethan's Lab Assignments
+Mini-golf game engine using GLUT. Cross-platform compatible. Ethan Lie & Maria Lopez-Latorre.
